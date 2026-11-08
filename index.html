@@ -102,4 +102,1379 @@ h3.mt small{font-family:var(--font);font-weight:400;font-size:13.5px;color:var(-
 .tk::before{top:-11px}.tk::after{bottom:-11px}
 .tk-main{padding:20px 24px 18px}
 .tk-top{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:13.5px;color:var(--muted)}
-.tk-date{font-family:var(--display);font-weight:700;font-size:19px;
+.tk-date{font-family:var(--display);font-weight:700;font-size:19px;color:var(--ink)}
+.tk-train{background:var(--c-m);color:var(--ink);border-radius:999px;padding:1px 11px;font-weight:700;font-size:13px}
+.tk-route{display:grid;grid-template-columns:auto minmax(40px,1fr) auto;gap:16px;align-items:center;margin:14px 0 16px}
+.tk-route b{display:block;font-family:var(--display);font-size:clamp(28px,3.8vw,38px);line-height:1;font-weight:700}
+.tk-route span{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}
+.tk-route .r{text-align:right}
+.tk-route .ln{position:relative;height:20px;border-top:2px dashed var(--dot);top:10px;text-align:center}
+.tk-route .ln span{white-space:nowrap;position:relative;top:-13px;display:inline-block;background:var(--paper2);padding:0 8px;font-size:12.5px;margin:0}
+.tk-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 18px;margin:0;font-size:13.5px}
+.tk-meta dt{font-size:12px;color:var(--muted)}
+.tk-meta dd{margin:0;font-weight:600}
+.tk-stub{border-left:2px dashed var(--dot);padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;justify-content:space-between}
+.tk-seat{font-family:var(--serif);font-weight:700;font-size:17px;line-height:1.35}
+.tk-must{font-size:13px;margin:0}
+.tk-code{font-size:12px;color:var(--muted);margin:0;line-height:1.5}
+.stamp{position:relative;display:grid;place-items:center;width:62px;height:62px;border:2px solid var(--accent);border-radius:50%;color:var(--accent);font-family:var(--serif);font-weight:700;font-size:12.5px;line-height:1.2;text-align:center;transform:rotate(-14deg);opacity:.85}
+.stamp::after{content:"";position:absolute;inset:3px;border:1px solid currentColor;border-radius:50%}
+
+/* timetable */
+.tt-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 18px;align-items:center;margin-bottom:12px;font-size:13px;color:var(--muted)}
+.tt-legend{display:flex;flex-wrap:wrap;gap:4px 14px}
+.tt-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1.5px solid}
+.tt-legend i.f{background:var(--c-f);border-color:var(--c-f-b)}.tt-legend i.m{background:var(--c-m);border-color:var(--c-m-b)}.tt-legend i.s{background:var(--c-s);border-color:var(--c-s-b)}.tt-legend i.r{background:var(--c-r);border-color:var(--c-r-b)}
+.tt-scroll{overflow:auto;max-height:min(80vh,920px);border:1px solid var(--rule);border-radius:14px;background:var(--paper);overscroll-behavior:contain}
+.tt{display:grid;grid-template-columns:58px repeat(10,minmax(142px,1fr));min-width:1478px}
+.tt-corner{position:sticky;top:0;left:0;z-index:4;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:12.5px;font-weight:600}
+.tt-head{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;gap:6px;padding:10px 12px 9px;border-left:1px solid var(--rule);border-bottom:1px solid var(--rule);line-height:1.3}
+.tt-head > div{display:flex;flex-direction:column;min-width:0}
+.tt-head small{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.07em;color:var(--muted)}
+.tt-head b{font-family:var(--serif);font-size:16px;margin:2px 0 1px}
+.tt-head span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-times{position:sticky;left:0;z-index:2;background:var(--paper);border-right:1px solid var(--rule)}
+.tt-times div{border-top:1px solid var(--rule);text-align:right;padding:2px 8px 0 0;font-size:11.5px;color:var(--muted);box-sizing:border-box}
+.tt-col{position:relative;border-left:1px solid var(--rule);background-image:linear-gradient(var(--rule) 1px,transparent 1px);background-size:100% 56px}
+.tb{position:absolute;display:block;margin:0;border:1px solid transparent;border-radius:7px;padding:4px 7px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;overflow:hidden;line-height:1.3}
+.tb.f{background:var(--c-f);border-color:color-mix(in srgb,var(--c-f-b) 28%,transparent)}.tb.m{background:var(--c-m);border-color:color-mix(in srgb,var(--c-m-b) 28%,transparent)}.tb.s{background:var(--c-s);border-color:color-mix(in srgb,var(--c-s-b) 28%,transparent)}.tb.r{background:var(--c-r);border-color:color-mix(in srgb,var(--c-r-b) 28%,transparent)}
+.tb:hover{filter:saturate(1.25) brightness(.98)}
+.tb .tm{display:block;font-size:10.5px;color:color-mix(in srgb,var(--ink) 62%,transparent);white-space:nowrap}
+.tb b{display:block;font-size:13px;font-weight:700}
+.tb small{display:block;font-size:11.5px;color:color-mix(in srgb,var(--ink) 66%,transparent);margin-top:1px}
+.tb.mid small{display:none}
+.tb.mid b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tb.short{padding:1px 7px;display:flex;align-items:center}
+.tb.short .tm,.tb.short small{display:none}
+.tb.short b{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tkb{font-style:normal;display:inline-block;font-size:10px;font-weight:700;color:var(--accent);border:1px solid currentColor;border-radius:3px;padding:0 3px;margin-left:5px;vertical-align:1px;line-height:1.45}
+
+/* schedule + map */
+.daytabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 52px);z-index:900;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);margin-bottom:28px}
+.daytabs .wrap{display:flex;overflow-x:auto;scrollbar-width:none;gap:4px;padding-top:8px}
+.daytabs .wrap::-webkit-scrollbar{display:none}
+.daytabs button{flex:1 0 98px;font:inherit;text-align:left;background:none;border:0;border-radius:10px 10px 0 0;color:var(--muted);padding:9px 12px 9px;cursor:pointer;line-height:1.35}
+.daytabs button b{display:block;font-family:var(--serif);font-size:15px;font-weight:700;color:var(--muted)}
+.daytabs button span{font-size:12.5px;white-space:nowrap}
+.daytabs button[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:0 -1px 0 var(--rule)}
+.daytabs button[aria-selected="true"] b,.daytabs button:hover b{color:var(--ink)}
+.ph{display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:end;margin-bottom:22px}
+.dd{display:flex;flex-direction:column;line-height:1}
+.dn{font-family:var(--display);font-size:42px;font-weight:700;letter-spacing:-.01em}
+.dw{font-family:var(--hand);font-size:24px;color:var(--muted);margin-top:2px}
+.dt .dp{display:block;font-family:var(--hand);font-size:22px;color:var(--accent);line-height:1.1}
+.dt h3{font-size:clamp(20px,2.5vw,25px);margin:2px 0}
+.dt small{color:var(--muted);font-size:14px}
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.maps{position:sticky;top:calc(env(safe-area-inset-top,0px) + 132px);display:grid;gap:14px;background:var(--paper);padding:12px;border-radius:14px;box-shadow:var(--shadow)}
+.plan{background:var(--paper);padding:8px 20px 18px;border-radius:14px;box-shadow:var(--shadow)}
+.mapfig{margin:0}
+.smap{display:block;width:100%;height:auto;border-radius:10px;background:#F1EADF}
+.smap .pin{cursor:pointer}
+.smap .pin .hd{transition:transform .15s}
+.smap .pin.on .hd{transform:scale(1.22)}
+.smap .lab{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.smap .pin .hd{transition:none}}
+.mapfig figcaption{font-family:var(--hand);font-size:20px;color:var(--muted);margin-top:4px}
+.minfo{font-size:13.5px;margin-top:8px;min-height:1.6em;color:var(--muted)}
+.minfo b{color:var(--ink);font-weight:600;margin-right:6px}
+.minfo a{margin-left:6px;color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);margin-top:2px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}
+.legend i.lm{border-radius:1px;background:#8C939B}
+.tl{width:100%;border-collapse:collapse;font-size:14.5px}
+.tl td{padding:10px 10px 10px 0;vertical-align:top;border-top:1px dashed var(--rule)}
+.tl tr:first-child td{border-top:0}
+.tl .t{width:104px;color:var(--muted);white-space:nowrap;font-size:13.5px;padding-top:11px}
+.tl .p{width:30px;white-space:nowrap}
+.tl .w{min-width:9em}
+.tl .c{color:var(--muted);font-size:13.5px;width:38%}
+.tl tr.key .w{font-weight:600}
+.tl tr.key .t{color:var(--ink)}
+.tl tr[data-pins]{cursor:pointer}
+.tl tr[data-pins]:hover td{background:var(--paper2)}
+.tl tr.on td{background:var(--paper2)}
+.tl .pin{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;background:var(--accent);color:#fff;font-size:11.5px;font-weight:700;margin:1px 2px 1px 0}
+.tip{font-size:14px;color:var(--ink);margin:16px 0 0;background:var(--paper2);border:1px dashed var(--dot);border-radius:10px;padding:12px 14px}
+.map-msg{font-size:13.5px;color:var(--muted);margin-top:18px}
+
+/* lists */
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px}
+.col h3{font-size:20px;margin-bottom:6px}
+.col h3 small{display:block;font-family:var(--font);font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:2px}
+.col h4{font-size:16px;margin-bottom:6px}
+.item{padding:14px 0;border-top:1px dashed var(--rule)}
+.item .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.item .nm{font-weight:600}
+.item .sc{font-family:var(--display);font-weight:700;color:var(--accent);font-size:15px}
+.item .pr{font-size:13.5px;color:var(--muted);margin-top:2px}
+.item p{margin:6px 0 0;font-size:14px}
+em.pick,em.alt{font-style:normal;font-size:12px;font-weight:600;color:var(--accent);margin-left:6px;white-space:nowrap}
+em.alt{color:var(--muted);font-weight:500}
+.sub-link{font-size:12.5px;margin-left:6px}
+.verdict{font-size:13.5px;color:var(--muted);padding-top:12px;border-top:1px dashed var(--rule);margin:0}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+.two h3{font-size:18px;margin:22px 0 6px}
+.two h3:first-child{margin-top:0}
+.two p{margin:0 0 10px;font-size:14.5px}
+ul.plain{margin:0 0 12px;padding:0;list-style:none;font-size:14.5px}
+ul.plain li{padding:6px 0;border-top:1px dashed var(--rule)}
+ul.plain li:first-child{border-top:0;padding-top:0}
+ul.eats{list-style:none;margin:0;padding:0}
+ul.eats li{padding:10px 0;border-top:1px dashed var(--rule);font-size:14px}
+ul.eats li a{font-weight:600}
+ul.eats .nm-plain{font-weight:600}
+ul.eats .cn{display:block;font-size:13px;color:var(--muted)}
+ul.eats .mn{display:block}
+ul.eats small{display:block;color:var(--muted);font-size:12.5px}
+.tours{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 36px}
+.tour{padding:16px 0;border-top:1px dashed var(--rule)}
+.tour h3{font-size:17px}
+.tour .meta{font-size:13px;color:var(--muted);margin:2px 0 6px}
+.tour p{margin:0;font-size:14px}
+.scroll-x{overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:14px;min-width:620px}
+table.t th{text-align:left;font-weight:600;font-size:13px;color:var(--muted);padding:8px 12px 8px 0;border-bottom:1.5px solid var(--ink)}
+table.t td{padding:10px 12px 10px 0;border-bottom:1px dashed var(--rule);vertical-align:top}
+table.t .n{text-align:right;white-space:nowrap}
+table.t tr.sum td{font-weight:700}
+table.t + .note,.scroll-x + .note{margin-top:8px}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 40px}
+.ck h3{font-size:17px;margin:18px 0 4px}
+.ck h3 small{font-family:var(--font);font-weight:400;font-size:13px;color:var(--muted);margin-left:6px;letter-spacing:0}
+.ck label{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:9px 0;border-top:1px dashed var(--rule);cursor:pointer;font-size:14.5px}
+.ck input{width:17px;height:17px;margin:3px 0 0;accent-color:var(--accent)}
+.ck small{display:block;color:var(--muted);font-size:13px}
+.ck input:checked + span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--dot)}
+.progress{font-family:var(--hand);font-size:24px;margin:0 0 4px}
+.prep-link{display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--kraft);border-radius:6px;padding:18px 20px;max-width:640px;transform:rotate(-.6deg)}
+.prep-link a{font-weight:600;white-space:nowrap}
+footer{padding:56px 0 48px;color:var(--muted);font-size:13px}
+footer p{max-width:54em}
+
+@media (max-width:860px){
+  .cover{border-radius:18px;padding-top:40px}
+  .plane{display:none}
+  .cover-grid{grid-template-columns:1fr;gap:34px}
+  .pgrid{grid-template-columns:1fr;gap:20px}
+  .maps{position:static}
+  .ph{grid-template-columns:78px 1fr;gap:12px}
+  .dn{font-size:30px}
+  .cols,.tours{grid-template-columns:1fr;gap:28px}
+  .tours{gap:0}
+  .two,.checks{grid-template-columns:1fr;gap:12px}
+  .tk{grid-template-columns:1fr}
+  .tk::before,.tk::after{display:none}
+  .tk-stub{border-left:0;border-top:2px dashed var(--dot);flex-direction:row;flex-wrap:wrap;align-items:center}
+  .tk-meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tk-route{gap:8px;grid-template-columns:auto minmax(64px,1fr) auto}
+  .tk-route b{font-size:27px}
+  .tk-seat br{display:none}
+  .stamp{width:56px;height:56px;font-size:11.5px}
+  .tt{grid-template-columns:52px repeat(10,136px);min-width:0}
+  .tl,.tl tbody{display:block}
+  .tl tr{display:grid;grid-template-columns:30px 1fr;column-gap:8px;padding:10px 0;border-top:1px dashed var(--rule)}
+  .tl tr:first-child{border-top:0}
+  .tl td{border:0;padding:0;width:auto}
+  .tl .p{grid-column:1;grid-row:1 / span 3}
+  .tl .t,.tl .w,.tl .c{grid-column:2}
+  .tl .t{padding-top:0}
+  .tl tr td.c,.tl tr td.w,.tl tr td.t{width:auto;min-width:0}
+  .tl tr.on td,.tl tr[data-pins]:hover td{background:none}
+  .tl tr.on .w{color:var(--accent)}
+  .plan{padding:6px 14px 14px}
+}
+@media print{body{background:#fff}nav.tabs,.daytabs,.maps,.tt-scroll{display:none}.panel[hidden]{display:block}.pgrid{display:block}section.sheet>.wrap,.cover{box-shadow:none}}
+
+/* app components */
+.muted{color:var(--muted)}
+.btn{font:inherit;font-size:14px;font-weight:600;border-radius:999px;padding:7px 16px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.primary:hover{background:color-mix(in srgb,var(--ink) 85%,var(--accent))}
+.btn.ghost{background:transparent}
+.btn.danger{color:#B4402F;border-color:color-mix(in srgb,#B4402F 40%,transparent);background:transparent}
+.btn.add{margin-top:14px;border-style:dashed;background:transparent;color:var(--muted)}
+.btn.add:hover{color:var(--ink)}
+.btn-sm{font:inherit;font-size:12.5px;font-weight:600;border-radius:999px;padding:3px 11px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn-sm:hover{border-color:var(--ink)}
+.btn-sm.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.link{font:inherit;font-size:12.5px;background:none;border:0;padding:2px 4px;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-color:var(--dot);text-underline-offset:3px}
+.link:hover{color:var(--ink)}
+.x{font:inherit;width:24px;height:24px;border:0;border-radius:50%;background:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1;flex:none}
+.x:hover{background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink)}
+.sp{flex:1}
+.ro .ed{display:none!important}
+.status{position:absolute;top:18px;left:22px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--dot)}
+.status[data-k="saved"]::before{background:#5C9A6A}.status[data-k="saving"]::before{background:#D3A43A}.status[data-k="error"]::before{background:#C2543F}
+.edit-trip{position:absolute;top:12px;right:16px}
+.cover .plane{top:30px;right:40px}
+
+/* memo card */
+.memo-card{position:relative;background:var(--kraft);padding:34px 22px 18px;border-radius:6px;transform:rotate(.4deg);box-shadow:0 1px 0 rgba(90,60,40,.08),0 10px 22px -16px rgba(90,60,40,.5)}
+.memo-card .card-h span{background:none;border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor;padding:0 14px}
+.memo-meta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted);margin:-4px 0 6px}
+#memo{list-style:none;margin:0;padding:0;font-size:14.5px;max-height:330px;overflow:auto}
+#memo li{display:flex;align-items:flex-start;gap:4px;padding:5px 0;border-bottom:1px dashed color-mix(in srgb,var(--ink) 18%,transparent)}
+#memo li.empty{color:var(--muted);border:0;font-size:13.5px}
+#memo label{display:grid;grid-template-columns:22px 1fr;gap:6px;flex:1;cursor:pointer}
+#memo input{width:16px;height:16px;margin:3px 0 0;accent-color:var(--accent)}
+#memo li.done span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--dot)}
+.addrow{display:flex;gap:6px;margin-top:10px}
+.addrow input{flex:1;min-width:0;font:inherit;font-size:14px;padding:7px 10px;border:1px solid color-mix(in srgb,var(--ink) 18%,transparent);border-radius:8px;background:color-mix(in srgb,var(--paper) 75%,transparent);color:var(--ink)}
+.addrow input:focus{outline:2px solid var(--accent);outline-offset:0}
+
+/* timetable extras */
+.plus{font:inherit;flex:none;width:26px;height:26px;border-radius:7px;border:1px solid color-mix(in srgb,var(--ink) 18%,transparent);background:color-mix(in srgb,var(--paper) 80%,transparent);color:var(--ink);font-size:16px;line-height:1;cursor:pointer}
+.plus:hover{background:var(--paper);border-color:var(--ink)}
+.tt-col{cursor:copy}
+.ro .tt-col{cursor:default}
+.tt-col.hov::after{content:var(--gt);position:absolute;left:3px;right:3px;top:var(--gy);height:22px;border:1.5px dashed var(--dot);border-radius:7px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;padding-left:8px;pointer-events:none;background:color-mix(in srgb,var(--paper) 70%,transparent)}
+.tb.cont{opacity:.82}
+.tb .in{display:block;height:100%;overflow:hidden}
+.tb:not(.short) .in{-webkit-mask-image:linear-gradient(#000 calc(100% - 12px),transparent);mask-image:linear-gradient(#000 calc(100% - 12px),transparent)}
+.tb.short .in{display:flex;align-items:center;min-width:0}
+.tb:focus-visible{z-index:2}
+.tt-help{font-size:13px;color:var(--muted);margin:10px 0 0}
+
+/* panel extras */
+.ph{grid-template-columns:110px 1fr auto}
+.ph .btn{align-self:end}
+.tl .t .cdot{display:block;font-size:11px;margin-top:2px;width:max-content;padding:0 6px;border-radius:999px;color:var(--ink)}
+.cdot.f{background:var(--c-f)}.cdot.m{background:var(--c-m)}.cdot.s{background:var(--c-s)}.cdot.r{background:var(--c-r)}
+.tl td.ed{width:50px;text-align:right;padding-right:0}
+.tl .links{display:flex;flex-wrap:wrap;gap:2px 10px;margin-top:3px;font-size:12.5px}
+.nomap{color:var(--muted);font-size:14px;margin:14px 0}
+
+/* restaurants */
+.eatgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 40px}
+.ecol-h{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:6px}
+.ecol h3{font-size:21px}
+.ecol h3 small{display:block;font-family:var(--font);font-weight:400;font-size:13px;color:var(--muted);letter-spacing:0}
+.cand{padding:13px 0 12px;border-top:1px dashed var(--rule)}
+.cand.in .nm a,.cand.in .nm{color:var(--ink)}
+.cand-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.cand .nm{font-weight:700}
+.cand .kind{font-style:normal;font-size:11.5px;font-weight:600;color:var(--muted);margin-left:7px}
+.cand .sc{font-family:var(--display);font-weight:700;color:var(--accent);font-size:15px}
+.cand .local{font-size:13px;color:var(--muted)}
+.cand .pr{font-size:13.5px;color:var(--muted);margin-top:1px}
+.cand p{margin:5px 0 0;font-size:14px}
+.cand-foot{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:9px}
+.inplan{font:inherit;font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:0;border-radius:999px;padding:3px 10px;cursor:pointer}
+
+/* money */
+.msum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:26px}
+.msum div{background:var(--paper2);border-radius:12px;padding:14px 16px}
+.msum span{display:block;font-size:13px;color:var(--muted)}
+.msum b{display:block;font-family:var(--display);font-size:clamp(20px,2.4vw,25px);margin:2px 0}
+.msum small{font-size:12px;color:var(--muted)}
+.msum .neg b,td.neg{color:#B4402F}
+table.t input.bud{width:118px;font:inherit;font-size:14px;text-align:right;padding:4px 8px;border:1px solid var(--rule);border-radius:7px;background:var(--paper);color:var(--ink)}
+td.barh,th.barh{width:22%}
+.bar{display:flex;height:9px;border-radius:5px;background:var(--rule);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.bar i.pl{background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--accent) 55%,transparent) 0 4px,transparent 4px 7px)}
+.mbar{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin:30px 0 10px}
+.mbar h3{font-size:20px}
+.fchips{display:flex;gap:6px}
+.fchips button{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--paper);color:var(--muted);border-radius:999px;padding:3px 12px;cursor:pointer}
+.fchips button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#mlist td small{display:block;color:var(--muted);font-size:12.5px;font-weight:400}
+.chip{display:inline-block;font-size:11.5px;font-weight:600;background:var(--paper2);border-radius:999px;padding:0 8px;color:var(--muted)}
+.st{font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.st.paid{background:var(--c-s);color:var(--ink)}.st.planned{background:var(--c-r);color:var(--ink)}
+.rates{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13.5px;color:var(--muted);margin-top:14px}
+.rates input{width:78px;font:inherit;font-size:13.5px;padding:3px 7px;border:1px solid var(--rule);border-radius:7px;background:var(--paper);color:var(--ink);text-align:right}
+
+/* checklists */
+.ltabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.ltabs button{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--rule);background:var(--paper);color:var(--muted);border-radius:999px;padding:6px 14px;cursor:pointer}
+.ltabs button small{font-weight:500;margin-left:6px;font-size:12px}
+.ltabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.ltabs .ltab-add{border-style:dashed}
+.lhead{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-bottom:6px}
+.lhead .progress{margin:0}
+.meter{flex:1;min-width:120px;height:5px;background:var(--rule);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent)}
+.ck h3{display:flex;align-items:baseline;gap:6px}
+.ck h3 .link{margin-left:auto}
+.ci{display:flex;align-items:flex-start;gap:4px;border-top:1px dashed var(--rule)}
+.ci label{flex:1;display:grid;grid-template-columns:22px 1fr;gap:8px;padding:9px 0;cursor:pointer;font-size:14.5px}
+.ci input{width:17px;height:17px;margin:3px 0 0;accent-color:var(--accent)}
+.ci small{display:block;color:var(--muted);font-size:13px}
+.ci.done span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--dot)}
+.ci .x{margin-top:7px;font-size:13px}
+.ck .addrow input{background:var(--paper);width:auto;height:auto;margin:0;accent-color:auto}
+.ci label{border-top:0}
+
+/* notes */
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:26px 22px}
+.notec{position:relative;background:var(--c-r);border-radius:4px 14px 6px 12px;padding:22px 16px 12px;box-shadow:0 8px 16px -14px rgba(90,60,40,.7);display:flex;flex-direction:column;gap:6px}
+.notec:nth-child(3n+2){background:var(--c-f)}.notec:nth-child(3n){background:var(--c-m)}
+.notec .tape{width:70px;height:20px;top:-9px}
+.notec .nt{font-family:var(--serif);font-weight:700;font-size:17px;border:0;background:transparent;color:var(--ink);padding:2px 0;border-bottom:1px dashed color-mix(in srgb,var(--ink) 25%,transparent)}
+.notec .nb{font:inherit;font-size:14.5px;line-height:1.65;border:0;background:transparent;color:var(--ink);resize:vertical;min-height:120px}
+.notec .nt:focus,.notec .nb:focus{outline:none}
+.notec:focus-within{box-shadow:0 0 0 2px var(--accent)}
+.notec .link{align-self:flex-end}
+.addnote{font:inherit;font-size:15px;font-weight:600;color:var(--muted);background:transparent;border:1.5px dashed var(--dot);box-shadow:none;align-items:center;justify-content:center;min-height:180px;cursor:pointer}
+.addnote:hover{color:var(--ink);border-color:var(--ink)}
+
+/* backup */
+.bk{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 14px}
+
+/* dialog */
+dialog{border:0;border-radius:18px;padding:0;background:var(--paper);color:var(--ink);width:min(520px,calc(100vw - 24px));max-height:calc(100dvh - 40px);box-shadow:0 30px 60px -20px rgba(40,25,15,.5)}
+dialog::backdrop{background:rgba(40,28,20,.42)}
+#dlgForm{padding:24px 24px 20px;display:flex;flex-wrap:wrap;gap:12px 14px}
+#dlgForm h3{width:100%;font-size:21px}
+.dlg-msg{width:100%;margin:0;color:var(--muted);font-size:14.5px}
+.dlg-err{width:100%;margin:0;color:#B4402F;font-size:13.5px;font-weight:600}
+.fld{width:100%;display:flex;flex-direction:column;gap:4px}
+.fld.half{width:calc(50% - 7px)}
+.fld label{font-size:12.5px;font-weight:600;color:var(--muted)}
+.fld small{font-size:12px;color:var(--muted)}
+.fld input:not([type=checkbox]):not([type=radio]),.fld select,.fld textarea{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--rule);border-radius:9px;background:var(--bg);color:var(--ink);width:100%}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:2px solid var(--accent);outline-offset:0}
+.fld .chk{font-size:14.5px;font-weight:500;color:var(--ink);display:flex;gap:8px;align-items:center;cursor:pointer}
+.fld .chk input{width:17px;height:17px;accent-color:var(--accent)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.segb{cursor:pointer}
+.segb input{position:absolute;opacity:0;pointer-events:none}
+.segb span{display:inline-block;font-size:14px;font-weight:600;padding:5px 14px;border-radius:999px;border:1px solid var(--rule);color:var(--muted)}
+.segb input:checked + span{color:var(--ink);border-color:var(--ink)}
+.segb.f input:checked + span{background:var(--c-f)}.segb.m input:checked + span{background:var(--c-m)}.segb.s input:checked + span{background:var(--c-s)}.segb.r input:checked + span{background:var(--c-r)}
+.segb input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.pchips{display:flex;flex-wrap:wrap;gap:6px;min-height:28px;align-items:center;font-size:13.5px}
+.pchip{display:inline-flex;align-items:center;gap:2px;background:var(--paper2);border-radius:999px;padding:2px 4px 2px 11px;font-weight:600}
+.pchip button{font:inherit;border:0;background:none;color:var(--muted);cursor:pointer;width:22px;height:22px;border-radius:50%}
+.pchip button:hover{background:var(--rule);color:var(--ink)}
+.dlg-act{width:100%;display:flex;gap:8px;align-items:center;margin-top:6px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:2000}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+@media (max-width:860px){
+  .eatgrid{grid-template-columns:1fr}
+  .msum{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ph{grid-template-columns:78px 1fr}
+  .ph .btn{grid-column:1 / -1;justify-self:start}
+  .tl tr{grid-template-columns:minmax(30px,auto) 1fr auto}
+  .tl .p{display:flex;flex-direction:column;gap:3px}
+  .tl td.ed{grid-column:3;grid-row:1;width:auto}
+  .status{top:12px;left:16px}
+  .cover{padding-top:56px}
+  .fld.half{width:100%}
+}
+
+.tin{font:inherit;color:inherit;letter-spacing:inherit;text-align:center;background:transparent;border:0;border-bottom:1.5px dashed transparent;width:100%;padding:0;border-radius:0}
+.tin:hover{border-bottom-color:var(--dot)}
+.tin:focus{outline:none;border-bottom-color:var(--accent)}
+.tin::placeholder{color:color-mix(in srgb,var(--ink) 28%,transparent)}
+.title .tin{line-height:1.1}
+.route .tin{width:auto;field-sizing:content;min-width:9em;max-width:80vw}
+.cover-sub .tin{max-width:640px;display:block;margin:0 auto;resize:none;overflow:hidden;field-sizing:content;min-height:1.6em;line-height:1.6}
+.cover-head{padding-top:6px}
+
+/* ---------- phone ---------- */
+@media (max-width:600px){
+  body{font-size:14px;line-height:1.6;word-break:keep-all;overflow-wrap:break-word;background-size:18px 18px}
+  .wrap{padding:0 14px}
+  .hero{padding:14px 6px 18px}
+  .cover{border-radius:16px;padding:52px 16px 24px}
+  .title{font-size:34px;margin:4px 0 12px}
+  .hand-sm{font-size:22px}
+  .route{font-size:15px;padding:4px 16px 5px}
+  .route .tin{min-width:7em}
+  .cover-sub{font-size:13.5px;margin-top:10px}
+  .cover-sub .tin{min-height:3.2em}
+  @supports (field-sizing:content){.cover-sub .tin{min-height:1.6em}}
+  .cover-grid{gap:26px;margin-top:26px}
+  .plan-card,.memo-card{padding:28px 14px 14px}
+  .card-h{font-size:18px}
+  .dplan a{grid-template-columns:54px 1fr;gap:8px;padding:6px 0}
+  .dbadge{font-size:10.5px}
+  .dplan b{font-size:13.5px}
+  .dplan small{font-size:12px}
+  #memo{font-size:13.5px}
+  .status{font-size:11.5px;top:14px;left:14px}
+
+  nav.tabs .wrap{gap:16px;height:46px}
+  nav.tabs a{font-size:14px}
+  .daytabs{top:calc(env(safe-area-inset-top,0px) + 46px);margin-bottom:18px}
+  .daytabs .wrap{padding-top:6px}
+  .daytabs button{flex:0 0 auto;min-width:78px;padding:7px 10px}
+  .daytabs button b{font-size:13.5px}
+  .daytabs button span{font-size:11.5px}
+
+  section{padding-top:28px}
+  section.sheet{padding:24px 6px 0}
+  section.sheet > .wrap{border-radius:14px;padding:32px 14px 26px}
+  section.sheet > .wrap::before{width:84px;height:20px;top:-9px;left:24px}
+  section.sheet:nth-of-type(3n+1) > .wrap::before{right:24px}
+  section > .wrap > h2{font-size:22px}
+  .lede{font-size:13.5px;margin:8px 0 18px}
+  h3.mt{font-size:17px;margin:26px 0 10px}
+  h3.mt small{display:block;margin:2px 0 0;font-size:12.5px}
+  .note,.tt-help,.map-msg{font-size:12.5px}
+  .callout{font-size:13.5px;padding:12px 14px}
+
+  /* timetable */
+  .tt-bar{font-size:12px}
+  .tt-scroll{max-height:72vh;border-radius:10px}
+  .tt{grid-template-columns:44px repeat(10,112px)}
+  .tt-corner{font-size:11px}
+  .tt-head{padding:7px 6px 6px 8px;gap:4px}
+  .tt-head small{font-size:10px}
+  .tt-head b{font-size:14px}
+  .tt-head span{font-size:11px}
+  .plus{width:24px;height:24px;font-size:15px}
+  .tt-times div{font-size:10.5px;padding-right:5px}
+  .tb{padding:3px 5px;border-radius:6px}
+  .tb .tm{font-size:9.5px}
+  .tb b{font-size:12px}
+  .tb small{font-size:10.5px}
+  .tb.short b{font-size:11px}
+
+  /* day panel */
+  .ph{grid-template-columns:64px 1fr;gap:10px;margin-bottom:16px}
+  .dn{font-size:26px}
+  .dw{font-size:20px}
+  .dt .dp{font-size:19px}
+  .dt h3{font-size:18px}
+  .dt small{font-size:12.5px}
+  .ph .btn{font-size:13px;padding:5px 12px}
+  .pgrid{gap:16px}
+  .maps{padding:8px;border-radius:12px}
+  .plan{padding:4px 12px 12px;border-radius:12px}
+  .tl{font-size:13.5px}
+  .tl .t{font-size:12.5px}
+  .tl .c{font-size:12.5px}
+  .tl .pin{width:19px;height:19px;font-size:10.5px}
+  .tip{font-size:13px;padding:10px 12px}
+  .minfo,.legend{font-size:12px}
+
+  /* lists, tables */
+  .item p,.cand p,.tour p,ul.eats li,.two p,ul.plain{font-size:13.5px}
+  .ecol h3{font-size:18px}
+  .tour h3{font-size:16px}
+  table.t{font-size:12.5px;min-width:520px}
+  table.t th{font-size:12px;padding:6px 10px 6px 0}
+  table.t td{padding:8px 10px 8px 0}
+  table.t input.bud{width:92px;font-size:13px}
+
+  /* tickets */
+  .tk-main{padding:16px 14px 14px}
+  .tk-top{font-size:12.5px}
+  .tk-date{font-size:16px}
+  .tk-route{margin:10px 0 12px}
+  .tk-route b{font-size:22px}
+  .tk-route span{font-size:12px}
+  .tk-route .ln span{font-size:11px;padding:0 4px}
+  .tk-meta{font-size:12.5px;gap:8px 12px}
+  .tk-meta dt{font-size:11px}
+  .tk-stub{padding:14px}
+  .tk-seat{font-size:15px}
+  .tk-must,.tk-code{font-size:12px}
+  .stamp{width:50px;height:50px;font-size:10.5px}
+
+  /* money */
+  .msum{gap:8px;margin-bottom:18px}
+  .msum div{padding:10px 12px}
+  .msum span,.msum small{font-size:11.5px}
+  .msum b{font-size:17px}
+  .mbar{margin:22px 0 8px}
+  .mbar h3{font-size:17px}
+  .rates{font-size:12.5px;gap:6px 14px}
+
+  /* checklist, notes */
+  .ltabs button{font-size:13px;padding:5px 12px}
+  .ck h3{font-size:16px}
+  .ci label{font-size:13.5px;padding:8px 0}
+  .progress{font-size:20px}
+  .notes{grid-template-columns:1fr;gap:20px}
+  .notec .nb{font-size:14px;min-height:100px}
+
+  /* dialog: 16px inputs stop iPhone from zooming in */
+  dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 24px);border-radius:16px}
+  #dlgForm{padding:18px 16px 16px;gap:10px 12px}
+  #dlgForm h3{font-size:18px}
+  .fld input:not([type=checkbox]):not([type=radio]),.fld select,.fld textarea,.addrow input{font-size:16px}
+  .segb span{font-size:13px;padding:5px 12px}
+  .dlg-act{position:sticky;bottom:-16px;background:var(--paper);padding:10px 0 4px;margin-top:2px}
+
+  .btn{font-size:13.5px;padding:7px 14px}
+  footer{padding:36px 0 32px;font-size:12px}
+}
+@media (max-width:370px){
+  body{font-size:13.5px}
+  .title{font-size:30px}
+  .tt{grid-template-columns:40px repeat(10,104px)}
+  .msum{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap"><div class="cover">
+  <span class="status" id="status" role="status"></span>
+  <svg class="plane" viewBox="0 0 230 120" aria-hidden="true"><path d="M6 112 C 44 64, 96 116, 128 74 S 180 34, 206 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 6" stroke-linecap="round"/><g transform="translate(214 19) rotate(-24)" fill="currentColor"><path d="M-14 -1.8 H13 Q19 0 13 1.8 H-14Z"/><path d="M1 -1.8 L-7 -12 H-3.5 L8 -1.8Z M1 1.8 L-7 12 H-3.5 L8 1.8Z"/><path d="M-14 -1.8 L-17 -7 H-14.5 L-9 -1.8Z M-14 1.8 L-17 7 H-14.5 L-9 1.8Z"/></g></svg>
+  <div class="cover-head">
+    <h1 class="title">동유럽 여행</h1>
+    <p><span class="route"><input id="h_route" class="tin" data-trip="route" placeholder="도시를 입력하세요" aria-label="도시" autocomplete="off" data-live></span></p>
+    <p class="cover-sub"><textarea id="h_sub" class="tin" data-trip="sub" rows="1" placeholder="여행 기간이나 한 줄 설명" aria-label="한 줄 설명" autocomplete="off" data-live></textarea></p>
+  </div>
+  <div class="cover-grid">
+    <div class="plan-card"><span class="tape"></span><h2 class="card-h"><span>10 DAYS PLAN</span></h2><ul class="dplan" id="plan"></ul></div>
+    <div class="memo-card"><svg class="clip" viewBox="0 0 48 40" aria-hidden="true"><path d="M14 19 Q14 4 24 4 Q34 4 34 19" fill="none" stroke="#7A6656" stroke-width="2.6"/><rect x="8" y="17" width="32" height="20" rx="3" fill="#3B302A"/><rect x="8" y="17" width="32" height="5" rx="2" fill="#5A4A40"/></svg><h2 class="card-h"><span>TO DO</span></h2>
+      <div class="memo-meta"><span id="memoCount"></span><button type="button" class="link ed" id="memoClear">완료한 일 지우기</button></div>
+      <ul id="memo"></ul>
+      <form class="addrow ed" id="memoForm"><input id="memoIn" type="text" placeholder="할 일 적기" aria-label="할 일 추가"><button type="submit" class="btn-sm">추가</button></form>
+    </div>
+  </div>
+</div></div></header>
+
+<nav class="tabs" aria-label="섹션 이동"><div class="wrap">
+  <a href="#timetable">한눈에 시간표</a><a href="#schedule">일정과 지도</a><a href="#eat">식당과 카페</a><a href="#money">예약과 지출</a><a href="#checks">체크리스트</a><a href="#notesec">메모</a><a href="#tickets">예매한 표</a><a href="#stay">숙소</a><a href="#trains">기차와 교통</a><a href="#shanghai">상하이 경유</a><a href="#tours">투어</a><a href="#backup">백업</a>
+</div></nav>
+
+<main>
+<section id="timetable" class="sheet"><div class="wrap">
+  <h2>한눈에 보는 시간표</h2>
+  <p class="lede">빈 시간을 누르면 일정을 추가하고, 일정을 누르면 고칠 수 있어요. 여기서 바꾼 내용은 아래 일정과 지도에도 바로 반영돼요. 시간은 모두 현지시간이에요.</p>
+  <div class="tt-bar"><span>옆으로 밀면 모든 날짜가 보여요</span><span class="tt-legend"><span><i class="f"></i>식사와 카페</span><span><i class="m"></i>이동</span><span><i class="s"></i>관광</span><span><i class="r"></i>휴식</span></span></div>
+  <div class="tt-scroll" id="ttScroll" tabindex="0" aria-label="10일 시간표"><div class="tt" id="tt"></div></div>
+  <p class="tt-help">날짜 옆 + 버튼으로도 추가할 수 있어요. 자정을 넘기는 일정은 다음 날 칸에 이어서 표시돼요.</p>
+</div></section>
+
+<section id="schedule">
+<div class="wrap"><h2>일정과 지도</h2>
+  <p class="lede">날짜를 고르면 그날의 약도와 시간표가 바뀌어요. 번호는 지도 핀과 같고, 줄을 누르면 지도에서 그 장소가 표시돼요. 수정 버튼으로 고친 내용은 한눈에 시간표에도 그대로 들어가요.</p></div>
+<div class="daytabs"><div class="wrap" role="tablist" aria-label="날짜 선택" id="daytabs"></div></div>
+<div class="wrap"><div id="panel"></div>
+  <p class="map-msg">약도는 위치 관계를 보여주는 그림이에요. 번호 핀은 그날 동선, 회색 네모는 근처의 주요 명소입니다.</p></div>
+</section>
+
+<section id="eat" class="sheet"><div class="wrap">
+  <h2>식당과 카페</h2>
+  <p class="lede">나라별 후보예요. 일정에 넣기를 누르면 날짜와 시간만 골라 바로 일정에 들어가고, 이미 넣은 곳은 날짜가 표시돼요.</p>
+  <div class="eatgrid" id="eatgrid"></div>
+</div></section>
+
+<section id="money" class="sheet"><div class="wrap">
+  <h2>예약과 지출</h2>
+  <p class="lede">예매한 것과 쓴 돈을 적으면 분류별 예산에서 자동으로 빠져요. 외화는 아래 환율로 원화 환산하고, 2인 기준이에요.</p>
+  <div class="msum" id="msum"></div>
+  <div class="scroll-x"><table class="t" id="mcats"></table></div>
+  <div class="mbar"><h3>기록</h3><div class="fchips" id="mfilter"><button type="button" data-f="all">전체</button><button type="button" data-f="paid">결제 완료</button><button type="button" data-f="planned">예정</button></div><button type="button" class="btn primary ed" id="madd">+ 기록 추가</button></div>
+  <div class="scroll-x"><table class="t"><thead><tr><th>날짜</th><th>항목</th><th>분류</th><th class="n">금액</th><th>상태</th><th></th></tr></thead><tbody id="mlist"></tbody></table></div>
+  <div class="rates" id="mrates"></div>
+</div></section>
+
+<section id="checks" class="sheet"><div class="wrap">
+  <h2>체크리스트</h2>
+  <p class="lede">예약할 것, 챙길 것, 살 것을 목록별로 관리해요. 목록과 그룹도 새로 만들 수 있어요.</p>
+  <div class="ltabs" role="tablist" id="ltabs"></div>
+  <div id="lbody"></div>
+</div></section>
+
+<section id="notesec" class="sheet"><div class="wrap">
+  <h2>메모</h2>
+  <p class="lede">적는 대로 바로 저장돼요.</p>
+  <div class="notes" id="notes"></div>
+</div></section>
+
+<section id="tickets" class="sheet"><div class="wrap">
+  <h2>예매한 표</h2>
+  <p class="lede">항공 4구간과 기차 3구간 모두 발권을 마쳤어요. ČD 표 두 장은 Yegwon Kim 명의의 2인권이라 둘이 같이 타고 명의자 여권을 챙기면 됩니다.</p>
+  <h3 class="mt">기차</h3>
+  <div class="tix"><article class="tk"><div class="tk-main"><div class="tk-top"><span class="tk-date">12/25 금</span><span class="tk-train">EC 144</span><span>ÖBB, 2등석</span></div>
+<div class="tk-route"><div><b>12:30</b><span>Budapest-Keleti</span></div><div class="ln"><span>2시간 47분</span></div><div class="r"><b>15:17</b><span>Wien Hbf</span></div></div>
+<dl class="tk-meta"><div><dt>요금</dt><dd>€21 × 2</dd></div><div><dt>좌석</dt><dd>지정 없음, 이 열차만</dd></div><div><dt>환불</dt><dd>변경과 환불 불가</dd></div><div><dt>예약번호</dt><dd>0675 3956 9763 3873</dd></div></dl></div>
+<div class="tk-stub"><span class="stamp">예매<br>완료</span><div class="tk-seat">자유석</div><p class="tk-must">국경을 넘는 표라 A4 흰 종이에 세로로 출력, 신분증 지참</p><p class="tk-code">Kim 2532 1268 8174 9101<br>Oh 2104 8912 0590 8514</p></div></article><article class="tk"><div class="tk-main"><div class="tk-top"><span class="tk-date">12/27 일</span><span class="tk-train">rj 56</span><span>ČD 레일젯, 2등석</span></div>
+<div class="tk-route"><div><b>15:10</b><span>Wien Hbf</span></div><div class="ln"><span>4시간 13분</span></div><div class="r"><b>19:23</b><span>Praha hl.n.</span></div></div>
+<dl class="tk-meta"><div><dt>요금</dt><dd>2인 1,488 Kč (€60)</dd></div><div><dt>좌석</dt><dd>369호차 64, 66번</dd></div><div><dt>환불</dt><dd>12/26 24시까지, 1인 €3</dd></div><div><dt>거래코드</dt><dd>I2QYZW</dd></div></dl></div>
+<div class="tk-stub"><span class="stamp">예매<br>완료</span><div class="tk-seat">369호차<br>64, 66번</div><p class="tk-must">휴대폰 저장, 바코드 접지 않기</p><p class="tk-code">주문 204910 072 00<br>Yegwon Kim 명의 2인권</p></div></article><article class="tk"><div class="tk-main"><div class="tk-top"><span class="tk-date">12/29 화</span><span class="tk-train">EN 10577</span><span>ČD 야간열차, 2인실 침대칸</span></div>
+<div class="tk-route"><div><b>21:58</b><span>Praha hl.n.</span></div><div class="ln"><span>10시간 31분</span></div><div class="r"><b>08:29</b><span>Budapest-Nyugati, 12/30</span></div></div>
+<dl class="tk-meta"><div><dt>요금</dt><dd>2인 5,827 Kč (€234)</dd></div><div><dt>침대</dt><dd>365호차 12, 16번</dd></div><div><dt>환불</dt><dd>변경과 환불 불가</dd></div><div><dt>거래코드</dt><dd>9S9NRJ</dd></div></dl></div>
+<div class="tk-stub"><span class="stamp">예매<br>완료</span><div class="tk-seat">365호차<br>12, 16번 침대</div><p class="tk-must">휴대폰 저장, 바코드 접지 않기</p><p class="tk-code">주문 204192 466 00<br>Yegwon Kim 명의 2인권</p></div></article></div>
+  <h3 class="mt">항공<small>중국동방항공, 예약번호 PZQKRL, 1인 무료 수하물 2개</small></h3>
+  <div class="scroll-x"><table class="t"><thead><tr><th>날짜</th><th>편명</th><th>출발</th><th>도착</th><th>메모</th></tr></thead><tbody>
+  <tr><td>12/24 목</td><td>MU5042</td><td>인천 T1 12:55</td><td>푸둥 T1 14:15</td><td></td></tr>
+  <tr><td>12/25 금</td><td>MU8639</td><td>푸둥 T1 02:25</td><td>부다페스트 T2B 07:05</td><td>상하이항공 운항, 상하이항공 카운터에서 체크인</td></tr>
+  <tr><td>1/1 금</td><td>MU8640</td><td>부다페스트 T2A 11:30</td><td>푸둥 T1 1/2 05:25</td><td>상하이항공 운항, 상하이항공 카운터에서 체크인</td></tr>
+  <tr><td>1/2 토</td><td>MU5051</td><td>푸둥 T1 17:45</td><td>인천 T1 20:45</td><td></td></tr>
+  </tbody></table></div>
+  <p class="note">상하이에서 갈 때 12시간 10분, 올 때 12시간 20분 머물러요. 출발 72시간 전에 운항 시각을 한 번 더 확인하세요.</p>
+</div></section>
+
+<section id="stay" class="sheet"><div class="wrap">
+  <h2>숙소</h2>
+  <p class="lede">세 도시 숙소 모두 예약을 마쳤어요. 세 곳 모두 조식은 포함되지 않았고, 예약자는 Yegwon Kim, 성인 2명이에요.</p>
+  <div class="tix">
+    <article class="tk"><div class="tk-main"><div class="tk-top"><span class="tk-date">12/25 금 → 12/27 일</span><span class="tk-train">빈, 2박</span><span>스탠다드 더블룸</span></div>
+      <div class="tk-route"><div><b>15:00</b><span>체크인부터</span></div><div class="ln"><span>모텔 원 빈 중앙역</span></div><div class="r"><b>12:00</b><span>체크아웃까지</span></div></div>
+      <dl class="tk-meta"><div><dt>요금</dt><dd>€324.09, 현장 결제</dd></div><div><dt>무료 취소</dt><dd>12/25 18시까지, 이후 €310</dd></div><div><dt>주소</dt><dd>Gerhard-Bronner-Str. 11, 1100 Wien</dd></div><div><dt>전화</dt><dd>+43 1 6020000</dd></div></dl></div>
+      <div class="tk-stub"><span class="stamp">예약<br>완료</span><div class="tk-seat">중앙역<br>바로 옆</div><p class="tk-must">대형 더블침대, 조식 불포함</p><p class="tk-code">Booking.com 6179.109.787<br>PIN 2299</p></div></article>
+    <article class="tk"><div class="tk-main"><div class="tk-top"><span class="tk-date">12/27 일 → 12/29 화</span><span class="tk-train">프라하, 2박</span><span>스튜디오 아파트</span></div>
+      <div class="tk-route"><div><b>12/27</b><span>체크인</span></div><div class="ln"><span>Franz by Zeitraum</span></div><div class="r"><b>12/29</b><span>체크아웃</span></div></div>
+      <dl class="tk-meta"><div><dt>요금</dt><dd>USD 532.91, 나중 결제</dd></div><div><dt>무료 취소</dt><dd>12/24 전까지, 3일 이내 전액</dd></div><div><dt>주소</dt><dd>Opletalova 1683/41, Praha 1</dd></div><div><dt>요청</dt><dd>금연, 큰 침대</dd></div></dl></div>
+      <div class="tk-stub"><span class="stamp">예약<br>완료</span><div class="tk-seat">중앙역<br>걸어서 10분</div><p class="tk-must">체크인 시각과 12/29 짐 보관은 숙소에 확인</p><p class="tk-code">예약 참조 101365825743<br>투숙객 참조 1795393027</p></div></article>
+    <article class="tk"><div class="tk-main"><div class="tk-top"><span class="tk-date">12/30 수 → 1/1 금</span><span class="tk-train">부다페스트, 2박</span><span>아파트</span></div>
+      <div class="tk-route"><div><b>14:00</b><span>체크인부터</span></div><div class="ln"><span>Brill Budapest Apartments 6</span></div><div class="r"><b>11:00</b><span>체크아웃까지</span></div></div>
+      <dl class="tk-meta"><div><dt>요금</dt><dd>€561.60, 도시세 포함</dd></div><div><dt>무료 취소</dt><dd>12/15 23:59까지, 이후 €540</dd></div><div><dt>주소</dt><dd>Ó utca 12 II., 1066 Budapest</dd></div><div><dt>전화</dt><dd>+36 30 333 4185</dd></div></dl></div>
+      <div class="tk-stub"><span class="stamp">예약<br>완료</span><div class="tk-seat">오페라 근처<br>주방 있음</div><p class="tk-must">12/16부터 전액 자동 결제. 도착 시간 미리 알리기</p><p class="tk-code">Booking.com 6415.858.236<br>PIN 2756</p></div></article>
+  </div>
+  <p class="note">12/30은 야간열차로 08:29에 도착하는데 체크인은 14:00부터예요. 짐을 먼저 맡길 수 있는지 숙소에 미리 물어보세요.</p>
+</div></section>
+
+
+<section id="trains" class="sheet"><div class="wrap">
+  <h2>기차와 시내 교통</h2>
+  <p class="lede">도시 간 기차 세 구간은 모두 예매를 마쳤어요. 시각과 좌석, 환불 조건은 예매한 표에 있고, 여기엔 탈 때 챙길 것만 모았습니다.</p>
+<div class="scroll-x"><table class="t">
+<thead><tr><th>날짜와 구간</th><th>열차와 시간</th><th class="n">2인 요금</th><th>탈 때 챙길 것</th></tr></thead>
+<tbody>
+<tr><td><b>12/25</b> Budapest-Keleti → Wien Hbf</td><td>EC 144, 12:30 → 15:17</td><td class="n">€42</td><td>A4 흰 종이에 세로로 출력한 표와 신분증. 좌석 지정 없음</td></tr>
+<tr><td><b>12/27</b> Wien Hbf → Praha hl.n.</td><td>rj 56, 15:10 → 19:23</td><td class="n">€60</td><td>369호차 64, 66번. 바코드 접지 않기</td></tr>
+<tr><td><b>12/29</b> Praha hl.n. → Budapest-Nyugati</td><td>EN 10577, 21:58 → 08:29</td><td class="n">€234</td><td>365호차 12, 16번 침대. 세면도구와 슬리퍼는 작은 가방에</td></tr>
+<tr class="sum"><td colspan="2">합계</td><td class="n">€336</td><td>약 57만원</td></tr>
+</tbody></table></div>
+<p class="note">출발 시각은 cd.cz와 ÖBB 앱에서 출발 전날 한 번 더 확인하세요.</p>
+<h3 class="mt">시내 교통권</h3>
+<div class="scroll-x"><table class="t">
+<thead><tr><th>도시</th><th>추천권</th><th class="n">1인 요금</th><th>쓰는 방법</th></tr></thead>
+<tbody>
+<tr><td>빈</td><td>디지털 24시간권 2장 (WienMobil 앱)</td><td class="n">€9.70 × 2</td><td>12/25 오후 시작, 만료 후 두 번째 권. 48·72시간권은 2026년부터 판매 안 함</td></tr>
+<tr><td>프라하</td><td>72시간권 (PID Lítačka 앱)</td><td class="n">340 CZK</td><td>12/28 아침부터 12/29 밤 중앙역까지. 종이권은 350 CZK</td></tr>
+<tr><td>부다페스트</td><td>72시간권 (BudapestGO 앱)</td><td class="n">5,750 HUF</td><td>12/30 오전부터. 공항버스 100E는 포함 안 됨</td></tr>
+<tr><td>BUD 공항</td><td>100E 전용권 2장</td><td class="n">2,500 HUF × 2</td><td>12/25 입국, 1/1 출국</td></tr>
+<tr><td>입국일 환승</td><td>일반 단일권 1장</td><td class="n">500 HUF</td><td>100E 하차 후 M2로 Keleti</td></tr>
+<tr><td>상하이</td><td>디디 (공항 왕복 2회 + 시내)</td><td class="n">2인 1대 기준</td><td>공항 편도 약 170위안, 시내 짧은 구간 20–40위안</td></tr>
+<tr class="sum"><td colspan="2">유럽 합계</td><td class="n">1인 약 10.5만원</td><td>2인 약 21.1만원, 택시 제외</td></tr>
+</tbody></table></div>
+<p class="note">앱 티켓은 구매 즉시 유효한지, 시작 시각을 지정하는지 화면에서 확인하세요.</p>
+</div></section>
+
+<section id="shanghai" class="sheet"><div class="wrap">
+  <h2>상하이 경유 준비</h2>
+  <p class="lede">친구가 정리해 준 목록에서 갈 때는 핫플 구경과 포토스튜디오, 와이탄 야경을, 올 때는 아침 식사와 동방명주 뷰 카페, 기념품을 골라 동선을 짰어요. 시간표는 일정표의 12/24와 1/2에 있고, 맛집 후보는 식당과 카페의 중국 칸에 모아 뒀어요.</p>
+  
+<div class="two">
+<div>
+<h3>입국과 짐</h3>
+<p><b>12/24 입국</b>은 한국 일반여권 30일 무비자 대상이에요. 현재 공지된 시행 기한이 2026년 12월 31일 24시까지라 기간 안에 들어갑니다.</p>
+<p><b>1/2 입국</b>은 그 기한 뒤라 연장 발표가 났는지 출발 전에 꼭 확인해야 해요. 10월 말 기준 2027년 연장은 아직 발표되지 않았습니다. 연장이 안 되면 헝가리에서 와서 한국으로 가는 제3국 연결이라 240시간 무비자 경유 대상이 될 수 있으니 동방항공과 이민국 공지로 조건을 확인하세요.</p>
+<p><b>짐</b>은 두 번 모두 최종 목적지까지 연결 수하물로 보내는 게 전제입니다. 인천과 부다페스트 카운터에서 상하이에서 찾지 않아도 되는지 확인하고, 레이오버 동안은 작은 가방만 들고 나가세요.</p>
+<h3>이동</h3>
+<p>공항과 시내는 디디로 50–60분이에요. 마그레브는 운영 시간이 짧아 새벽 도착과 밤 복귀에는 맞지 않아요. 공항으로 돌아갈 때는 출발 3시간 전 도착을 목표로 잡았습니다.</p>
+</div>
+<div>
+<h3>앱과 결제</h3>
+<ul class="plain">
+<li><b>알리페이</b> 카드와 여권 등록, 지하철 QR. 한 번에 200위안을 넘으면 해외카드 수수료가 붙어 나눠 결제하는 게 유리해요.</li>
+<li><b>위챗</b> 식당 원격 줄서기, QR 주문, 음료 사전 주문.</li>
+<li><b>디디</b> 알리페이 안 미니앱으로도 호출 가능.</li>
+<li><b>고덕지도</b> 중국 안 길찾기는 이쪽이 정확해요. 구글 지도 링크는 위치 확인용이고, 아래 한자 이름을 복사해 고덕지도에 붙여 넣으면 됩니다.</li>
+<li><b>따종디엔핑, 메이투안, 샤오홍슈</b> 쿠폰, 배달, 현지 후기.</li>
+<li><b>파파고</b> 오프라인 중국어 팩 미리 받기.</li>
+</ul>
+<p class="note">유럽용 eSIM이 중국을 포함하지 않는 경우가 많아요. 중국 데이터가 되는 상품인지, 아니면 상하이용을 따로 사야 하는지 확인하세요.</p>
+</div>
+</div>
+</div></section>
+
+<section id="tours" class="sheet"><div class="wrap">
+  <h2>투어로 하면 좋은 것</h2>
+  <p class="lede">혼자 보면 맥락을 놓치기 쉬운 곳, 겨울에 이동이 번거로운 곳, 둘이 함께 나온 사진처럼 전문가 손이 확실히 나은 것 위주입니다.</p>
+  
+<div class="tours">
+<div class="tour"><h3>프라하성 가이드 투어</h3><p class="meta">12/28 오전, 2.5–3시간</p><p>성 비투스 대성당, 구왕궁, 황금소로가 흩어져 있어 설명을 들으면 훨씬 재밌고 줄서기와 동선도 맡길 수 있어요. 10:00–12:30 자리에 그대로 대체 가능. 입장료(450 CZK) 포함 여부 확인.</p></div>
+<div class="tour"><h3>프라하 커플 스냅</h3><p class="meta">12/28 아침 카를교 또는 12/29 오전, 1시간 내외</p><p>셀프스냅 위주 여행이라 둘이 함께 나온 사진을 확실히 남기기 좋아요. 업체별 가격 차이가 커서 견적 비교 필수, 날씨 취소 규정 확인.</p></div>
+<div class="tour"><h3>헝가리 국회의사당 내부 투어</h3><p class="meta">공식 가이드 투어로만 입장, 1–1.5시간, 약 14,000 HUF</p><p>외관과 전혀 다른 화려한 내부. 넣는다면 12/30 온천을 빼고 오후 투어로. 열차 지연 위험 때문에 12/30 오전은 피하기.</p></div>
+<div class="tour"><h3>빈 미술관 오디오가이드</h3><p class="meta">12/26 오후 벨베데레, 1.5–2시간</p><p>클림트와 실레 작품은 배경을 알면 보는 맛이 달라져요. 한국어 오디오가이드(€5)로 충분하고, 더 깊게 보고 싶으면 한국어 도슨트 투어.</p></div>
+<div class="tour"><h3>빈 클래식 공연</h3><p class="meta">12/26 저녁, 1인 €45–90, 선택</p><p>음악 취향에 맞으면 오래 기억에 남는 저녁. 넣으면 오후 카페나 산책을 줄여야 하니 프로그램과 좌석을 보고 결정.</p></div>
+<div class="tour"><h3>부다페스트 야경 투어</h3><p class="meta">이번 일정에선 생략</p><p>12/30 유람선과 12/31 해 질 녘 부다 언덕 동선이 야경 투어의 핵심 장면을 대부분 커버해요. 겔레르트 언덕 전망까지 원하면 12/30 저녁에 유람선 대신 넣으세요.</p></div>
+</div>
+<p class="callout">근교 당일투어(잘츠부르크, 체스키크룸로프, 할슈타트)는 제외했어요. 짧은 겨울 낮에 왕복 6–9시간이 들어 하루를 통째로 써야 하기 때문이에요.</p>
+</div></section>
+
+<section id="backup" class="sheet"><div class="wrap">
+  <h2>저장과 백업</h2>
+  <p class="lede">고친 내용은 이 브라우저에 자동으로 저장돼요. 다른 기기나 브라우저에서는 보이지 않으니, 옮기거나 공유할 때는 파일로 저장한 뒤 그쪽에서 불러오세요. 브라우저 데이터를 지우면 내용도 지워지니 출발 전에 한 번씩 백업해 두세요.</p>
+  <div class="bk"><button type="button" class="btn primary" id="bkSave">파일로 저장</button><button type="button" class="btn ed" id="bkLoad">파일 불러오기</button><button type="button" class="btn danger ed" id="bkReset">처음 계획으로 되돌리기</button><input type="file" id="bkFile" accept=".json,application/json" hidden></div>
+  <p class="note">백업 파일에는 메모와 지출 기록도 들어 있으니 공유 전에 확인하세요.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap"><p>처음 계획은 헝가리·오스트리아·체코 연말 여행 실행 계획(조사 기준 2026-10-18), 친구가 정리한 상하이 목록, 11월 8일에 받은 전자 승차권을 바탕으로 했어요. 숙소는 Booking.com과 예약 확인서 기준이고, 식당 연말 영업과 중국 무비자 연장 여부는 아직 확정되지 않았어요.</p></div></footer>
+
+<dialog id="dlg" aria-label="편집"><form id="dlgForm" method="dialog"></form></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+"use strict";
+var P={"w_hbf": ["빈 중앙역", 48.1852, 16.376, "station", "12/25 15:17 도착, 12/27 15:10 rj 56 출발", "wien", "https://www.google.com/maps/search/?api=1&query=Wien%20Hauptbahnhof"], "w_motel": ["Motel One Wien-Hauptbahnhof", 48.186, 16.38, "hotel", "예산형 숙소 대안", "wien", "https://www.google.com/maps/search/?api=1&query=Motel%20One%20Wien-Hauptbahnhof"], "w_cloud": ["The Cloud One Staatsoper", 48.2006, 16.3672, "hotel", "시내 도보형 숙소 대안", "wien", "https://www.google.com/maps/search/?api=1&query=The%20Cloud%20One%20Vienna%20Staatsoper"], "w_rathaus": ["시청 앞 크리스마스마켓", 48.2105, 16.3576, "market", "12/26 종료, 첫날 오후 필수", "wien", "https://www.google.com/maps/search/?api=1&query=Wiener%20Christkindlmarkt%20Rathausplatz"], "w_landtmann": ["Café Landtmann", 48.2116, 16.3614, "cafe", "시청 옆 클래식 카페, 12/25 저녁 후보", "wien", "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Landtmann%20Wien"], "w_schon": ["쇤브룬 궁전과 마켓", 48.1849, 16.3122, "sight", "Palace Ticket €42, 오전 시간지정", "wien", "https://www.google.com/maps/search/?api=1&query=Schloss%20Sch%C3%B6nbrunn"], "w_belv": ["상궁 벨베데레", 48.1915, 16.3809, "sight", "클림트 ‘키스’, €23", "wien", "https://www.google.com/maps/search/?api=1&query=Oberes%20Belvedere%20Wien"], "w_gerstner": ["Gerstner", 48.2024, 16.3702, "cafe", "커피와 케이크 €15–22", "wien", "https://www.google.com/maps/search/?api=1&query=Gerstner%20K.u.K.%20Hofzuckerb%C3%A4cker%20K%C3%A4rntner%20Stra%C3%9Fe"], "w_opera": ["국립오페라극장", 48.2032, 16.3688, "sight", "외관 무료", "wien", "https://www.google.com/maps/search/?api=1&query=Wiener%20Staatsoper"], "w_kartner": ["케른트너 거리", 48.2058, 16.3714, "sight", "쇼핑 거리 산책", "wien", "https://www.google.com/maps/search/?api=1&query=K%C3%A4rntner%20Stra%C3%9Fe%20Wien"], "w_stephan": ["슈테판광장 마켓", 48.2085, 16.3726, "market", "12/26 19시까지", "wien", "https://www.google.com/maps/search/?api=1&query=Christkindlmarkt%20Stephansplatz%20Wien"], "w_figl": ["Figlmüller Wollzeile", 48.2091, 16.3754, "food", "슈니첼, 예약 권장", "wien", "https://www.google.com/maps/search/?api=1&query=Figlm%C3%BCller%20Wollzeile"], "w_demel": ["Demel", 48.2087, 16.367, "cafe", "왕실 제과점, 추가 후보", "wien", "https://www.google.com/maps/search/?api=1&query=Demel%20Wien%20Kohlmarkt"], "w_sperl": ["Café Sperl", 48.1989, 16.3601, "cafe", "조용한 옛 카페, 추가 후보", "wien", "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Sperl%20Wien"], "w_plachutta": ["Plachutta Wollzeile", 48.2083, 16.38, "food", "타펠슈피츠, 추가 후보", "wien", "https://www.google.com/maps/search/?api=1&query=Plachutta%20Wollzeile"], "w_khm": ["미술사박물관", 48.2038, 16.3617, "sight", "벨베데레 대체안, €22–24", "wien", "https://www.google.com/maps/search/?api=1&query=Kunsthistorisches%20Museum%20Wien"], "w_hofburg": ["호프부르크와 국립도서관", 48.2063, 16.366, "sight", "국립도서관 프룽크잘 €12, 12/27 오전", "wien", "https://www.google.com/maps/search/?api=1&query=%C3%96sterreichische%20Nationalbibliothek%20Prunksaal"], "p_hln": ["프라하 중앙역", 50.0831, 14.4353, "station", "12/27 19:23 도착, 12/29 21:58 야간열차 출발", "praha", "https://www.google.com/maps/search/?api=1&query=Praha%20hlavn%C3%AD%20n%C3%A1dra%C5%BE%C3%AD"], "p_motel": ["Motel One Florentinum", 50.0906, 14.4338, "hotel", "실용형 숙소 대안", "praha", "https://www.google.com/maps/search/?api=1&query=Motel%20One%20Prague%20Florentinum"], "p_ibis": ["ibis Praha Old Town", 50.0893, 14.4312, "hotel", "예산형 숙소 대안", "praha", "https://www.google.com/maps/search/?api=1&query=ibis%20Praha%20Old%20Town"], "p_powder": ["화약탑", 50.0874, 14.4278, "sight", "외관 무료", "praha", "https://www.google.com/maps/search/?api=1&query=Pra%C5%A1n%C3%A1%20br%C3%A1na%20Praha"], "p_oldsq": ["구시가지광장과 마켓", 50.0877, 14.4218, "market", "천문시계, 마켓 11/28–1/6", "praha", "https://www.google.com/maps/search/?api=1&query=Starom%C4%9Bstsk%C3%A9%20n%C3%A1m%C4%9Bst%C3%AD%20Praha"], "p_oldhall": ["구시청사 전망대", 50.0866, 14.4202, "sight", "350 CZK, 12/29 정오 천문시계와 함께", "praha", "https://www.google.com/maps/search/?api=1&query=Starom%C4%9Bstsk%C3%A1%20radnice%20Praha"], "p_lokal": ["Lokál Dlouhááá", 50.0902, 14.4247, "food", "체코 음식 350–500 CZK", "praha", "https://www.google.com/maps/search/?api=1&query=Lok%C3%A1l%20Dlouh%C3%A1%C3%A1%C3%A1%20Praha"], "p_charles": ["카를교", 50.0865, 14.4114, "sight", "아침 셀프스냅과 야경", "praha", "https://www.google.com/maps/search/?api=1&query=Karl%C5%AFv%20most%20Praha"], "p_mala": ["말라스트라나 광장", 50.088, 14.4036, "sight", "아침 식사와 골목 사진", "praha", "https://www.google.com/maps/search/?api=1&query=Malostransk%C3%A9%20n%C3%A1m%C4%9Bst%C3%AD%20Praha"], "p_castle": ["프라하성", 50.0907, 14.3995, "sight", "기본 코스 450 CZK, 겨울 16시 종료", "praha", "https://www.google.com/maps/search/?api=1&query=Pra%C5%BEsk%C3%BD%20hrad"], "p_nerudova": ["네루도바 거리", 50.0886, 14.3975, "sight", "성에서 내려오는 길, 점심", "praha", "https://www.google.com/maps/search/?api=1&query=Nerudova%20Praha"], "p_kampa": ["캄파 섬", 50.0846, 14.4078, "sight", "강변 골목 사진", "praha", "https://www.google.com/maps/search/?api=1&query=Kampa%20Praha"], "p_savoy": ["Café Savoy", 50.0806, 14.4062, "cafe", "말라스트라나 카페", "praha", "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Savoy%20Praha"], "p_kuzelky": ["Lokál U Bílé kuželky", 50.087, 14.4092, "food", "말라스트라나 식당, 추가 후보", "praha", "https://www.google.com/maps/search/?api=1&query=Lok%C3%A1l%20U%20B%C3%ADl%C3%A9%20ku%C5%BEelky%20Praha"], "p_clem": ["클레멘티눔", 50.0864, 14.4163, "sight", "투어 380 CZK, 회차제", "praha", "https://www.google.com/maps/search/?api=1&query=Klementinum%20Praha"], "p_louvre": ["Café Louvre", 50.082, 14.419, "cafe", "식사와 휴식 300–500 CZK", "praha", "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Louvre%20Praha"], "p_slavia": ["Kavárna Slavia", 50.0813, 14.4136, "cafe", "강변 뷰 카페, 추가 후보", "praha", "https://www.google.com/maps/search/?api=1&query=Kav%C3%A1rna%20Slavia%20Praha"], "p_imperial": ["Café Imperial", 50.0899, 14.4296, "cafe", "타일 장식 카페, 추가 후보", "praha", "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Imperial%20Praha"], "p_wenc": ["바츨라프광장", 50.081, 14.428, "sight", "기념품과 카페", "praha", "https://www.google.com/maps/search/?api=1&query=V%C3%A1clavsk%C3%A9%20n%C3%A1m%C4%9Bst%C3%AD%20Praha"], "b_bud": ["부다페스트 공항", 47.4369, 19.2556, "station", "12/25 도착, 1/1 출발", "buda", "https://www.google.com/maps/search/?api=1&query=Budapest%20Ferenc%20Liszt%20International%20Airport"], "b_deak": ["Deák Ferenc tér", 47.4977, 19.0548, "station", "공항버스 100E 발착, 환승 허브", "buda", "https://www.google.com/maps/search/?api=1&query=De%C3%A1k%20Ferenc%20t%C3%A9r%20Budapest"], "b_keleti": ["Keleti역", 47.5003, 19.0838, "station", "12/25 12:30 EC 144 빈행 출발", "buda", "https://www.google.com/maps/search/?api=1&query=Budapest%20Keleti%20p%C3%A1lyaudvar"], "b_nyugati": ["Nyugati역", 47.5104, 19.0567, "station", "12/30 08:29 야간열차 도착", "buda", "https://www.google.com/maps/search/?api=1&query=Budapest%20Nyugati%20p%C3%A1lyaudvar"], "b_d8": ["voco Budapest D8", 47.4989, 19.0476, "hotel", "강변 야경 숙소 대안", "buda", "https://www.google.com/maps/search/?api=1&query=voco%20Budapest%20D8"], "b_moments": ["Hotel Moments", 47.5024, 19.058, "hotel", "안드라시 거리, 상위 대안", "buda", "https://www.google.com/maps/search/?api=1&query=Hotel%20Moments%20Budapest"], "b_szech": ["세체니 온천", 47.5187, 19.0817, "sight", "락커 13,200–15,800 HUF", "buda", "https://www.google.com/maps/search/?api=1&query=Sz%C3%A9chenyi%20Thermal%20Bath"], "b_basilica": ["성 이슈트반 성당과 마켓", 47.5009, 19.0539, "market", "Advent Basilica 11/13–1/1", "buda", "https://www.google.com/maps/search/?api=1&query=St.%20Stephen%27s%20Basilica%20Budapest"], "b_pier": ["유람선 선착장 (Vigadó tér)", 47.4958, 19.0486, "sight", "Legenda 일반 야경편 €25, 표의 선착장 우선", "buda", "https://www.google.com/maps/search/?api=1&query=Vigad%C3%B3%20t%C3%A9r%20Budapest"], "b_market": ["중앙시장", 47.487, 19.0583, "market", "1층 식재료, 2층 기념품, 연말 단축 영업 확인", "buda", "https://www.google.com/maps/search/?api=1&query=K%C3%B6zponti%20V%C3%A1s%C3%A1rcsarnok%20Budapest"], "b_fisher": ["어부의 요새", 47.5022, 19.035, "sight", "블루아워와 야경, 셀프스냅 1순위", "buda", "https://www.google.com/maps/search/?api=1&query=Hal%C3%A1szb%C3%A1stya%20Budapest"], "b_matthias": ["마차시 성당", 47.5013, 19.0337, "sight", "야간 조명 외관, 내부 3,400 HUF", "buda", "https://www.google.com/maps/search/?api=1&query=M%C3%A1ty%C3%A1s-templom%20Budapest"], "b_ruszwurm": ["Ruszwurm", 47.5032, 19.0328, "cafe", "요새 옆 작은 제과점", "buda", "https://www.google.com/maps/search/?api=1&query=Ruszwurm%20Cukr%C3%A1szda%20Budapest"], "b_castle": ["부다성 테라스", 47.496, 19.0397, "sight", "일몰 감상, 외관과 테라스 무료", "buda", "https://www.google.com/maps/search/?api=1&query=Budav%C3%A1ri%20Palota"], "b_batthy": ["Batthyány tér", 47.5066, 19.0388, "sight", "국회의사당 정면 야경 포인트", "buda", "https://www.google.com/maps/search/?api=1&query=Batthy%C3%A1ny%20t%C3%A9r%20Budapest"], "b_parl": ["국회의사당", 47.5071, 19.0457, "sight", "내부는 가이드 투어로만", "buda", "https://www.google.com/maps/search/?api=1&query=Hungarian%20Parliament%20Building"], "b_chain": ["세체니 체인브리지", 47.499, 19.0437, "sight", "강변 산책", "buda", "https://www.google.com/maps/search/?api=1&query=Sz%C3%A9chenyi%20Chain%20Bridge"], "b_hungarikum": ["Hungarikum Bisztró", 47.5052, 19.0493, "food", "3코스 15,180 HUF, 12/31 저녁 후보", "buda", "https://www.google.com/maps/search/?api=1&query=Hungarikum%20Bisztr%C3%B3%20Budapest"], "b_borkonyha": ["Borkonyha", 47.4997, 19.0512, "food", "모던 헝가리 요리, 추가 후보", "buda", "https://www.google.com/maps/search/?api=1&query=Borkonyha%20Winekitchen%20Budapest"], "b_menza": ["Menza", 47.5035, 19.0632, "food", "캐주얼 헝가리 음식, 추가 후보", "buda", "https://www.google.com/maps/search/?api=1&query=Menza%20%C3%89tterem%20Budapest"], "b_gerbeaud": ["Gerbeaud", 47.4967, 19.0505, "cafe", "클래식 카페, 뵈뢰슈마르티 광장", "buda", "https://www.google.com/maps/search/?api=1&query=Gerbeaud%20Budapest"], "b_nyc": ["New York Café", 47.4985, 19.0705, "cafe", "실내 사진 목적이면", "buda", "https://www.google.com/maps/search/?api=1&query=New%20York%20Caf%C3%A9%20Budapest"], "b_central": ["Centrál Kávéház", 47.4917, 19.0566, "cafe", "덜 붐비는 클래식 카페", "buda", "https://www.google.com/maps/search/?api=1&query=Centr%C3%A1l%20K%C3%A1v%C3%A9h%C3%A1z%20Budapest"], "s_pvg": ["푸둥공항 T1", 31.1513, 121.8006, "station", "동방항공 국제선 터미널", "sha", "https://www.google.com/maps/search/?api=1&query=Shanghai%20Pudong%20International%20Airport%20Terminal%201"], "s_wukang": ["우캉맨션", 31.2046, 121.437, "sight", "해 지기 전 외관 사진", "sha", "https://www.google.com/maps/search/?api=1&query=Wukang%20Mansion%20Shanghai"], "s_anfu": ["안푸루", 31.2135, 121.444, "sight", "카페와 편집숍 거리", "sha", "https://www.google.com/maps/search/?api=1&query=Anfu%20Road%20Shanghai"], "s_hakuna": ["Hakunamatata 사진관", 31.2165, 121.4555, "sight", "포토스튜디오, 예약 필요", "sha", "https://www.google.com/maps/search/?api=1&query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%BB%84%E6%B5%A6%E5%8C%BA%E6%B7%AE%E6%B5%B7%E4%B8%AD%E8%B7%AF899%E5%BC%847%E5%8F%B7"], "s_feidachu": ["페이다추 费大厨", 31.2373, 121.4793, "food", "고추돼지볶음, 예약 불가", "sha", "https://www.google.com/maps/search/?api=1&query=%E8%B4%B9%E5%A4%A7%E5%8E%A8%E8%BE%A3%E6%A4%92%E7%82%92%E8%82%89%20%E4%B8%8A%E6%B5%B7%E5%8D%97%E4%BA%AC%E4%B8%9C%E8%B7%AF%E6%82%A6%E8%8D%9F%E5%B9%BF%E5%9C%BA"], "s_nanjing": ["난징동루 보행거리", 31.2367, 121.4825, "sight", "크리스마스 조명, 쇼핑", "sha", "https://www.google.com/maps/search/?api=1&query=Nanjing%20Road%20Pedestrian%20Street%20Shanghai"], "s_hongyi": ["홍이플라자 宏伊国际广场", 31.2381, 121.4832, "food", "소양생전, 레드립스, 팝마트", "sha", "https://www.google.com/maps/search/?api=1&query=%E5%AE%8F%E4%BC%8A%E5%9B%BD%E9%99%85%E5%B9%BF%E5%9C%BA%20%E5%8D%97%E4%BA%AC%E4%B8%9C%E8%B7%AF299%E5%8F%B7"], "s_bund": ["와이탄", 31.2397, 121.4906, "sight", "루자주이 스카이라인 야경", "sha", "https://www.google.com/maps/search/?api=1&query=The%20Bund%20Shanghai"], "s_xinjiang": ["신큐카오바 新疆正宗羊肉串", 31.2337, 121.48, "food", "양꼬치와 빵구이, 간식용", "sha", "https://www.google.com/maps/search/?api=1&query=%E6%96%B0%E7%96%86%E6%AD%A3%E5%AE%97%E7%BE%8A%E8%82%89%E4%B8%B2%20%E6%B5%99%E6%B1%9F%E4%B8%AD%E8%B7%AF70%E5%8F%B7"], "s_jingyunhua": ["경운화 京云华", 31.2353, 121.4745, "food", "베이징덕, 신세계성 9층", "sha", "https://www.google.com/maps/search/?api=1&query=%E4%BA%AC%E4%BA%91%E5%8D%8E%20%E6%96%B0%E4%B8%96%E7%95%8C%E5%9F%8E%20%E5%8D%97%E4%BA%AC%E8%A5%BF%E8%B7%AF"], "s_butterfly": ["국제호텔 나비파이", 31.2368, 121.4857, "food", "8시 오픈, 7시 전후 줄", "sha", "https://www.google.com/maps/search/?api=1&query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%BB%84%E6%B5%A6%E5%8C%BA%E6%B1%9F%E8%A5%BF%E4%B8%AD%E8%B7%AF374%E5%8F%B7"], "s_dahuchun": ["대호춘 大壶春", 31.2297, 121.4793, "food", "셩젠바오, 또우장, 07:30 오픈", "sha", "https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E5%A3%B6%E6%98%A5%20%E4%BA%91%E5%8D%97%E5%8D%97%E8%B7%AF89%E5%8F%B7"], "s_united": ["와이탄원 33 유니언 교회", 31.2436, 121.4876, "sight", "유럽풍 외관", "sha", "https://www.google.com/maps/search/?api=1&query=%E5%A4%96%E6%BB%A9%E6%BA%9033%20%E8%81%94%E5%90%88%E6%95%99%E5%A0%82%20%E5%8D%97%E8%8B%8F%E5%B7%9E%E8%B7%AF107%E5%8F%B7"], "s_postal": ["상하이 우편박물관", 31.2446, 121.4842, "sight", "오전에 대문 앞 사진", "sha", "https://www.google.com/maps/search/?api=1&query=Shanghai%20Postal%20Museum"], "s_zhapu": ["자푸루교", 31.2442, 121.4868, "sight", "쑤저우강 위 다리", "sha", "https://www.google.com/maps/search/?api=1&query=%E4%B9%8D%E6%B5%A6%E8%B7%AF%E6%A1%A5%20%E4%B8%8A%E6%B5%B7"], "s_flower": ["류이 플라워 커피바", 31.2449, 121.4864, "cafe", "동방명주 뷰 카페", "sha", "https://www.google.com/maps/search/?api=1&query=%E6%B1%ADflower%20coffee%20bar%20%E5%8C%97%E8%8B%8F%E5%B7%9E%E8%B7%AF234%E5%8F%B7"], "s_illy": ["illy coffee 벨라지오", 31.2444, 121.4892, "cafe", "1층 테라스, 동방명주 뷰", "sha", "https://www.google.com/maps/search/?api=1&query=illy%20%E5%8C%97%E8%8B%8F%E5%B7%9E%E8%B7%AF188%E5%8F%B7%20Bellagio%20Shanghai"], "s_northbund": ["북와이탄 강변공원", 31.2476, 121.4985, "sight", "강변 산책, 스카이라인 뷰", "sha", "https://www.google.com/maps/search/?api=1&query=%E5%8C%97%E5%A4%96%E6%BB%A9%E6%BB%A8%E6%B1%9F%E5%85%AC%E5%9B%AD"], "s_smp": ["SMP몰과 하마선생", 31.2493, 121.4972, "sight", "The Stage 포토존, B2 마트 기념품", "sha", "https://www.google.com/maps/search/?api=1&query=SMP%E4%B8%8A%E6%B5%B7%E7%99%BD%E7%8E%89%E5%85%B0%E5%B9%BF%E5%9C%BA"], "s_yuku": ["위쿠 鱼酷", 31.2371, 121.4798, "food", "카오위, 悦荟 6층", "sha", "https://www.google.com/maps/search/?api=1&query=%E9%B1%BC%E9%85%B7%E6%B4%BB%E9%B1%BC%E7%83%A4%E9%B1%BC%20%E4%B8%8A%E6%B5%B7%E5%8D%97%E4%BA%AC%E4%B8%9C%E8%B7%AF%E6%82%A6%E8%8D%9F"], "s_pearl": ["동방명주", 31.2397, 121.4998, "sight", "강 건너 랜드마크", "sha", "https://www.google.com/maps/search/?api=1&query=Oriental%20Pearl%20Tower"], "s_hongkui": ["홍쿠이지아 红盔甲", 31.231, 121.483, "food", "마늘가재, 마약옥수수", "sha", "https://www.google.com/maps/search/?api=1&query=%E7%BA%A2%E7%9B%94%E7%94%B2%E5%B0%8F%E9%BE%99%E8%99%BE%20%E9%87%91%E9%99%B5%E4%B8%9C%E8%B7%AF500%E5%8F%B7"], "s_yuanji": ["원기운교 袁记云饺", 31.2392, 121.483, "food", "게알새우 마라만두", "sha", "https://www.google.com/maps/search/?api=1&query=%E8%A2%81%E8%AE%B0%E4%BA%91%E9%A5%BA%20%E5%AE%81%E6%B3%A2%E8%B7%AF232%E5%8F%B7"], "s_zhuang": ["장씨네 게살국수 庄氏隆兴", 31.2346, 121.4886, "food", "게살비빔면, 09:00–21:00", "sha", "https://www.google.com/maps/search/?api=1&query=%E5%BA%84%E6%B0%8F%E9%9A%86%E5%85%B4%20%E5%9B%9B%E5%B7%9D%E4%B8%AD%E8%B7%AF150%E5%8F%B7"], "s_yuxingji": ["위싱지 裕兴记", 31.2363, 121.4778, "food", "가성비 게살국수", "sha", "https://www.google.com/maps/search/?api=1&query=%E8%A3%95%E5%85%B4%E8%AE%B0%E8%9F%B9%E9%BB%84%E9%9D%A2%20%E4%B9%9D%E6%B1%9F%E8%B7%AF691%E5%8F%B7"], "s_shandong": ["산동잡곡전병", 31.2365, 121.4735, "food", "지엔빙, 06:00 오픈", "sha", "https://www.google.com/maps/search/?api=1&query=%E5%B1%B1%E4%B8%9C%E6%9D%82%E7%B2%AE%E7%85%8E%E9%A5%BC%20%E5%B9%BF%E8%A5%BF%E5%8C%97%E8%B7%AF430%E5%8F%B7"], "s_fuxinghall": ["세계회객청", 31.2462, 121.494, "sight", "건물 앞 강변 산책로", "sha", "https://www.google.com/maps/search/?api=1&query=%E4%B8%96%E7%95%8C%E4%BC%9A%E5%AE%A2%E5%8E%85%20%E5%8C%97%E5%A4%96%E6%BB%A9%E8%B7%AF8%E5%8F%B7"], "w_motelone": ["모텔 원 빈 중앙역", 48.18383, 16.3788, "hotel", "12/25–27 숙소, 체크인 15:00, 체크아웃 12:00, 조식 불포함", "wien", "https://www.google.com/maps/search/?api=1&query=Motel%20One%20Wien-Hauptbahnhof%20Gerhard-Bronner-Stra%C3%9Fe%2011"], "p_franz": ["Franz by Zeitraum", 50.08262, 14.4298, "hotel", "12/27–29 숙소, 스튜디오 아파트, 조식 불포함", "praha", "https://www.google.com/maps/search/?api=1&query=Franz%20by%20Zeitraum%20Opletalova%2041%20Praha"], "b_brill": ["Brill Budapest Apartments 6", 47.5034, 19.0568, "hotel", "12/30–1/1 숙소, 체크인 14:00, 체크아웃 11:00, 조식 불포함", "buda", "https://www.google.com/maps/search/?api=1&query=Brill%20Budapest%20Apartments%20%C3%93%20utca%2012%20Budapest"]};
+var DEFAULT={"v": 1, "trip": {"title": "동유럽 여행", "route": "부다페스트 - 빈 - 프라하", "sub": "2026년 12월 24일부터 2027년 1월 2일까지, 상하이를 두 번 들르는 9박 10일"}, "days": [{"d": "1224", "date": "2026-12-24", "w": "목", "label": "인천 → 상하이", "plan": "와이탄 야경", "title": "출국, 상하이 레이오버 12시간", "small": "14:15 도착, 다음날 02:25 출발", "tip": "크리스마스이브 밤의 와이탄과 난징동루는 인파 통제로 일방통행이 생기거나 근처 지하철역이 무정차 통과할 수 있어요. 와이탄에서 공항으로 갈 땐 강변 바로 앞보다 한두 블록 안쪽에서 디디를 부르는 편이 빠릅니다. 입국 조건과 앱 준비는 아래 상하이 경유 준비를 보세요."}, {"d": "1225", "date": "2026-12-25", "w": "금", "label": "부다페스트 → 빈", "plan": "크리스마스마켓", "title": "부다페스트 입국 후 빈, 크리스마스 저녁", "small": "12:30 EC 144, 빈 15:17 도착", "tip": "EC 144는 변경과 환불이 안 되는 할인권이에요. 착륙부터 출발까지 5시간 반 여유가 있지만, 비행기가 크게 늦어 놓치면 다음 열차 표를 새로 사야 하니 ÖBB 앱을 미리 깔아 두세요. 국경을 넘는 표라 휴대폰 화면 대신 A4 흰 종이에 세로로 출력한 표와 신분증을 보여줘야 합니다."}, {"d": "1226", "date": "2026-12-26", "w": "토", "label": "빈", "plan": "쇤브룬, 벨베데레", "title": "궁전 하나, 미술관 하나, 빈 카페", "small": "강도 보통에서 높음", "tip": "미술에 흥미가 낮으면 벨베데레 대신 호프부르크와 국립도서관(€12). 미술사박물관을 고르면 2.5–3시간을 잡고 벨베데레와 중복하지 마세요."}, {"d": "1227", "date": "2026-12-27", "w": "일", "label": "빈 → 프라하", "plan": "오후 기차", "title": "빈에서 느긋한 오전, 오후 기차로 프라하", "small": "15:10 rj 56, 프라하 19:23 도착", "tip": "열차가 오후 출발로 정해져서 오전은 빈에서 보내고, 프라하 첫날은 밤 산책만 해요. 원래 이날 넣었던 화약탑과 구시청사 전망대는 12/29로 옮겼습니다. 프라하 72시간권은 12/28 아침에 시작해도 12/29 밤 중앙역까지 충분해요. 표는 12/26 24시까지 1인 €3에 환불할 수 있고, 그 뒤로는 환불이 안 됩니다."}, {"d": "1228", "date": "2026-12-28", "w": "월", "label": "프라하", "plan": "카를교, 프라하성", "title": "카를교와 프라하성, 사진을 가장 많이 남길 날", "small": "강도 보통", "tip": "날씨가 나쁘면 아침 카를교 촬영을 12/29와 맞바꿉니다."}, {"d": "1229", "date": "2026-12-29", "w": "화", "label": "프라하 → 야간열차", "plan": "야간열차", "title": "여유로운 프라하 마지막 날과 야간열차", "small": "21:58 EN 10577, 부다페스트 08:29 도착", "tip": "2인 침대칸은 더블침대가 아니라 위아래 침대이고, 객실 전용 샤워와 화장실은 보장되지 않아요. 할인 운임이라 변경과 환불이 안 됩니다. 클레멘티눔은 매주 월요일에 다음 2주분이 열리니 12월 중순부터 판매 달력을 확인하세요."}, {"d": "1230", "date": "2026-12-30", "w": "수", "label": "부다페스트", "plan": "온천, 유람선", "title": "온천, 휴식, 다뉴브 유람선", "small": "강도 보통", "tip": "열차 지연에 대비해 오전에는 취소가 어려운 예약을 넣지 않습니다. 세체니는 대여가 없다고 공식 안내되어 있어요. 유람선은 경험용으로, 어부의 요새 야경은 다음날 저녁에 직접 올라가서 봅니다."}, {"d": "1231", "date": "2026-12-31", "w": "목", "label": "부다페스트", "plan": "어부의 요새", "title": "낮엔 페스트, 해 질 녘부터 부다 언덕 야경", "small": "어부의 요새는 블루아워와 야경 시간에", "tip": "12월 말 부다페스트는 16시 전후에 해가 져서, 15시에 올라가면 일몰과 블루아워, 완전한 야경을 한 번에 볼 수 있어요. 12/31 밤에는 성 지구와 강변이 늦게까지 붐비고 교통 통제가 생길 수 있어 18시 전에 내려오는 동선으로 잡았습니다. 국회의사당 내부를 보고 싶다면 12/30 온천을 빼고 오후 투어로 넣으세요."}, {"d": "0101", "date": "2027-01-01", "w": "금", "label": "부다페스트 → 상하이", "plan": "", "title": "공항으로, 상하이행", "small": "11:30 출발, 다음날 05:25 도착", "tip": "택시는 숙소에서 공항까지 40–60분, 차량 1대 14,000–20,000 HUF 임시 예산. Bolt 같은 앱 호출로 견적을 확인하세요."}, {"d": "0102", "date": "2027-01-02", "w": "토", "label": "상하이 → 인천", "plan": "", "title": "상하이 레이오버 12시간, 저녁 귀국", "small": "05:25 도착, 17:45 출발", "tip": "1월 초는 중국 신정 연휴와 겹칠 수 있어 와이탄과 난징동루가 이른 오후부터 붐빕니다. 에그타르트는 기내 반입이 가능해서 공항 가기 전에 사도 괜찮아요."}], "events": [{"id": "e1", "d": "1224", "s": "12:55", "e": "14:15", "cat": "m", "t": "MU5042 인천 → 상하이", "n": "인천 T1", "pl": [], "u": "", "key": 1, "tk": 1}, {"id": "e2", "d": "1224", "s": "14:15", "e": "15:15", "cat": "m", "t": "푸둥공항 T1 도착, 입국 심사", "n": "짐은 부다페스트까지 연결 수하물로 부쳤는지 인천에서 확인", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e3", "d": "1224", "s": "15:15", "e": "16:15", "cat": "m", "t": "디디로 시내 이동", "n": "약 60분, 1대 170위안 안팎", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e4", "d": "1224", "s": "16:15", "e": "16:50", "cat": "s", "t": "우캉맨션과 우캉루", "n": "해 지기 전 외관 사진, 일몰 17:00 전후", "pl": ["s_wukang"], "u": "", "key": 1, "tk": 0}, {"id": "e5", "d": "1224", "s": "16:50", "e": "17:30", "cat": "s", "t": "안푸루 산책, 음료 한 잔", "n": "헤이티, Molly Tea 등", "pl": ["s_anfu"], "u": "", "key": 0, "tk": 0}, {"id": "e6", "d": "1224", "s": "17:30", "e": "18:30", "cat": "s", "t": "Hakunamatata 사진관 (선택)", "n": "포토스튜디오, 샤오홍슈나 위챗으로 사전 예약", "pl": ["s_hakuna"], "u": "", "key": 1, "tk": 0}, {"id": "e7", "d": "1224", "s": "18:30", "e": "18:50", "cat": "m", "t": "디디로 난징동루", "n": "약 20분", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e8", "d": "1224", "s": "18:50", "e": "20:00", "cat": "f", "t": "저녁 페이다추 费大厨", "n": "고추돼지볶음, 대왕레몬아이스티, 쌀밥. 대기가 길면 경운화 京云华", "pl": ["s_feidachu"], "u": "", "key": 1, "tk": 0}, {"id": "e9", "d": "1224", "s": "20:00", "e": "20:40", "cat": "s", "t": "난징동루 보행거리 → 와이탄 방향", "n": "홍이플라자 宏伊国际广场 들러도 좋음", "pl": ["s_nanjing"], "u": "", "key": 0, "tk": 0}, {"id": "e10", "d": "1224", "s": "20:40", "e": "21:40", "cat": "s", "t": "와이탄 야경", "n": "강 건너 동방명주와 루자주이 스카이라인", "pl": ["s_bund"], "u": "", "key": 1, "tk": 0}, {"id": "e11", "d": "1224", "s": "21:40", "e": "22:40", "cat": "m", "t": "디디로 공항", "n": "이브라 인파가 많으면 21:15에 출발", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e12", "d": "1224", "s": "22:40", "e": "02:25", "cat": "m", "t": "체크인, 보안 검사, 출국 심사", "n": "국제선 출발 3시간 전 도착 목표", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e13", "d": "1225", "s": "02:25", "e": "07:05", "cat": "m", "t": "MU8639 상하이 → 부다페스트", "n": "상하이항공 운항편", "pl": [], "u": "", "key": 1, "tk": 1}, {"id": "e14", "d": "1225", "s": "07:05", "e": "08:45", "cat": "m", "t": "부다페스트 공항 T2B 도착, 입국과 수하물", "n": "EES 등록으로 입국 줄이 길 수 있음", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e15", "d": "1225", "s": "08:45", "e": "10:00", "cat": "m", "t": "공항 → Deák Ferenc tér → Keleti역", "n": "100E 버스와 M2, 100E 2,500 HUF와 단일권 500 HUF", "pl": ["b_deak", "b_keleti"], "u": "", "key": 0, "tk": 0}, {"id": "e16", "d": "1225", "s": "10:00", "e": "12:00", "cat": "f", "t": "역 근처에서 아침 겸 점심, 대기", "n": "3,000–5,000 HUF. 짐이 가벼우면 M2 한 정거장 거리 New York Café도 가능, 25일 영업 확인", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e17", "d": "1225", "s": "12:30", "e": "15:17", "cat": "m", "t": "EC 144 Keleti → 빈 중앙역", "n": "12:00까지 플랫폼 확인. 좌석 지정이 없어 빈자리에 앉기", "pl": ["w_hbf"], "u": "", "key": 1, "tk": 1}, {"id": "e18", "d": "1225", "s": "15:17", "e": "16:15", "cat": "r", "t": "모텔 원 빈 중앙역 체크인, 휴식", "n": "중앙역 바로 옆, 체크인 15:00부터", "pl": ["w_motelone"], "u": "", "key": 0, "tk": 0}, {"id": "e19", "d": "1225", "s": "16:15", "e": "17:30", "cat": "s", "t": "시청 앞 크리스마스마켓", "n": "해 진 뒤 조명이 켜진 시간, 간식과 음료 €10–15, 12/26 종료", "pl": ["w_rathaus"], "u": "", "key": 1, "tk": 0}, {"id": "e20", "d": "1225", "s": "17:45", "e": "19:00", "cat": "f", "t": "저녁 Café Landtmann", "n": "€20–30, 크리스마스 영업 확인", "pl": ["w_landtmann"], "u": "", "key": 0, "tk": 0}, {"id": "e21", "d": "1225", "s": "19:00", "e": "", "cat": "r", "t": "숙소 복귀, 휴식", "n": "컨디션이 좋으면 중심가 조명 20–30분", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e22", "d": "1226", "s": "07:45", "e": "08:30", "cat": "f", "t": "아침 식사", "n": "조식 불포함. 호텔 조식 별도 결제나 근처 카페", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e23", "d": "1226", "s": "08:30", "e": "09:00", "cat": "m", "t": "쇤브룬으로 이동", "n": "U4와 도보 25–40분", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e24", "d": "1226", "s": "09:00", "e": "10:20", "cat": "s", "t": "쇤브룬 궁전 Palace Ticket", "n": "€42, 오전 시간 지정 예약", "pl": ["w_schon"], "u": "", "key": 1, "tk": 0}, {"id": "e25", "d": "1226", "s": "10:20", "e": "11:30", "cat": "s", "t": "궁전 외관, 정원 앞쪽, 쇤브룬 마켓", "n": "무료", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e26", "d": "1226", "s": "11:30", "e": "12:20", "cat": "f", "t": "점심 (마켓 또는 인근)", "n": "€18–25", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e27", "d": "1226", "s": "13:15", "e": "14:45", "cat": "s", "t": "상궁 벨베데레, 클림트 ‘키스’", "n": "€23, 한국어 오디오가이드 €5", "pl": ["w_belv"], "u": "", "key": 1, "tk": 0}, {"id": "e28", "d": "1226", "s": "15:30", "e": "16:30", "cat": "f", "t": "Gerstner 커피와 케이크", "n": "오페라 맞은편, €15–22", "pl": ["w_gerstner"], "u": "", "key": 1, "tk": 0}, {"id": "e29", "d": "1226", "s": "16:30", "e": "18:00", "cat": "s", "t": "오페라 → 케른트너 거리 → 슈테판광장 마켓", "n": "광장 마켓 12/26 19시까지", "pl": ["w_opera", "w_kartner", "w_stephan"], "u": "", "key": 0, "tk": 0}, {"id": "e30", "d": "1226", "s": "18:00", "e": "19:30", "cat": "f", "t": "Figlmüller 슈니첼 저녁", "n": "€30–40, 예약 권장", "pl": ["w_figl"], "u": "", "key": 1, "tk": 0}, {"id": "e31", "d": "1227", "s": "08:00", "e": "09:15", "cat": "f", "t": "아침 식사, 체크아웃", "n": "조식 불포함, 체크아웃 12:00까지. 짐은 오후까지 맡기기", "pl": ["w_motelone"], "u": "", "key": 0, "tk": 0}, {"id": "e32", "d": "1227", "s": "09:15", "e": "10:00", "cat": "m", "t": "U1으로 시내, 미하엘러 광장 산책", "n": "일요일이라 상점은 대부분 쉬어요", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e33", "d": "1227", "s": "10:00", "e": "11:15", "cat": "s", "t": "국립도서관 프룽크잘과 호프부르크", "n": "€12, 일요일 개관 시간 확인", "pl": ["w_hofburg"], "u": "", "key": 1, "tk": 0}, {"id": "e34", "d": "1227", "s": "11:15", "e": "11:50", "cat": "f", "t": "Demel 커피 한 잔", "n": "케이크 진열장 구경, 포장해서 기차 간식으로도", "pl": ["w_demel"], "u": "", "key": 0, "tk": 0}, {"id": "e35", "d": "1227", "s": "12:00", "e": "13:15", "cat": "f", "t": "점심 Plachutta Wollzeile", "n": "타펠슈피츠 €30–40, 예약 권장", "pl": ["w_plachutta"], "u": "", "key": 1, "tk": 0}, {"id": "e36", "d": "1227", "s": "13:15", "e": "14:40", "cat": "m", "t": "U1으로 중앙역, 호텔에서 짐 찾기", "n": "호텔이 역 바로 옆. 역 안 슈퍼에서 물과 간식", "pl": ["w_motelone", "w_hbf"], "u": "", "key": 0, "tk": 0}, {"id": "e37", "d": "1227", "s": "15:10", "e": "19:23", "cat": "m", "t": "rj 56 빈 → 프라하 중앙역", "n": "369호차 64, 66번, 4시간 13분", "pl": ["w_hbf", "p_hln"], "u": "", "key": 1, "tk": 1}, {"id": "e38", "d": "1227", "s": "19:23", "e": "20:15", "cat": "m", "t": "Franz by Zeitraum 체크인", "n": "중앙역에서 걸어서 10분 안팎", "pl": ["p_franz"], "u": "", "key": 0, "tk": 0}, {"id": "e39", "d": "1227", "s": "20:15", "e": "21:00", "cat": "s", "t": "카를교 야경 건너 구시가지광장", "n": "숙소에서 트램이나 걸어서 20–25분. 마켓 조명과 틴 성당", "pl": ["p_charles", "p_oldsq"], "u": "", "key": 1, "tk": 0}, {"id": "e40", "d": "1227", "s": "21:00", "e": "22:15", "cat": "f", "t": "마켓 노점 저녁 또는 Lokál Dlouhááá", "n": "마켓 마감과 Lokál 마지막 주문 시간 확인", "pl": ["p_oldsq", "p_lokal"], "u": "", "key": 0, "tk": 0}, {"id": "e41", "d": "1228", "s": "07:30", "e": "08:45", "cat": "s", "t": "카를교와 강변 셀프스냅", "n": "07:30엔 아직 어두움, 8시대 중심", "pl": ["p_charles"], "u": "", "key": 1, "tk": 0}, {"id": "e42", "d": "1228", "s": "08:45", "e": "09:30", "cat": "f", "t": "아침, 따뜻한 음료 (말라스트라나)", "n": "200–350 CZK", "pl": ["p_mala"], "u": "", "key": 0, "tk": 0}, {"id": "e43", "d": "1228", "s": "09:30", "e": "10:00", "cat": "m", "t": "트램 22로 프라하성 입구", "n": "오르막은 트램으로", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e44", "d": "1228", "s": "10:00", "e": "12:30", "cat": "s", "t": "프라하성 기본 코스", "n": "450 CZK, 겨울 16시 종료", "pl": ["p_castle"], "u": "", "key": 1, "tk": 0}, {"id": "e45", "d": "1228", "s": "12:30", "e": "13:30", "cat": "f", "t": "점심 (네루도바 거리 주변)", "n": "350–500 CZK", "pl": ["p_nerudova"], "u": "", "key": 0, "tk": 0}, {"id": "e46", "d": "1228", "s": "13:30", "e": "15:00", "cat": "s", "t": "네루도바 → 말라스트라나 → 캄파 섬", "n": "내리막 산책과 촬영", "pl": ["p_kampa"], "u": "", "key": 0, "tk": 0}, {"id": "e47", "d": "1228", "s": "15:00", "e": "16:00", "cat": "f", "t": "카페 휴식 Café Savoy", "n": "200–350 CZK", "pl": ["p_savoy"], "u": "", "key": 0, "tk": 0}, {"id": "e48", "d": "1228", "s": "16:00", "e": "17:00", "cat": "s", "t": "카를교 야경, 낮 사진 보완", "n": "무료", "pl": [], "u": "", "key": 1, "tk": 0}, {"id": "e49", "d": "1228", "s": "17:30", "e": "19:00", "cat": "f", "t": "저녁 (Lokál U Bílé kuželky 등), 숙소", "n": "350–550 CZK", "pl": ["p_kuzelky"], "u": "", "key": 0, "tk": 0}, {"id": "e50", "d": "1229", "s": "08:00", "e": "09:00", "cat": "f", "t": "아침 식사, 짐 정리", "n": "조식 불포함. 열차용 작은 가방 따로 싸기", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e51", "d": "1229", "s": "09:00", "e": "10:00", "cat": "r", "t": "체크아웃, 짐 보관", "n": "체크아웃 시각과 저녁까지 짐 보관 가능 여부를 숙소에 미리 확인", "pl": ["p_franz"], "u": "", "key": 0, "tk": 0}, {"id": "e52", "d": "1229", "s": "10:00", "e": "11:15", "cat": "s", "t": "클레멘티눔 투어", "n": "380 CZK, 회차제, 172계단", "pl": ["p_clem"], "u": "", "key": 1, "tk": 0}, {"id": "e53", "d": "1229", "s": "11:15", "e": "12:15", "cat": "s", "t": "구시청사 전망대와 정오 천문시계", "n": "350 CZK, 온라인 우선입장 450 CZK", "pl": ["p_oldhall"], "u": "", "key": 1, "tk": 0}, {"id": "e54", "d": "1229", "s": "12:30", "e": "14:00", "cat": "f", "t": "Café Louvre 식사와 휴식", "n": "300–500 CZK", "pl": ["p_louvre"], "u": "", "key": 1, "tk": 0}, {"id": "e55", "d": "1229", "s": "14:00", "e": "15:30", "cat": "s", "t": "바츨라프광장, 화약탑, 기념품", "n": "쇼핑 예산 별도", "pl": ["p_wenc", "p_powder"], "u": "", "key": 0, "tk": 0}, {"id": "e56", "d": "1229", "s": "15:30", "e": "16:30", "cat": "s", "t": "카를교 블루아워 재촬영", "n": "일몰 16시 전후, 전날 날씨에 따라", "pl": ["p_charles"], "u": "", "key": 0, "tk": 0}, {"id": "e57", "d": "1229", "s": "16:30", "e": "18:30", "cat": "f", "t": "이른 저녁, 휴식", "n": "이동 전 체력 비축", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e58", "d": "1229", "s": "18:30", "e": "20:30", "cat": "r", "t": "간식 구매, 숙소에서 짐 회수", "n": "숙소가 중앙역 근처라 이동이 짧아요", "pl": ["p_franz"], "u": "", "key": 0, "tk": 0}, {"id": "e59", "d": "1229", "s": "20:30", "e": "21:30", "cat": "m", "t": "프라하 중앙역으로, 플랫폼 확인", "n": "숙소에서 걸어서 10분 안팎", "pl": ["p_hln"], "u": "", "key": 0, "tk": 0}, {"id": "e60", "d": "1229", "s": "21:58", "e": "08:29", "cat": "m", "t": "EN 10577 부다페스트 Nyugati행 야간열차", "n": "365호차 12, 16번 침대, 2인실", "pl": ["p_hln"], "u": "", "key": 1, "tk": 1}, {"id": "e61", "d": "1230", "s": "08:30", "e": "09:15", "cat": "m", "t": "Nyugati역 08:29 도착 → 숙소에 짐 맡기기", "n": "체크인은 14:00부터. 이른 도착 짐 보관을 숙소에 미리 문의", "pl": ["b_nyugati", "b_brill"], "u": "", "key": 0, "tk": 0}, {"id": "e62", "d": "1230", "s": "09:15", "e": "10:15", "cat": "f", "t": "아침 식사, 컨디션 확인", "n": "3,000–4,500 HUF", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e63", "d": "1230", "s": "11:00", "e": "13:30", "cat": "s", "t": "세체니 온천", "n": "락커 13,200–15,800 HUF, 수영복과 슬리퍼, 수건 지참", "pl": ["b_szech"], "u": "", "key": 1, "tk": 0}, {"id": "e64", "d": "1230", "s": "13:30", "e": "14:30", "cat": "f", "t": "점심", "n": "4,000–6,000 HUF", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e65", "d": "1230", "s": "14:30", "e": "16:00", "cat": "r", "t": "Brill Budapest Apartments 체크인, 샤워, 휴식", "n": "체크인 14:00부터. 잠을 못 잤으면 온천 시간을 줄이기", "pl": ["b_brill"], "u": "", "key": 0, "tk": 0}, {"id": "e66", "d": "1230", "s": "16:00", "e": "17:00", "cat": "s", "t": "성 이슈트반 성당과 마켓", "n": "성당 3,000–7,500 HUF", "pl": ["b_basilica"], "u": "", "key": 0, "tk": 0}, {"id": "e67", "d": "1230", "s": "18:00", "e": "19:00", "cat": "s", "t": "다뉴브 야경 유람선 (선착장)", "n": "Legenda 일반편 €25", "pl": ["b_pier"], "u": "", "key": 1, "tk": 0}, {"id": "e68", "d": "1230", "s": "19:15", "e": "20:30", "cat": "f", "t": "저녁 Menza 등", "n": "5,000–8,000 HUF", "pl": ["b_menza"], "u": "", "key": 0, "tk": 0}, {"id": "e69", "d": "1231", "s": "08:00", "e": "09:00", "cat": "f", "t": "아침 식사", "n": "조식 불포함. 숙소 주방이나 근처 카페", "pl": ["b_brill"], "u": "", "key": 0, "tk": 0}, {"id": "e70", "d": "1231", "s": "09:30", "e": "10:45", "cat": "s", "t": "중앙시장", "n": "1층 식재료, 2층 기념품. 12/31은 단축 영업일 수 있음", "pl": ["b_market"], "u": "", "key": 0, "tk": 0}, {"id": "e71", "d": "1231", "s": "10:45", "e": "11:15", "cat": "s", "t": "바치 거리 산책 → 뵈뢰슈마르티 광장", "n": "무료", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e72", "d": "1231", "s": "11:15", "e": "12:15", "cat": "f", "t": "Gerbeaud 커피와 케이크", "n": "광장 마켓과 함께", "pl": ["b_gerbeaud"], "u": "", "key": 0, "tk": 0}, {"id": "e73", "d": "1231", "s": "12:15", "e": "13:15", "cat": "f", "t": "점심", "n": "5,000–8,000 HUF", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e74", "d": "1231", "s": "13:30", "e": "15:00", "cat": "r", "t": "숙소 휴식, 짐 정리", "n": "1/1 이른 출발과 긴 저녁 대비", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e75", "d": "1231", "s": "15:00", "e": "15:15", "cat": "s", "t": "16번 버스로 부다 왕궁 언덕", "n": "Deák Ferenc tér에서 승차, 결빙 시 걷지 말고 버스", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e76", "d": "1231", "s": "15:15", "e": "16:00", "cat": "s", "t": "부다성 테라스, 다뉴브 위 일몰", "n": "일몰 16:00 전후, 무료", "pl": ["b_castle"], "u": "", "key": 1, "tk": 0}, {"id": "e77", "d": "1231", "s": "16:00", "e": "16:45", "cat": "s", "t": "어부의 요새 블루아워 셀프스냅", "n": "하늘이 남색일 때 국회의사당과 강이 가장 예쁨, 삼각대", "pl": ["b_fisher"], "u": "", "key": 1, "tk": 0}, {"id": "e78", "d": "1231", "s": "16:45", "e": "17:20", "cat": "f", "t": "Ruszwurm에서 몸 녹이기", "n": "자리가 적음, 연말 영업시간 확인", "pl": ["b_ruszwurm"], "u": "", "key": 0, "tk": 0}, {"id": "e79", "d": "1231", "s": "17:20", "e": "17:50", "cat": "s", "t": "마차시 성당 조명과 요새 야경 한 번 더", "n": "하층 무료, 상층 테라스는 현장 운영 확인", "pl": ["b_matthias"], "u": "", "key": 1, "tk": 0}, {"id": "e80", "d": "1231", "s": "17:50", "e": "18:20", "cat": "s", "t": "Batthyány tér에서 국회의사당 야경 정면", "n": "16번 버스 또는 계단길 도보 15분", "pl": ["b_batthy"], "u": "", "key": 1, "tk": 0}, {"id": "e81", "d": "1231", "s": "18:45", "e": "20:15", "cat": "f", "t": "예약한 연말 저녁 Hungarikum Bisztró", "n": "1인 €35–60, M2 한 정거장, 특별 코스 여부 확인", "pl": ["b_hungarikum"], "u": "", "key": 1, "tk": 0}, {"id": "e82", "d": "1231", "s": "20:15", "e": "21:00", "cat": "s", "t": "성당 광장과 도심 조명 산책", "n": "기본안은 여기서 마무리", "pl": ["b_basilica"], "u": "", "key": 0, "tk": 0}, {"id": "e83", "d": "1231", "s": "23:30", "e": "00:15", "cat": "s", "t": "(선택) 짧은 카운트다운", "n": "숙소 도보권에서만", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e84", "d": "0101", "s": "06:15", "e": "07:00", "cat": "f", "t": "체크아웃, 간단한 아침", "n": "조식 불포함, 체크아웃 11:00까지. 전날 사 둔 빵과 커피로", "pl": ["b_brill"], "u": "", "key": 0, "tk": 0}, {"id": "e85", "d": "0101", "s": "07:00", "e": "08:15", "cat": "m", "t": "Deák Ferenc tér → 100E → 부다페스트 공항", "n": "2,500 HUF, 1/1 특별 운행 공지 확인", "pl": ["b_deak"], "u": "", "key": 1, "tk": 0}, {"id": "e86", "d": "0101", "s": "08:15", "e": "11:30", "cat": "m", "t": "T2A 체크인, 보안 검사, 출국", "n": "상하이항공 카운터, EES 출국 등록 포함 여유", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e87", "d": "0101", "s": "11:30", "e": "05:25", "cat": "m", "t": "MU8640 부다페스트 → 상하이", "n": "기내 1박, 상하이 05:25 도착", "pl": [], "u": "", "key": 1, "tk": 1}, {"id": "e88", "d": "0102", "s": "05:25", "e": "06:30", "cat": "m", "t": "푸둥공항 T1 도착, 입국 심사", "n": "1/2 입국 조건은 아래 상하이 경유 준비 확인", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e89", "d": "0102", "s": "06:30", "e": "07:15", "cat": "m", "t": "디디로 난징동루 쪽", "n": "새벽이라 40–50분", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e90", "d": "0102", "s": "07:15", "e": "08:15", "cat": "f", "t": "국제호텔 나비파이 줄서기", "n": "8시 오픈, 품절 전에 사려면 7시 전후", "pl": ["s_butterfly"], "u": "", "key": 1, "tk": 0}, {"id": "e91", "d": "0102", "s": "08:15", "e": "09:10", "cat": "f", "t": "아침 대호춘 大壶春", "n": "도보 15분, 셩젠바오와 또우장, 요우티아오", "pl": ["s_dahuchun"], "u": "", "key": 1, "tk": 0}, {"id": "e92", "d": "0102", "s": "09:10", "e": "09:40", "cat": "s", "t": "아침 와이탄 산책", "n": "낮의 스카이라인 사진", "pl": ["s_bund"], "u": "", "key": 0, "tk": 0}, {"id": "e93", "d": "0102", "s": "09:40", "e": "10:00", "cat": "s", "t": "와이탄원 33 유니언 교회", "n": "외관 사진", "pl": ["s_united"], "u": "", "key": 0, "tk": 0}, {"id": "e94", "d": "0102", "s": "10:00", "e": "10:40", "cat": "s", "t": "상하이 우편박물관 대문 사진, 자푸루교", "n": "오전 빛이 예쁜 곳, 외관 촬영은 개관과 무관", "pl": ["s_postal", "s_zhapu"], "u": "", "key": 1, "tk": 0}, {"id": "e95", "d": "0102", "s": "10:40", "e": "11:30", "cat": "f", "t": "동방명주 뷰 카페 류이 플라워 커피바", "n": "대안 illy coffee 벨라지오", "pl": ["s_flower"], "u": "", "key": 1, "tk": 0}, {"id": "e96", "d": "0102", "s": "11:30", "e": "12:00", "cat": "s", "t": "북와이탄 강변공원 강변 산책", "n": "", "pl": ["s_northbund"], "u": "", "key": 0, "tk": 0}, {"id": "e97", "d": "0102", "s": "12:00", "e": "12:40", "cat": "s", "t": "SMP몰과 하마선생", "n": "The Stage 포토존, B2 마트에서 과자와 기념품", "pl": ["s_smp"], "u": "", "key": 1, "tk": 0}, {"id": "e98", "d": "0102", "s": "12:40", "e": "12:50", "cat": "m", "t": "디디로 난징동루", "n": "약 10분", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e99", "d": "0102", "s": "12:50", "e": "13:50", "cat": "f", "t": "점심 위쿠 鱼酷", "n": "QR 주문 후 생선 선택, 두부튀김 추천", "pl": ["s_yuku"], "u": "", "key": 1, "tk": 0}, {"id": "e100", "d": "0102", "s": "14:00", "e": "15:00", "cat": "m", "t": "디디로 공항", "n": "1월 초 연휴 교통 감안", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e101", "d": "0102", "s": "15:00", "e": "17:45", "cat": "m", "t": "체크인, 출국", "n": "", "pl": [], "u": "", "key": 0, "tk": 0}, {"id": "e102", "d": "0102", "s": "17:45", "e": "20:45", "cat": "m", "t": "MU5051 상하이 → 인천", "n": "", "pl": [], "u": "", "key": 1, "tk": 1}], "memo": [{"id": "t0", "t": "부다페스트 숙소에 12/30 아침 도착과 짐 보관 문의", "done": 0}, {"id": "t1", "t": "12/25 ÖBB 표 A4 흰 종이에 출력", "done": 0}, {"id": "t2", "t": "1/2 상하이 입국 조건 다시 확인", "done": 0}, {"id": "t3", "t": "미끄럽지 않은 방수 신발 준비", "done": 0}], "cands": [{"id": "c1", "c": "at", "name": "Gerstner", "kind": "카페", "price": "커피와 케이크 €15–22, 12/26 오후", "note": "오페라 맞은편, 장식적인 실내. 대기가 길면 인근 카페로.", "score": "8.9", "pl": "w_gerstner", "u": "https://www.google.com/maps/search/?api=1&query=Gerstner%20K.u.K.%20Hofzuckerb%C3%A4cker%20K%C3%A4rntner%20Stra%C3%9Fe", "local": ""}, {"id": "c2", "c": "at", "name": "Figlmüller Wollzeile", "kind": "식당", "price": "슈니첼 €21.90, 식사 €30–40, 12/26 저녁", "note": "대표 슈니첼을 한 번 경험하기 좋음. 예약 필수급.", "score": "8.7", "pl": "w_figl", "u": "https://www.google.com/maps/search/?api=1&query=Figlm%C3%BCller%20Wollzeile", "local": ""}, {"id": "c3", "c": "at", "name": "Café Landtmann", "kind": "카페", "price": "12/25 시청 마켓 후 저녁과 디저트", "note": "시청 바로 옆 클래식 카페. 마켓 직후 동선이 가장 짧음.", "score": "", "pl": "w_landtmann", "u": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Landtmann%20Wien", "local": ""}, {"id": "c4", "c": "at", "name": "Demel", "kind": "카페", "price": "호프부르크 근처 디저트", "note": "왕실 납품 제과점. 케이크 진열장 구경만으로도 재미.", "score": "", "pl": "w_demel", "u": "https://www.google.com/maps/search/?api=1&query=Demel%20Wien%20Kohlmarkt", "local": ""}, {"id": "c5", "c": "at", "name": "Café Sperl", "kind": "카페", "price": "조용한 옛 빈 카페", "note": "관광객이 덜 붐비는 클래식 실내.", "score": "", "pl": "w_sperl", "u": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Sperl%20Wien", "local": ""}, {"id": "c6", "c": "at", "name": "Plachutta Wollzeile", "kind": "식당", "price": "타펠슈피츠(삶은 소고기)", "note": "슈니첼 말고 빈 전통 요리를 하나 더 원할 때. 예약 권장.", "score": "", "pl": "w_plachutta", "u": "https://www.google.com/maps/search/?api=1&query=Plachutta%20Wollzeile", "local": ""}, {"id": "c7", "c": "cz", "name": "Café Louvre", "kind": "카페", "price": "식사 300–500 CZK, 12/29 점심", "note": "카페 분위기와 식사를 한 번에.", "score": "9.2", "pl": "p_louvre", "u": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Louvre%20Praha", "local": ""}, {"id": "c8", "c": "cz", "name": "Lokál Dlouhááá", "kind": "식당", "price": "350–500 CZK, 12/27 저녁", "note": "체코 전통 음식을 실용적으로. 활기차고 시끄러운 편.", "score": "8.7", "pl": "p_lokal", "u": "https://www.google.com/maps/search/?api=1&query=Lok%C3%A1l%20Dlouh%C3%A1%C3%A1%C3%A1%20Praha", "local": ""}, {"id": "c9", "c": "cz", "name": "Café Savoy", "kind": "카페", "price": "말라스트라나, 12/28 오후 카페", "note": "천장 장식이 예쁜 카페. 캄파 산책 뒤 바로.", "score": "", "pl": "p_savoy", "u": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Savoy%20Praha", "local": ""}, {"id": "c10", "c": "cz", "name": "Lokál U Bílé kuželky", "kind": "식당", "price": "카를교 서쪽, 12/28 점심이나 저녁", "note": "Lokál 체인의 말라스트라나 지점. 카를교 건너 바로.", "score": "", "pl": "p_kuzelky", "u": "https://www.google.com/maps/search/?api=1&query=Lok%C3%A1l%20U%20B%C3%ADl%C3%A9%20ku%C5%BEelky%20Praha", "local": ""}, {"id": "c11", "c": "cz", "name": "Kavárna Slavia", "kind": "카페", "price": "국립극장 맞은편 강변", "note": "창가에서 블타바강과 프라하성이 보이는 오래된 카페.", "score": "", "pl": "p_slavia", "u": "https://www.google.com/maps/search/?api=1&query=Kav%C3%A1rna%20Slavia%20Praha", "local": ""}, {"id": "c12", "c": "cz", "name": "Café Imperial", "kind": "카페", "price": "구시가지 동쪽, 타일 장식 실내", "note": "ibis나 Motel One 숙박 시 아침이나 저녁 동선에 맞음.", "score": "", "pl": "p_imperial", "u": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Imperial%20Praha", "local": ""}, {"id": "c13", "c": "hu", "name": "Hungarikum Bisztró", "kind": "식당", "price": "3코스 15,180 HUF(서비스 포함), 12/31 저녁", "note": "굴라시, 오리, 디저트. 연말 일반 메뉴 운영 여부와 예약 확인.", "score": "8.8", "pl": "b_hungarikum", "u": "https://www.google.com/maps/search/?api=1&query=Hungarikum%20Bisztr%C3%B3%20Budapest", "local": ""}, {"id": "c14", "c": "hu", "name": "Ruszwurm", "kind": "카페", "price": "어부의 요새 옆, 12/31 해 질 녘", "note": "작고 오래된 제과점. 야경 촬영 중 몸 녹이기 좋은 위치.", "score": "", "pl": "b_ruszwurm", "u": "https://www.google.com/maps/search/?api=1&query=Ruszwurm%20Cukr%C3%A1szda%20Budapest", "local": ""}, {"id": "c15", "c": "hu", "name": "Gerbeaud", "kind": "카페", "price": "뵈뢰슈마르티 광장, 12/31 오전", "note": "클래식 카페. 광장 마켓과 함께.", "score": "", "pl": "b_gerbeaud", "u": "https://www.google.com/maps/search/?api=1&query=Gerbeaud%20Budapest", "local": ""}, {"id": "c16", "c": "hu", "name": "Menza", "kind": "식당", "price": "리스트 광장, 캐주얼 헝가리 음식", "note": "부담 없는 가격대. 12/30 유람선 뒤 저녁으로.", "score": "", "pl": "b_menza", "u": "https://www.google.com/maps/search/?api=1&query=Menza%20%C3%89tterem%20Budapest", "local": ""}, {"id": "c17", "c": "hu", "name": "New York Café", "kind": "카페", "price": "디저트 세트 약 12,075 HUF", "note": "실내 사진이 목적이면 가치 있음. 가성비와 대기 효율은 낮음.", "score": "7.9", "pl": "b_nyc", "u": "https://www.google.com/maps/search/?api=1&query=New%20York%20Caf%C3%A9%20Budapest", "local": ""}, {"id": "c18", "c": "hu", "name": "Borkonyha", "kind": "식당", "price": "성당 근처, 연말 저녁 대안", "note": "모던 헝가리 요리. 무알코올 음료 구성 확인.", "score": "", "pl": "b_borkonyha", "u": "https://www.google.com/maps/search/?api=1&query=Borkonyha%20Winekitchen%20Budapest", "local": ""}, {"id": "c19", "c": "hu", "name": "Centrál Kávéház", "kind": "식당", "price": "대학가 쪽 클래식 카페", "note": "뉴욕카페보다 덜 붐비는 대안.", "score": "", "pl": "b_central", "u": "https://www.google.com/maps/search/?api=1&query=Centr%C3%A1l%20K%C3%A1v%C3%A9h%C3%A1z%20Budapest", "local": ""}, {"id": "c20", "c": "cn", "name": "페이다추 费大厨", "kind": "식당", "price": "", "note": "고추돼지볶음, 대왕레몬아이스티, 난징동루 悦荟 5층, 예약 불가", "score": "", "pl": "s_feidachu", "u": "https://www.google.com/maps/search/?api=1&query=%E8%B4%B9%E5%A4%A7%E5%8E%A8%E8%BE%A3%E6%A4%92%E7%82%92%E8%82%89%20%E4%B8%8A%E6%B5%B7%E5%8D%97%E4%BA%AC%E4%B8%9C%E8%B7%AF%E6%82%A6%E8%8D%9F%E5%B9%BF%E5%9C%BA", "local": "费大厨辣椒炒肉"}, {"id": "c21", "c": "cn", "name": "위쿠 鱼酷", "kind": "식당", "price": "", "note": "카오위, 두부튀김, 悦荟 6층", "score": "", "pl": "s_yuku", "u": "https://www.google.com/maps/search/?api=1&query=%E9%B1%BC%E9%85%B7%E6%B4%BB%E9%B1%BC%E7%83%A4%E9%B1%BC%20%E4%B8%8A%E6%B5%B7%E5%8D%97%E4%BA%AC%E4%B8%9C%E8%B7%AF%E6%82%A6%E8%8D%9F", "local": "鱼酷活鱼烤鱼"}, {"id": "c22", "c": "cn", "name": "경운화 京云华", "kind": "식당", "price": "", "note": "베이징덕, 생선탕수육, 홍소육, 신세계성 9층", "score": "", "pl": "s_jingyunhua", "u": "https://www.google.com/maps/search/?api=1&query=%E4%BA%AC%E4%BA%91%E5%8D%8E%20%E6%96%B0%E4%B8%96%E7%95%8C%E5%9F%8E%20%E5%8D%97%E4%BA%AC%E8%A5%BF%E8%B7%AF", "local": "京云华"}, {"id": "c23", "c": "cn", "name": "홍쿠이지아 红盔甲", "kind": "식당", "price": "", "note": "마늘가재, 마약옥수수, 반쯤 먹으면 면 추가", "score": "", "pl": "s_hongkui", "u": "https://www.google.com/maps/search/?api=1&query=%E7%BA%A2%E7%9B%94%E7%94%B2%E5%B0%8F%E9%BE%99%E8%99%BE%20%E9%87%91%E9%99%B5%E4%B8%9C%E8%B7%AF500%E5%8F%B7", "local": "红盔甲·小龙虾"}, {"id": "c24", "c": "cn", "name": "장씨네 게살국수 庄氏隆兴", "kind": "식당", "price": "", "note": "게살비빔면, 샤오롱바오, 09:00–21:00", "score": "", "pl": "s_zhuang", "u": "https://www.google.com/maps/search/?api=1&query=%E5%BA%84%E6%B0%8F%E9%9A%86%E5%85%B4%20%E5%9B%9B%E5%B7%9D%E4%B8%AD%E8%B7%AF150%E5%8F%B7", "local": "庄氏隆兴"}, {"id": "c25", "c": "cn", "name": "위싱지 裕兴记", "kind": "식당", "price": "", "note": "게살국수", "score": "", "pl": "s_yuxingji", "u": "https://www.google.com/maps/search/?api=1&query=%E8%A3%95%E5%85%B4%E8%AE%B0%E8%9F%B9%E9%BB%84%E9%9D%A2%20%E4%B9%9D%E6%B1%9F%E8%B7%AF691%E5%8F%B7", "local": "裕兴记"}, {"id": "c26", "c": "cn", "name": "원기운교 袁记云饺", "kind": "식당", "price": "", "note": "게알새우 마라만두", "score": "", "pl": "s_yuanji", "u": "https://www.google.com/maps/search/?api=1&query=%E8%A2%81%E8%AE%B0%E4%BA%91%E9%A5%BA%20%E5%AE%81%E6%B3%A2%E8%B7%AF232%E5%8F%B7", "local": "袁记云饺"}, {"id": "c27", "c": "cn", "name": "대호춘 大壶春", "kind": "간식", "price": "", "note": "셩젠바오, 또우장, 요우티아오, 07:30–19:30", "score": "", "pl": "s_dahuchun", "u": "https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E5%A3%B6%E6%98%A5%20%E4%BA%91%E5%8D%97%E5%8D%97%E8%B7%AF89%E5%8F%B7", "local": "大壶春"}, {"id": "c28", "c": "cn", "name": "산동잡곡전병", "kind": "간식", "price": "", "note": "지엔빙 (매운소스, 과자 추가), 06:00–18:00", "score": "", "pl": "s_shandong", "u": "https://www.google.com/maps/search/?api=1&query=%E5%B1%B1%E4%B8%9C%E6%9D%82%E7%B2%AE%E7%85%8E%E9%A5%BC%20%E5%B9%BF%E8%A5%BF%E5%8C%97%E8%B7%AF430%E5%8F%B7", "local": "山东杂粮煎饼"}, {"id": "c29", "c": "cn", "name": "국제호텔 나비파이", "kind": "간식", "price": "", "note": "나비파이, 08:00 오픈, 오픈런 필요", "score": "", "pl": "s_butterfly", "u": "https://www.google.com/maps/search/?api=1&query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%BB%84%E6%B5%A6%E5%8C%BA%E6%B1%9F%E8%A5%BF%E4%B8%AD%E8%B7%AF374%E5%8F%B7", "local": "国际饭店 蝴蝶酥"}, {"id": "c30", "c": "cn", "name": "홍이플라자 宏伊国际广场", "kind": "간식", "price": "", "note": "소양생전 셩젠바오, 레드립스 마라반, 난징동루 지하", "score": "", "pl": "s_hongyi", "u": "https://www.google.com/maps/search/?api=1&query=%E5%AE%8F%E4%BC%8A%E5%9B%BD%E9%99%85%E5%B9%BF%E5%9C%BA%20%E5%8D%97%E4%BA%AC%E4%B8%9C%E8%B7%AF299%E5%8F%B7", "local": "宏伊国际广场"}, {"id": "c31", "c": "cn", "name": "신큐카오바 新疆正宗羊肉串", "kind": "간식", "price": "", "note": "신장식 양꼬치, 빵구이", "score": "", "pl": "s_xinjiang", "u": "https://www.google.com/maps/search/?api=1&query=%E6%96%B0%E7%96%86%E6%AD%A3%E5%AE%97%E7%BE%8A%E8%82%89%E4%B8%B2%20%E6%B5%99%E6%B1%9F%E4%B8%AD%E8%B7%AF70%E5%8F%B7", "local": "新疆正宗羊肉串"}, {"id": "c32", "c": "cn", "name": "류이 플라워 커피바", "kind": "카페", "price": "", "note": "동방명주 뷰", "score": "", "pl": "s_flower", "u": "https://www.google.com/maps/search/?api=1&query=%E6%B1%ADflower%20coffee%20bar%20%E5%8C%97%E8%8B%8F%E5%B7%9E%E8%B7%AF234%E5%8F%B7", "local": "汭flower coffee bar"}, {"id": "c33", "c": "cn", "name": "illy coffee 벨라지오", "kind": "카페", "price": "", "note": "벨라지오 1층 테라스", "score": "", "pl": "s_illy", "u": "https://www.google.com/maps/search/?api=1&query=illy%20%E5%8C%97%E8%8B%8F%E5%B7%9E%E8%B7%AF188%E5%8F%B7%20Bellagio%20Shanghai", "local": "illy 河畔咖啡"}, {"id": "c34", "c": "cn", "name": "SMP몰과 하마선생", "kind": "카페", "price": "", "note": "마트 과자, 대백토, 오레오 한정판", "score": "", "pl": "s_smp", "u": "https://www.google.com/maps/search/?api=1&query=SMP%E4%B8%8A%E6%B5%B7%E7%99%BD%E7%8E%89%E5%85%B0%E5%B9%BF%E5%9C%BA", "local": "盒马鲜生 (白玉兰广场 B2)"}, {"id": "c35", "c": "cn", "name": "음료 체인", "kind": "카페", "price": "", "note": "헤이티 喜茶, 차지 霸王茶姬, Molly Tea 茉莉奶白, 아마수작 阿嬷手作, 거리마다 있어서 따로 찾지 않아도 됨", "score": "", "pl": "", "u": "", "local": ""}, {"id": "c36", "c": "cn", "name": "베이커리", "kind": "카페", "price": "", "note": "루씨허 버터떡 泸溪河, 릴리안 에그타르트 莉莲蛋挞, 에그타르트는 기내 반입 가능", "score": "", "pl": "", "u": "", "local": ""}], "lists": [{"id": "L1", "name": "예약 체크리스트", "groups": [{"id": "g1", "name": "지금 바로 (11월 초까지)", "items": [{"id": "i1", "t": "항공 4구간 전자항공권 확인", "s": "MU5042, MU8639, MU8640, MU5051. 이름 철자와 날짜, 상하이에서 짐을 찾지 않는 연결 수하물인지", "done": 0}, {"id": "i2", "t": "부다페스트 숙소 12/30–1/1", "s": "Brill Budapest Apartments 6 예약 완료. 12/15까지 무료 취소", "done": 1}, {"id": "i3", "t": "빈 숙소 12/25–12/27", "s": "모텔 원 빈 중앙역 예약 완료, 조식 불포함", "done": 1}, {"id": "i4", "t": "프라하 숙소 12/27–12/29", "s": "Franz by Zeitraum 예약 완료. 12/29 저녁까지 짐 보관 가능 여부 확인", "done": 1}, {"id": "i5", "t": "해외여행자보험 가입", "s": "항공 지연과 휴대품 도난 보장 포함, 중국 체류도 포함되는지", "done": 0}]}, {"id": "g2", "name": "11–12월 중 (날짜와 시간 지정)", "items": [{"id": "i6", "t": "쇤브룬 Palace Ticket 12/26 오전", "s": "9시 전후", "done": 0}, {"id": "i7", "t": "상궁 벨베데레 12/26 오후", "s": "13:15 전후", "done": 0}, {"id": "i8", "t": "12/25 저녁, 12/26 Figlmüller 예약", "s": "크리스마스 영업과 일반 메뉴인지", "done": 0}, {"id": "i9", "t": "12/31 연말 저녁 식당 예약", "s": "18:45 전후, 특별 코스 가격 확인", "done": 0}, {"id": "i10", "t": "12/30 다뉴브 야경 유람선 (Legenda 일반편)", "s": "18시 전후 회차", "done": 0}, {"id": "i11", "t": "세체니 온천 (선택 예약)", "s": "오전 고정 예약은 최소화", "done": 0}, {"id": "i12", "t": "클레멘티눔 12/29 10시 회차", "s": "매주 월요일 다음 2주분 오픈", "done": 0}, {"id": "i13", "t": "상하이 포토스튜디오 12/24 17:30 (선택)", "s": "Hakunamatata 등, 위챗이나 샤오홍슈로 문의", "done": 0}, {"id": "i14", "t": "(선택) 프라하성 가이드 투어, 커플 스냅, 공연", "s": "원하는 것만", "done": 0}]}, {"id": "g3", "name": "출발 1–2주 전", "items": [{"id": "i15", "t": "기차표 3장 출력과 휴대폰 저장", "s": "12/25 ÖBB 표는 A4 흰 종이 세로 출력 필수. ČD 표 바코드는 접지 않기", "done": 0}, {"id": "i16", "t": "중국 무비자 연장 여부 확인", "s": "1/2 입국이 기한 뒤라 연장이 없으면 240시간 경유 조건 확인", "done": 0}, {"id": "i17", "t": "알리페이, 위챗에 카드와 여권 등록", "s": "디디, 고덕지도까지 설치하고 한 번 로그인", "done": 0}, {"id": "i18", "t": "eSIM 구매", "s": "유럽 3국과 중국이 모두 되는지, 아니면 두 개로", "done": 0}, {"id": "i19", "t": "트래블카드 충전", "s": "유로, 코루나, 포린트, 위안. 소액 현금도 조금", "done": 0}, {"id": "i20", "t": "교통 앱 설치", "s": "WienMobil, PID Lítačka, BudapestGO, Bolt", "done": 0}, {"id": "i21", "t": "ETIAS 시행 여부 공식 사이트 재확인", "s": "", "done": 0}]}, {"id": "g4", "name": "출발 직전", "items": [{"id": "i22", "t": "12/25, 12/31, 1/1 식당과 공항버스 특별 운영 공지", "s": "", "done": 0}, {"id": "i23", "t": "기차 출발 시각 재확인", "s": "cd.cz, ÖBB 앱. rj 56은 12/26 24시까지만 환불 가능", "done": 0}, {"id": "i24", "t": "날씨 확인 후 카를교 촬영일 결정", "s": "12/28과 12/29 중", "done": 0}, {"id": "i25", "t": "모든 예약 바우처를 휴대폰에 오프라인 저장", "s": "", "done": 0}, {"id": "i26", "t": "프라하 숙소에 짐 보관 시간 재확인", "s": "", "done": 0}]}]}, {"id": "L2", "name": "준비물", "groups": [{"id": "g5", "name": "서류와 돈", "items": [{"id": "i27", "t": "여권", "s": "출국일 기준 유효기간 넉넉히, 유럽 출국 후 3개월 이상", "done": 0}, {"id": "i28", "t": "전자항공권 4구간, 숙소 3곳, 기차 예약 확인서", "s": "휴대폰 오프라인 저장과 사본 1부 출력", "done": 0}, {"id": "i29", "t": "여행자보험 증서", "s": "", "done": 0}, {"id": "i30", "t": "트래블카드와 신용카드 2장", "s": "한 장은 다른 가방에 분리 보관", "done": 0}, {"id": "i31", "t": "소액 현금", "s": "유로, 코루나, 포린트. 마켓 노점과 화장실, 팁 용도", "done": 0}, {"id": "i32", "t": "유럽 첫 입국 EES 등록 대비", "s": "부다페스트 도착 때 얼굴과 지문 등록", "done": 0}]}, {"id": "g6", "name": "상하이 경유", "items": [{"id": "i33", "t": "중국 무비자 연장 여부 확인", "s": "1/2 입국이 현재 공지된 기한 뒤라 출발 전에 재확인", "done": 0}, {"id": "i34", "t": "알리페이에 카드와 여권 등록", "s": "한 번에 200위안 넘게 결제하면 수수료, 나눠 결제", "done": 0}, {"id": "i35", "t": "위챗 설치와 카드 등록", "s": "식당 원격 줄서기, QR 주문", "done": 0}, {"id": "i36", "t": "디디, 고덕지도, 따종디엔핑 설치", "s": "가고 싶은 곳은 한자 이름으로 고덕지도 즐겨찾기", "done": 0}, {"id": "i37", "t": "파파고 중국어 오프라인 팩", "s": "", "done": 0}, {"id": "i38", "t": "중국에서도 되는 데이터", "s": "유럽용 eSIM이 중국을 포함하는지 확인", "done": 0}, {"id": "i39", "t": "레이오버용 작은 가방", "s": "큰 짐은 연결 수하물로 부치고 갈아입을 겉옷, 보조배터리, 물티슈만", "done": 0}, {"id": "i40", "t": "보조배터리 인증 표시 확인", "s": "중국 출발편은 3C 표시를 확인하는 경우가 있음, 기내에선 사용 금지", "done": 0}]}, {"id": "g7", "name": "옷", "items": [{"id": "i41", "t": "긴 코트 또는 롱패딩", "s": "사진용으로 코트, 보온용으로 안에 경량패딩", "done": 0}, {"id": "i42", "t": "발열 내의와 기모 하의", "s": "", "done": 0}, {"id": "i43", "t": "머플러, 비니, 터치 장갑", "s": "머플러는 사진 소품으로도", "done": 0}, {"id": "i44", "t": "방수 되는 편한 신발", "s": "돌바닥과 결빙 대비, 미끄럼 적은 밑창", "done": 0}, {"id": "i45", "t": "핫팩", "s": "어부의 요새 야경처럼 해 진 뒤 오래 서 있는 날 필수", "done": 0}, {"id": "i46", "t": "연말 저녁용 단정한 옷 한 벌", "s": "", "done": 0}]}, {"id": "g8", "name": "온천과 야간열차", "items": [{"id": "i47", "t": "수영복, 슬리퍼, 수건", "s": "세체니는 대여 없음", "done": 0}, {"id": "i48", "t": "방수 파우치, 젖은 옷용 비닐", "s": "", "done": 0}, {"id": "i49", "t": "야간열차용 작은 가방", "s": "세면도구, 실내 슬리퍼, 갈아입을 옷, 물, 간식", "done": 0}, {"id": "i50", "t": "귀마개와 안대", "s": "기내 2박에도 유용", "done": 0}, {"id": "i51", "t": "자물쇠 또는 와이어", "s": "큰 짐 고정", "done": 0}]}, {"id": "g9", "name": "카메라와 전자기기", "items": [{"id": "i52", "t": "Zf, 24–120mm, 40mm SE", "s": "낮엔 렌즈 교환을 줄이고 40mm는 저녁 산책과 카페용", "done": 0}, {"id": "i53", "t": "예비 배터리 2개 이상", "s": "추위에 빨리 닳음, 안주머니 보관", "done": 0}, {"id": "i54", "t": "작은 삼각대나 폰 거치대, 리모컨", "s": "카를교와 어부의 요새 블루아워 셀프스냅", "done": 0}, {"id": "i55", "t": "렌즈 천, 간단 방수 커버", "s": "", "done": 0}, {"id": "i56", "t": "보조배터리, 멀티 충전기", "s": "유럽은 230V C/F형이라 한국 충전기 그대로", "done": 0}]}, {"id": "g10", "name": "건강과 기내", "items": [{"id": "i57", "t": "상비약", "s": "감기약, 소화제, 진통제, 밴드", "done": 0}, {"id": "i58", "t": "목베개, 수면양말", "s": "새벽 비행이 두 번", "done": 0}, {"id": "i59", "t": "립밤, 핸드크림, 보습제", "s": "건조한 기내와 겨울 바람", "done": 0}, {"id": "i60", "t": "물티슈, 휴대용 휴지", "s": "중국 식당 비닐 식기, 공중화장실 대비", "done": 0}]}]}, {"id": "L3", "name": "쇼핑리스트", "groups": [{"id": "g11", "name": "상하이", "items": [{"id": "i61", "t": "하마선생 마트 과자", "s": "SMP몰 B2", "done": 0}, {"id": "i62", "t": "대백토 사탕, 오레오 한정판", "s": "", "done": 0}, {"id": "i63", "t": "릴리안 에그타르트", "s": "기내 반입 가능", "done": 0}]}, {"id": "g12", "name": "빈", "items": []}, {"id": "g13", "name": "프라하", "items": []}, {"id": "g14", "name": "부다페스트", "items": [{"id": "i64", "t": "중앙시장 파프리카 가루", "s": "2층 기념품", "done": 0}]}]}], "money": {"rates": {"KRW": 1, "EUR": 1513, "CZK": 70, "HUF": 4.3, "CNY": 200, "USD": 1400}, "cats": [{"id": "air", "name": "항공", "budget": 1447600}, {"id": "hotel", "name": "숙소", "budget": 2090000}, {"id": "train", "name": "도시 간 기차", "budget": 508400}, {"id": "local", "name": "시내와 공항 교통", "budget": 211000}, {"id": "food", "name": "식사와 카페", "budget": 900000}, {"id": "ticket", "name": "입장, 온천, 투어", "budget": 700000}, {"id": "sha", "name": "상하이 레이오버", "budget": 270000}, {"id": "etc", "name": "eSIM, 보험, 소모품", "budget": 120000}, {"id": "spare", "name": "예비비", "budget": 300000}], "items": [{"id": "m1", "date": "2026-09-25", "cat": "air", "name": "항공권 4구간, 2인", "amount": 1447600, "cur": "KRW", "status": "paid", "kind": "예약", "memo": "중국동방항공 PZQKRL"}, {"id": "m2", "date": "2026-10-31", "cat": "train", "name": "EN 10577 프라하 → 부다페스트 야간열차, 2인", "amount": 234, "cur": "EUR", "status": "paid", "kind": "예약", "memo": "5,827 Kč, 환불 불가"}, {"id": "m3", "date": "2026-11-08", "cat": "train", "name": "EC 144 부다페스트 → 빈, 2인", "amount": 42, "cur": "EUR", "status": "paid", "kind": "예약", "memo": "ÖBB 할인권, 환불 불가"}, {"id": "m4", "date": "2026-11-08", "cat": "train", "name": "rj 56 빈 → 프라하, 2인", "amount": 60, "cur": "EUR", "status": "paid", "kind": "예약", "memo": "1,488 Kč, 12/26 24시까지 환불 가능"}, {"id": "m5", "date": "", "cat": "hotel", "name": "모텔 원 빈 중앙역 2박", "amount": 324.09, "cur": "EUR", "status": "planned", "kind": "예약", "memo": "현장 결제, 12/25 18시까지 무료 취소 (이후 €310)"}, {"id": "m6", "date": "", "cat": "hotel", "name": "Franz by Zeitraum 2박", "amount": 532.91, "cur": "USD", "status": "planned", "kind": "예약", "memo": "나중 결제, 12/24 전까지 무료 취소"}, {"id": "m7", "date": "", "cat": "hotel", "name": "Brill Budapest Apartments 6 2박", "amount": 561.6, "cur": "EUR", "status": "planned", "kind": "예약", "memo": "12/16부터 자동 결제, 12/15까지 무료 취소 (이후 €540)"}]}, "notes": [{"id": "n1", "title": "자유 메모", "body": ""}]};
+var CF={
+wien:{rot:-12,
+ water:[[[[48.2330,16.3560],[48.2250,16.3610],[48.2185,16.3700],[48.2140,16.3770],[48.2105,16.3830],[48.2040,16.3920],[48.1990,16.4010]],45],
+        [[[48.1880,16.3050],[48.1895,16.3200],[48.1920,16.3350],[48.1960,16.3500],[48.1990,16.3640],[48.2015,16.3760],[48.2045,16.3800],[48.2070,16.3840],[48.2090,16.3860]],18]],
+ parks:[[48.1805,16.3115,650,420],[48.1940,16.3805,170,380],[48.2045,16.3792,170,230],[48.2085,16.3605,120,110],[48.2045,16.3665,90,110],[48.2110,16.3590,100,120],[48.1995,16.3705,110,70],[48.1915,16.3900,120,90]],
+ roads:[[[[48.2155,16.3640],[48.2128,16.3598],[48.2100,16.3583],[48.2075,16.3590],[48.2045,16.3618],[48.2027,16.3690],[48.2018,16.3740],[48.2042,16.3792],[48.2085,16.3805],[48.2125,16.3770],[48.2155,16.3700],[48.2155,16.3640]],1],
+        [[[48.2250,16.3480],[48.2120,16.3390],[48.2000,16.3380],[48.1910,16.3400],[48.1850,16.3550],[48.1840,16.3700],[48.1870,16.3850],[48.1900,16.3950]],1],
+        [[[48.2020,16.3600],[48.1960,16.3440],[48.1930,16.3350],[48.1890,16.3200],[48.1870,16.3100]],1],
+        [[[48.2027,16.3690],[48.1990,16.3740],[48.1940,16.3760],[48.1860,16.3760]],0],
+        [[[48.2085,16.3731],[48.2058,16.3714],[48.2032,16.3688]],0],
+        [[[48.2085,16.3731],[48.2110,16.3790]],0]],
+ lm:[["슈테판 대성당",48.2085,16.3731],["호프부르크 왕궁",48.2066,16.3652],["시청",48.2108,16.3572],["국회의사당",48.2080,16.3590],["카를 성당",48.1982,16.3718],["나슈마르크트",48.1985,16.3625],["알베르티나",48.2047,16.3681],["뮤지엄스콰르티어",48.2035,16.3585],["보티프 성당",48.2155,16.3590],["글로리에테",48.1784,16.3087],["무지크페라인",48.2006,16.3726],["슈베덴플라츠",48.2116,16.3777],["훈데르트바서하우스",48.2073,16.3940]]},
+praha:{rot:8,
+ water:[[[[50.0600,14.4150],[50.0700,14.4150],[50.0780,14.4128],[50.0830,14.4122],[50.0870,14.4112],[50.0915,14.4135],[50.0948,14.4190],[50.0958,14.4270],[50.0972,14.4350],[50.0990,14.4420],[50.1010,14.4500]],210]],
+ parks:[[50.0830,14.3960,330,550],[50.0962,14.4175,520,200],[50.0935,14.4010,170,90],[50.0842,14.4082,60,140],[50.0848,14.4330,90,140],[50.0905,14.3940,120,140]],
+ roads:[[[[50.0790,14.4300],[50.0845,14.4250]],1],[[[50.0816,14.4130],[50.0826,14.4215],[50.0845,14.4250],[50.0870,14.4280]],1],
+        [[[50.0905,14.4345],[50.0830,14.4345],[50.0760,14.4330],[50.0700,14.4300]],1],
+        [[[50.0812,14.4065],[50.0812,14.4135]],1],[[[50.0893,14.4100],[50.0900,14.4160]],1],[[[50.0920,14.4180],[50.0945,14.4150]],0],
+        [[[50.0880,14.4036],[50.0898,14.4080],[50.0905,14.4120]],0],[[[50.0877,14.4218],[50.0870,14.4270]],0],[[[50.0865,14.4114],[50.0866,14.4180],[50.0877,14.4218]],0]],
+ lm:[["성 비투스 대성당",50.0909,14.4005],["황금소로",50.0921,14.4036],["틴 성당",50.0878,14.4227],["루돌피눔",50.0900,14.4160],["국립극장",50.0810,14.4135],["댄싱하우스",50.0755,14.4142],["유대인 지구",50.0903,14.4189],["페트르진 전망대",50.0835,14.3951],["시민회관",50.0875,14.4282],["국립박물관",50.0789,14.4310],["존 레논 벽",50.0862,14.4067],["성 미쿨라시 성당",50.0880,14.4034]]},
+buda:{rot:-6,
+ water:[[[[47.5300,19.0490],[47.5260,19.0480],[47.5160,19.0450],[47.5080,19.0428],[47.5020,19.0428],[47.4970,19.0450],[47.4920,19.0505],[47.4870,19.0560],[47.4820,19.0610],[47.4760,19.0660]],300]],
+ parks:[[47.5150,19.0820,520,650],[47.4875,19.0455,380,300],[47.5270,19.0475,130,350],[47.4980,19.0525,60,60],[47.5025,19.0500,80,90],[47.4990,19.0365,90,260],[47.5030,19.0300,120,120]],
+ roads:[[[[47.4990,19.0560],[47.5050,19.0640],[47.5100,19.0700],[47.5150,19.0780]],1],
+        [[[47.5135,19.0500],[47.5105,19.0570],[47.5030,19.0690],[47.4970,19.0710],[47.4900,19.0700],[47.4830,19.0640],[47.4800,19.0600]],1],
+        [[[47.4990,19.0410],[47.4985,19.0465],[47.4993,19.0560]],1],[[[47.4915,19.0470],[47.4935,19.0545],[47.4960,19.0640],[47.5000,19.0820]],1],
+        [[[47.5140,19.0420],[47.5135,19.0500]],1],[[[47.4855,19.0530],[47.4865,19.0590]],1],
+        [[[47.5150,19.0400],[47.5066,19.0388],[47.5000,19.0380],[47.4960,19.0397]],0],[[[47.5104,19.0567],[47.5009,19.0539],[47.4977,19.0548]],0],[[[47.4977,19.0548],[47.4870,19.0583]],0]],
+ lm:[["영웅광장",47.5149,19.0779],["오페라하우스",47.5027,19.0584],["도하니 시나고그",47.4959,19.0605],["겔레르트 온천",47.4838,19.0510],["자유의 여신상",47.4865,19.0470],["다뉴브 강변 신발",47.5045,19.0450],["산도르 궁전",47.4965,19.0395],["바이다후냐드 성",47.5155,19.0855],["머르기트섬",47.5240,19.0475],["리스트 광장",47.5035,19.0632],["아스트리아",47.4930,19.0590]]},
+sha:{rot:0,
+ water:[[[[31.2620,121.5230],[31.2560,121.5150],[31.2500,121.5070],[31.2460,121.5010],[31.2420,121.4965],[31.2380,121.4950],[31.2330,121.4960],[31.2280,121.4990],[31.2230,121.5020],[31.2150,121.5040],[31.2050,121.5050]],370],
+        [[[31.2470,121.4350],[31.2455,121.4550],[31.2440,121.4700],[31.2442,121.4800],[31.2446,121.4870],[31.2442,121.4950]],70]],
+ parks:[[31.2310,121.4735,320,260],[31.2420,121.4910,70,60],[31.2375,121.5045,160,130],[31.2170,121.4665,160,140],[31.2160,121.4530,80,70],[31.2235,121.4500,90,80],[31.2490,121.4985,80,260]],
+ roads:[[[[31.2290,121.4300],[31.2285,121.4500],[31.2305,121.4700],[31.2335,121.4880],[31.2345,121.4935]],1],
+        [[[31.2050,121.4380],[31.2120,121.4500],[31.2200,121.4600],[31.2250,121.4720],[31.2290,121.4860]],1],
+        [[[31.2550,121.4630],[31.2300,121.4640],[31.2100,121.4660],[31.2000,121.4680]],1],
+        [[[31.2236,121.4458],[31.2290,121.4600],[31.2350,121.4730],[31.2367,121.4825],[31.2395,121.4895]],0],
+        [[[31.2470,121.4935],[31.2400,121.4912],[31.2330,121.4925],[31.2270,121.4965]],1],
+        [[[31.2470,121.4990],[31.2500,121.4900],[31.2510,121.4750]],0],[[[31.2445,121.4850],[31.2380,121.4850],[31.2300,121.4850]],0],
+        [[[31.2400,121.5020],[31.2350,121.5100],[31.2300,121.5200]],1]],
+ lm:[["상하이 타워",31.2335,121.5055],["진마오 타워",31.2364,121.5037],["IFC몰",31.2370,121.5012],["예원",31.2272,121.4920],["신천지",31.2195,121.4750],["티엔즈팡",31.2100,121.4690],["인민광장",31.2310,121.4735],["상하이 박물관",31.2283,121.4756],["징안사",31.2236,121.4458],["외백도교",31.2448,121.4895],["화평반점",31.2402,121.4902],["푸싱공원",31.2170,121.4665],["난징시루",31.2290,121.4590]]}
+};
+
+var COL={food:["#D9684C","#FBE4DC"],cafe:["#C98A1F","#F7EBD2"],sight:["#3F8E62","#DCEEE2"],market:["#A9558F","#F2DEEB"],hotel:["#55657F","#E2E6EE"],station:["#55657F","#E2E6EE"]};
+
+var CITY={wien:"빈",praha:"프라하",buda:"부다페스트",sha:"상하이"};
+var CITY_ORDER=["sha","buda","wien","praha"];
+var COUNTRY=[{id:"at",name:"오스트리아",city:"빈",pc:"wien",days:["1225","1226","1227"]},{id:"cz",name:"체코",city:"프라하",pc:"praha",days:["1227","1228","1229"]},{id:"hu",name:"헝가리",city:"부다페스트",pc:"buda",days:["1230","1231","1225","0101"]},{id:"cn",name:"중국",city:"상하이",pc:"sha",days:["1224","0102"]}];
+var CATS={f:"식사",m:"이동",s:"관광",r:"휴식"};
+var TYPE={sight:"관광",market:"마켓",food:"식당",cafe:"카페",hotel:"숙소",station:"역"};
+var DAYCITY={"1224":"sha","1225":"wien","1226":"wien","1227":"praha","1228":"praha","1229":"praha","1230":"buda","1231":"buda","0101":"buda","0102":"sha"};
+var LS="trip-planner-html-v2";
+/* 구글 시트 동기화 주소: Apps Script 웹 앱 URL(…/exec)을 아래 따옴표 안에 붙여넣으세요. 비워 두면 이 폰에만 저장돼요 */
+var SYNC_URL="https://script.google.com/macros/s/AKfycbzQqv7fstVHK3ifgulpkVE_iRp27i3yrgwx24LtZOVVQ2FhjWnnC-unIDh0P8BsoJfrUQ/exec";
+
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function uid(p){return (p||"x")+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function toMin(t){if(!t||!/^\d{1,2}:\d{2}$/.test(t))return null;var a=t.split(":");return (+a[0])*60+(+a[1]);}
+function fmt(m){m=((m%1440)+1440)%1440;return (m<600?"0":"")+Math.floor(m/60)+":"+(m%60<10?"0":"")+(m%60);}
+function dl(d){return (+d.slice(0,2))+"/"+(+d.slice(2));}
+function won(n){return (Math.round(n)||0).toLocaleString("ko-KR")+"원";}
+function mapsUrl(q){if(!q)return "";if(/^https?:\/\//.test(q))return q;return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);}
+function valid(o){return !!(o&&Array.isArray(o.days)&&Array.isArray(o.events));}
+function hhmm(t){if(t==null)return "";t=String(t).trim();var m=t.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);return m?(m[1].length<2?"0":"")+m[1]+":"+m[2]:t;}
+function normalize(o){for(var k in DEFAULT){if(o[k]==null)o[k]=clone(DEFAULT[k]);}if(!o.money.rates)o.money.rates=clone(DEFAULT.money.rates);(o.events||[]).forEach(function(e){e.s=hhmm(e.s);e.e=hhmm(e.e);if(!Array.isArray(e.pl))e.pl=e.pl?String(e.pl).split(",").filter(Boolean):[];});return o;}
+function dayOf(d){for(var i=0;i<S.days.length;i++)if(S.days[i].d===d)return S.days[i];return null;}
+function byStart(a,b){return (toMin(a.s)||0)-(toMin(b.s)||0)||((a.e?toMin(a.e):9999)-(b.e?toMin(b.e):9999));}
+
+var S=null;
+try{S=JSON.parse(localStorage.getItem(LS)||"null");}catch(e){S=null;}
+if(!valid(S))S=clone(DEFAULT);
+S=normalize(S);
+
+/* ---------- saving ---------- */
+var canWrite=true,docRef=null,saveTimer=null,writing=false,again=false,lastRev=S.rev||"",pendingRemote=null;
+function setStatus(k){
+  var el=$("#status");if(!el)return;
+  var m={local:"이 브라우저에 자동 저장돼요",saving:"저장하는 중",saved:"모든 기기에 저장됨",error:"저장하지 못했어요. 잠시 뒤 다시 시도해요",ro:"보기 전용"};
+  el.textContent=m[k]||"";el.dataset.k=k;
+}
+function commit(silent){
+  S.rev=uid("r");lastRev=S.rev;
+  try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){msg("저장하지 못했어요. 저장 공간이 막혀 있을 수 있으니 아래 백업에서 파일로 저장해 두세요");}
+  if(!silent)renderAll();
+  if(!docRef){setStatus("local");return;}
+  setStatus("saving");clearTimeout(saveTimer);saveTimer=setTimeout(flush,700);
+}
+function flush(){
+  if(!docRef||!canWrite)return;
+  if(writing){again=true;return;}
+  writing=true;
+  docRef.set(clone(S)).then(function(){setStatus("saved");},function(e){
+    if(e&&e.code==="invalid_argument"){canWrite=false;applyRO();setStatus("ro");}
+    else{setStatus("error");setTimeout(function(){again=true;},2000);}
+  }).then(function(){writing=false;if(again){again=false;flush();}});
+}
+function busy(){var a=document.activeElement;return $("#dlg").open||(a&&a.closest&&a.closest("[data-live]"));}
+function applyRemote(d){S=normalize(clone(d));lastRev=S.rev||"";try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}renderAll();}
+
+/* ---------- modal ---------- */
+var dlgResolve=null;
+function placeOptions(sel){
+  var h='<option value="">장소 고르기</option>';
+  CITY_ORDER.forEach(function(c){
+    h+='<optgroup label="'+CITY[c]+'">';
+    Object.keys(P).filter(function(k){return P[k][5]===c;}).sort(function(a,b){return P[a][0].localeCompare(P[b][0],"ko");}).forEach(function(k){h+='<option value="'+k+'"'+(k===sel?" selected":"")+'>'+esc(P[k][0])+'</option>';});
+    h+='</optgroup>';
+  });
+  return h;
+}
+function form(o){
+  var dlg=$("#dlg"),f=$("#dlgForm");
+  var h='<h3>'+esc(o.title)+'</h3>'+(o.message?'<p class="dlg-msg">'+esc(o.message)+'</p>':'');
+  (o.fields||[]).forEach(function(fd){
+    var v=fd.value==null?"":fd.value,id="f_"+fd.k;
+    h+='<div class="fld'+(fd.half?" half":"")+'" data-k="'+fd.k+'">';
+    if(fd.type!=="check")h+='<label for="'+id+'">'+esc(fd.label)+'</label>';
+    if(fd.type==="textarea")h+='<textarea id="'+id+'" rows="'+(fd.rows||3)+'">'+esc(v)+'</textarea>';
+    else if(fd.type==="select")h+='<select id="'+id+'">'+fd.options.map(function(op){return '<option value="'+esc(op[0])+'"'+(String(op[0])===String(v)?" selected":"")+'>'+esc(op[1])+'</option>';}).join("")+'</select>';
+    else if(fd.type==="seg")h+='<div class="seg" id="'+id+'">'+fd.options.map(function(op){return '<label class="segb '+op[0]+'"><input type="radio" name="'+id+'" value="'+op[0]+'"'+(op[0]===v?" checked":"")+'><span>'+esc(op[1])+'</span></label>';}).join("")+'</div>';
+    else if(fd.type==="check")h+='<label class="chk"><input type="checkbox" id="'+id+'"'+(v?" checked":"")+'> '+esc(fd.label)+'</label>';
+    else if(fd.type==="places")h+='<div class="pchips" id="'+id+'" data-v="'+esc((v||[]).join(","))+'"></div><select class="padd">'+placeOptions("")+'</select>';
+    else if(fd.type==="place1")h+='<select id="'+id+'">'+placeOptions(v)+'</select>';
+    else h+='<input id="'+id+'" type="'+(fd.type||"text")+'" value="'+esc(v)+'"'+(fd.step?' step="'+fd.step+'"':'')+(fd.ph?' placeholder="'+esc(fd.ph)+'"':'')+(fd.req?" required":"")+'>';
+    if(fd.hint)h+='<small>'+esc(fd.hint)+'</small>';
+    h+='</div>';
+  });
+  h+='<div class="dlg-act">'+(o.del?'<button type="button" class="btn danger" data-act="del">'+esc(o.del)+'</button>':'')+'<span class="sp"></span><button type="button" class="btn ghost" data-act="cancel">취소</button><button type="submit" class="btn primary">'+esc(o.submit||"저장")+'</button></div>';
+  f.innerHTML=h;
+  $$(".pchips",f).forEach(function(box){
+    var vals=box.dataset.v?box.dataset.v.split(","):[];
+    function draw(){box.dataset.v=vals.join(",");box.innerHTML=vals.length?vals.map(function(k,i){return '<span class="pchip">'+esc(P[k]?P[k][0]:k)+'<button type="button" aria-label="'+esc(P[k]?P[k][0]:k)+' 빼기" data-i="'+i+'">×</button></span>';}).join(""):'<span class="muted">지도에 표시할 장소가 없어요</span>';}
+    draw();
+    box.addEventListener("click",function(e){var b=e.target.closest("button[data-i]");if(b){vals.splice(+b.dataset.i,1);draw();}});
+    box.nextElementSibling.addEventListener("change",function(e){if(e.target.value&&vals.indexOf(e.target.value)<0){vals.push(e.target.value);draw();}e.target.value="";});
+  });
+  return new Promise(function(res){
+    dlgResolve=res;
+    f.onsubmit=function(e){
+      e.preventDefault();
+      var out={};
+      (o.fields||[]).forEach(function(fd){
+        var el=$("#f_"+fd.k,f);
+        if(fd.type==="check")out[fd.k]=el.checked?1:0;
+        else if(fd.type==="seg"){var c=$('input:checked',el);out[fd.k]=c?c.value:"";}
+        else if(fd.type==="places")out[fd.k]=el.dataset.v?el.dataset.v.split(","):[];
+        else if(fd.type==="number")out[fd.k]=el.value===""?0:+el.value;
+        else out[fd.k]=el.value.trim();
+      });
+      if(o.validate){var err=o.validate(out);if(err){var m=$(".dlg-err",f);if(!m){m=document.createElement("p");m.className="dlg-err";$(".dlg-act",f).before(m);}m.textContent=err;return;}}
+      close(out);
+    };
+    $$("[data-act]",f).forEach(function(b){b.onclick=function(){close(b.dataset.act==="del"?"__del":null);};});
+    dlg.showModal();
+    var first=$("input:not([type=radio]):not([type=checkbox]),textarea",f);if(first&&!o.noFocus)setTimeout(function(){first.focus();},30);
+  });
+}
+function close(v){var dlg=$("#dlg");if(dlg.open)dlg.close();var r=dlgResolve;dlgResolve=null;if(r)r(v);if(pendingRemote){var d=pendingRemote;pendingRemote=null;applyRemote(d);}}
+function confirmBox(title,message,label){return form({title:title,message:message,submit:label||"확인",noFocus:true}).then(function(v){return !!v;});}
+
+/* ---------- event editing ---------- */
+function dayOptions(){return S.days.map(function(d){return [d.d,dl(d.d)+" ("+d.w+") "+d.label];});}
+function openEvent(id,preset){
+  if(!canWrite)return;
+  var ev=id?S.events.filter(function(e){return e.id===id;})[0]:null;
+  var v=ev?clone(ev):Object.assign({d:cur,s:"10:00",e:"11:00",cat:"s",t:"",n:"",pl:[],u:"",key:0,tk:0},preset||{});
+  form({title:ev?"일정 수정":"일정 추가",del:ev?"삭제":null,fields:[
+    {k:"d",label:"날짜",type:"select",options:dayOptions(),value:v.d},
+    {k:"s",label:"시작",type:"time",value:v.s,half:1,req:1},
+    {k:"e",label:"끝 (비워도 돼요)",type:"time",value:v.e,half:1},
+    {k:"cat",label:"분류",type:"seg",options:[["f","식사"],["m","이동"],["s","관광"],["r","휴식"]],value:v.cat},
+    {k:"t",label:"일정",value:v.t,req:1,ph:"예: 세체니 온천"},
+    {k:"n",label:"메모",type:"textarea",value:v.n,rows:2,ph:"가격, 예약, 주의할 점"},
+    {k:"pl",label:"지도 장소",type:"places",value:v.pl||[],hint:"고른 장소는 일정과 지도의 약도에 번호 핀으로 표시돼요"},
+    {k:"u",label:"다른 장소 (구글 지도 검색어나 링크)",value:v.u,ph:"목록에 없는 곳"},
+    {k:"key",label:"중요 일정으로 표시",type:"check",value:v.key},
+    {k:"tk",label:"예매 완료",type:"check",value:v.tk}
+  ],validate:function(o){if(!o.t)return "일정 이름을 적어 주세요";if(toMin(o.s)==null)return "시작 시각을 적어 주세요";if(o.e&&toMin(o.e)===toMin(o.s))return "끝 시각이 시작과 같아요";}}).then(function(o){
+    if(!o)return;
+    if(o==="__del"){confirmBox("일정을 지울까요?","‘"+v.t+"’ 일정을 시간표와 지도에서 모두 지워요.","지우기").then(function(ok){if(ok){S.events=S.events.filter(function(e){return e.id!==id;});commit();}});return;}
+    if(ev){var live=S.events.filter(function(e){return e.id===id;})[0];if(live)Object.assign(live,o);else{o.id=id;S.events.push(o);}}
+    else{o.id=uid("e");S.events.push(o);}
+    commit();
+    if(o.d!==cur)show(o.d,false);
+  });
+}
+function editDay(d){
+  var x=dayOf(d);
+  form({title:dl(d)+" 정보 수정",fields:[{k:"label",label:"구간",value:x.label},{k:"plan",label:"10 DAYS PLAN 한 줄",value:x.plan},{k:"title",label:"제목",value:x.title},{k:"small",label:"부제",value:x.small},{k:"tip",label:"팁",type:"textarea",rows:4,value:x.tip}]}).then(function(o){if(o){Object.assign(dayOf(d)||x,o);commit();}});
+}
+
+/* ---------- hero, plan, memo ---------- */
+function renderHero(){
+  ["route","sub"].forEach(function(k){var el=$("#h_"+k);if(el&&document.activeElement!==el)el.value=S.trip[k]||"";});fitTitle();
+  $("#plan").innerHTML=S.days.map(function(d,i){return '<li><a href="#d'+d.d+'" data-go="'+d.d+'"><span class="dbadge">DAY '+(i+1)+'</span><span><b>'+esc(d.label)+'</b><small>'+dl(d.d)+(d.plan?" "+esc(d.plan):"")+'</small></span></a></li>';}).join("");
+}
+function fitTitle(){var el=$("#h_title");if(!el)return;var t=el.value||el.placeholder,w=0;for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);w+=c>0x2E80?1.05:(c===32?.3:.68);}var box=el.parentNode.clientWidth||600;var px=Math.max(26,Math.min(96,box*0.94/Math.max(w,3)));if(!el.value)px=Math.min(px,52);el.style.fontSize=px.toFixed(1)+"px";}
+window.addEventListener("resize",function(){fitTitle();});
+function renderMemo(){
+  var m=S.memo;
+  $("#memo").innerHTML=m.length?m.map(function(x){return '<li class="'+(x.done?"done":"")+'"><label><input type="checkbox" data-mid="'+x.id+'"'+(x.done?" checked":"")+'><span>'+esc(x.t)+'</span></label><button type="button" class="x ed" data-mdel="'+x.id+'" aria-label="지우기">×</button></li>';}).join(""):'<li class="empty">할 일을 적어 두면 여기에 쌓여요</li>';
+  $("#memoCount").textContent=m.filter(function(x){return x.done;}).length+" / "+m.length;
+}
+
+/* ---------- timetable ---------- */
+var PH=56,H0=6,ttScrolled=false;
+function segments(){
+  var idx={},out={};
+  S.days.forEach(function(d,i){idx[d.d]=i;out[d.d]=[];});
+  S.events.forEach(function(e){
+    var i=idx[e.d];if(i==null)return;var s=toMin(e.s);if(s==null)return;
+    var en=e.e?toMin(e.e):null,point=false;if(en==null){en=s+30;point=true;}
+    if(en>s)out[e.d].push({e:e,s:s,en:Math.min(en,1440),point:point});
+    else{out[e.d].push({e:e,s:s,en:1440,over:1});var nx=S.days[i+1];if(nx&&en>0)out[nx.d].push({e:e,s:0,en:en,cont:1});}
+  });
+  var mn=360;
+  Object.keys(out).forEach(function(k){out[k].forEach(function(g){if(!g.cont)mn=Math.min(mn,g.s);});});
+  H0=Math.max(0,Math.min(6,Math.floor(mn/60)));
+  Object.keys(out).forEach(function(k){
+    out[k]=out[k].filter(function(g){if(g.cont){g.s=Math.max(g.s,H0*60);return g.en>g.s;}return true;});
+    layout(out[k]);
+  });
+  return out;
+}
+function layout(segs){
+  segs.sort(function(a,b){return a.s-b.s||b.en-a.en;});
+  var cl=[],end=-1;
+  function fl(){var n=0;cl.forEach(function(x){n=Math.max(n,x.lane+1);});cl.forEach(function(x){x.n=n;});cl=[];}
+  segs.forEach(function(g){
+    if(cl.length&&g.s>=end){fl();end=-1;}
+    var le=[];cl.forEach(function(c){le[c.lane]=Math.max(le[c.lane]||0,c.en);});
+    var l=0;while(le[l]!=null&&le[l]>g.s)l++;
+    g.lane=l;cl.push(g);end=Math.max(end,g.en);
+  });
+  if(cl.length)fl();
+}
+function renderTT(){
+  var seg=segments(),total=(24-H0)*PH,h=['<div class="tt-corner">시간</div>'];
+  S.days.forEach(function(d,i){h.push('<div class="tt-head" style="background:var(--h-'+(DAYCITY[d.d]||"wien")+')"><div><small>DAY '+(i<9?"0":"")+(i+1)+'</small><b>'+dl(d.d)+' ('+esc(d.w)+')</b><span>'+esc(d.label)+'</span></div><button type="button" class="plus ed" data-add="'+d.d+'" aria-label="'+dl(d.d)+' 일정 추가">+</button></div>');});
+  var tc='<div class="tt-times" style="height:'+total+'px">';
+  for(var x=H0;x<24;x++)tc+='<div style="height:'+PH+'px">'+(x<10?"0":"")+x+':00</div>';
+  h.push(tc+'</div>');
+  S.days.forEach(function(d){
+    var c='<div class="tt-col" data-d="'+d.d+'" style="height:'+total+'px">';
+    seg[d.d].forEach(function(g){
+      var e=g.e,top=(g.s-H0*60)/60*PH+1,ht=Math.max((g.en-g.s)/60*PH-2,18);
+      var w=100/g.n,cls="tb "+e.cat+(ht<40?" short":ht<84?" mid":"")+(g.cont?" cont":"");
+      var time=g.cont?"~"+e.e:(e.e?e.s+"–"+e.e:e.s);
+      c+='<button type="button" class="'+cls+'" data-id="'+e.id+'" style="top:'+top.toFixed(1)+'px;height:'+ht.toFixed(1)+'px;left:calc('+(g.lane*w)+'% + 3px);width:calc('+w+'% - 6px)" title="'+esc(time+" "+e.t)+'">'
+        +'<span class="in"><span class="tm">'+time+' · '+CATS[e.cat]+'</span><b>'+(g.cont?"(이어서) ":"")+esc(e.t)+(e.tk?'<i class="tkb">예매 완료</i>':'')+'</b>'+(e.n?'<small>'+esc(e.n)+'</small>':'')+'</span></button>';
+    });
+    h.push(c+'</div>');
+  });
+  var el=$("#tt");
+  el.style.gridTemplateColumns="";
+  el.innerHTML=h.join("");
+  var sc=$("#ttScroll");
+  if(!ttScrolled){ttScrolled=true;sc.scrollTop=Math.max(0,(7-H0)*PH);}
+}
+function ttBind(){
+  var el=$("#tt");
+  el.addEventListener("click",function(e){
+    var b=e.target.closest(".tb");if(b){if(canWrite)openEvent(b.dataset.id);else show(b.closest(".tt-col").dataset.d,true);return;}
+    var a=e.target.closest("[data-add]");if(a){var evs=S.events.filter(function(x){return x.d===a.dataset.add;}).sort(byStart),last=evs.length?(toMin(evs[evs.length-1].e)||toMin(evs[evs.length-1].s)+30):600;last=Math.min(last,1380);openEvent(null,{d:a.dataset.add,s:fmt(last),e:fmt(Math.min(last+60,1439))});return;}
+    var col=e.target.closest(".tt-col");
+    if(col&&e.target===col&&canWrite){var y=e.clientY-col.getBoundingClientRect().top,m=H0*60+Math.floor(y/PH*2)*30;openEvent(null,{d:col.dataset.d,s:fmt(m),e:fmt(Math.min(m+60,1439))});}
+  });
+  el.addEventListener("mousemove",function(e){
+    $$(".tt-col.hov",el).forEach(function(c){if(c!==e.target)c.classList.remove("hov");});
+    var col=e.target.classList&&e.target.classList.contains("tt-col")?e.target:null;
+    if(!col||!canWrite)return;
+    var y=e.clientY-col.getBoundingClientRect().top,slot=Math.floor(y/PH*2);
+    col.style.setProperty("--gy",(slot*PH/2)+"px");col.style.setProperty("--gt",'"+ '+fmt(H0*60+slot*30)+' 일정 추가"');col.classList.add("hov");
+  });
+  el.addEventListener("mouseleave",function(){$$(".tt-col.hov",el).forEach(function(c){c.classList.remove("hov");});});
+}
+
+/* ---------- day tabs + panel ---------- */
+var cur=(function(){var m=(location.hash||"").match(/^#d(\d{4})$/);return m&&dayOf(m[1])?m[1]:S.days[0].d;})();
+function renderTabs(){
+  $("#daytabs").innerHTML=S.days.map(function(d){return '<button type="button" role="tab" data-tab="'+d.d+'" aria-selected="'+(d.d===cur)+'"><b>'+dl(d.d)+' '+esc(d.w)+'</b><span>'+esc(d.label)+'</span></button>';}).join("");
+}
+function show(d,scroll,quiet){
+  if(!dayOf(d))return;cur=d;
+  $$("[data-tab]").forEach(function(b){b.setAttribute("aria-selected",String(b.dataset.tab===d));});
+  renderPanel();
+  var t=$('[data-tab="'+d+'"]');if(t){var bar=t.parentNode;bar.scrollLeft=t.offsetLeft-bar.clientWidth/2+t.offsetWidth/2;}
+  if(!quiet){try{history.replaceState(null,"","#d"+d);}catch(e){}}
+  if(scroll)$("#schedule").scrollIntoView();
+}
+var stopInfo={};
+function renderPanel(){
+  var d=dayOf(cur),evs=S.events.filter(function(e){return e.d===cur;}).sort(byStart);
+  var num={},k=0,stops={},seq={},cities=[];
+  evs.forEach(function(e){(e.pl||[]).forEach(function(p){
+    if(!P[p])return;var c=P[p][5];
+    if(num[p]==null){num[p]=++k;if(!stops[c]){stops[c]=[];seq[c]=[];cities.push(c);}stops[c].push([p,k]);}
+    var q=seq[c];if(q[q.length-1]!==p)q.push(p);
+  });});
+  stopInfo=num;
+  var multi=cities.length>1,maps="";
+  cities.forEach(function(c){maps+='<figure class="mapfig"><div class="leaf" data-city="'+c+'" data-h="'+(multi?300:460)+'" aria-label="'+dl(cur)+' '+CITY[c]+' 동선 약도"></div>'+(multi?'<figcaption>'+CITY[c]+'</figcaption>':'')+'<div class="minfo" aria-live="polite"></div></figure>';});
+  if(!cities.length)maps='<p class="nomap">일정에 장소를 고르면 약도가 여기에 그려져요.</p>';
+  var legend='<div class="legend"><span><i style="background:#3F8E62"></i>관광</span><span><i style="background:#A9558F"></i>마켓</span><span><i style="background:#D9684C"></i>식당</span><span><i style="background:#C98A1F"></i>카페</span><span><i style="background:#55657F"></i>숙소·역</span><span><i class="lm"></i>주변 명소</span></div>';
+  var rows=evs.map(function(e){
+    var ns=(e.pl||[]).filter(function(p){return P[p];}).map(function(p){return num[p];});
+    var pins=ns.map(function(n,i){var p=e.pl.filter(function(q){return P[q];})[i];return '<span class="pin" style="background:'+(COL[P[p][3]]||COL.sight)[0]+'">'+n+'</span>';}).join("");
+    var links=(e.pl||[]).filter(function(p){return P[p];}).map(function(p){return '<a class="pl" href="'+P[p][6]+'" target="_blank" rel="noopener">'+esc(P[p][0])+'</a>';});
+    if(e.u)links.push('<a class="pl" href="'+esc(mapsUrl(e.u))+'" target="_blank" rel="noopener">'+esc(/^https?:/.test(e.u)?"지도 링크":e.u)+'</a>');
+    var t=e.e?e.s+"–"+e.e:e.s;
+    return '<tr data-id="'+e.id+'"'+(ns.length?' data-pins="'+ns.join(",")+'"':'')+(e.key?' class="key"':'')+'><td class="t">'+t+'<span class="cdot '+e.cat+'">'+CATS[e.cat]+'</span></td><td class="p">'+pins+'</td><td class="w">'+esc(e.t)+(e.tk?'<span class="ok">예매 완료</span>':'')+'</td><td class="c">'+esc(e.n)+(links.length?'<span class="links">'+links.join("")+'</span>':'')+'</td><td class="ed"><button type="button" class="btn-sm" data-edit="'+e.id+'">수정</button></td></tr>';
+  }).join("");
+  $("#panel").innerHTML='<div class="ph"><div class="dd"><span class="dn">'+dl(cur)+'</span><span class="dw">'+esc(d.w)+'</span></div><div class="dt"><span class="dp">'+esc(d.label)+'</span><h3>'+esc(d.title)+'</h3><small>'+esc(d.small)+'</small></div><button type="button" class="btn ghost ed" data-editday="'+cur+'">이 날 정보 수정</button></div>'
+   +'<div class="pgrid"><div class="maps">'+maps+legend+'</div><div class="plan">'+(evs.length?'<table class="tl"><tbody>'+rows+'</tbody></table>':'<p class="nomap">아직 일정이 없어요.</p>')+'<button type="button" class="btn add ed" data-addday="'+cur+'">+ 이 날 일정 추가</button>'+(d.tip?'<p class="tip">'+esc(d.tip)+'</p>':'')+'</div></div>';
+  cities.forEach(function(c){var el=$('#panel .leaf[data-city="'+c+'"]');draw(el,c,stops[c],seq[c]);});
+}
+function bindPanel(){
+  $("#panel").addEventListener("click",function(e){
+    var b;
+    if((b=e.target.closest("[data-edit]")))return openEvent(b.dataset.edit);
+    if((b=e.target.closest("[data-addday]"))){var evs=S.events.filter(function(x){return x.d===cur;}).sort(byStart),last=evs.length?(toMin(evs[evs.length-1].e)||toMin(evs[evs.length-1].s)+30):600;last=Math.min(last,1380);return openEvent(null,{d:cur,s:fmt(last),e:fmt(Math.min(last+60,1439))});}
+    if((b=e.target.closest("[data-editday]")))return editDay(b.dataset.editday);
+    if(e.target.closest("a"))return;
+    var tr=e.target.closest("tr[data-id]");
+    if(tr){if(tr.dataset.pins)highlight(tr.dataset.pins.split(",")[0]);else if(canWrite)openEvent(tr.dataset.id);}
+  });
+}
+function highlight(n){
+  n=String(n);
+  $$("#panel tr[data-pins]").forEach(function(tr){tr.classList.toggle("on",tr.dataset.pins.split(",").indexOf(n)>-1);});
+  $$("#panel .smap .pin").forEach(function(g){g.classList.toggle("on",g.dataset.n===n);});
+  $$("#panel .minfo").forEach(function(m){m.innerHTML="";});
+  var id=null;Object.keys(stopInfo).forEach(function(k){if(String(stopInfo[k])===n)id=k;});
+  if(!id)return;var fig=$('#panel .leaf[data-city="'+P[id][5]+'"]');if(!fig)return;
+  fig.parentNode.querySelector(".minfo").innerHTML="<b>"+n+". "+esc(P[id][0])+"</b>"+esc(P[id][4])+"<a href='"+P[id][6]+"' target='_blank' rel='noopener'>구글 지도</a>";
+}
+function tw(s,fs){var w=0;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);w+=(c>0x2E80?1.02:(c===32?.32:.58))*fs;}return w;}
+function E(tag,a,txt){var s="<"+tag;for(var k in a)s+=" "+k+'="'+a[k]+'"';return s+(txt!=null?">"+txt+"</"+tag+">":"/>");}
+function draw(el,city,stops,seq){
+  var F=CF[city],W=460,H=+el.dataset.h||460;
+  var la=stops.map(function(s){return P[s[0]][1];}),ln=stops.map(function(s){return P[s[0]][2];});
+  var lat0=(Math.min.apply(0,la)+Math.max.apply(0,la))/2,lng0=(Math.min.apply(0,ln)+Math.max.apply(0,ln))/2;
+  var k=Math.cos(lat0*Math.PI/180);
+  var dLa=Math.max(Math.max.apply(0,la)-Math.min.apply(0,la),.0045),dLn=Math.max((Math.max.apply(0,ln)-Math.min.apply(0,ln))*k,.0045);
+  var s=Math.min((W-150)/dLn,(H-120)/dLa),m2=s/111320;
+  function X(g){return W/2+(g-lng0)*k*s;} function Y(g){return H/2+10-(g-lat0)*s;}
+  function pl(arr){return arr.map(function(p,i){return (i?"L":"M")+X(p[1]).toFixed(1)+" "+Y(p[0]).toFixed(1);}).join(" ");}
+  var u="p"+Math.random().toString(36).slice(2,7),o=[];
+  o.push('<defs><pattern id="'+u+'" width="30" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate('+F.rot+')"><rect x="3" y="3" width="24" height="16" rx="2" fill="#E5DCCD"/></pattern><clipPath id="c'+u+'"><rect width="'+W+'" height="'+H+'" rx="10"/></clipPath></defs><g clip-path="url(#c'+u+')">');
+  o.push(E("rect",{width:W,height:H,fill:"#F1EADF"}),E("rect",{width:W,height:H,fill:"url(#"+u+")"}));
+  F.parks.forEach(function(p){o.push(E("ellipse",{cx:X(p[1]).toFixed(1),cy:Y(p[0]).toFixed(1),rx:Math.max(7,p[3]*m2).toFixed(1),ry:Math.max(7,p[2]*m2).toFixed(1),fill:"#CFE5C6"}));});
+  F.water.forEach(function(w){o.push(E("path",{d:pl(w[0]),fill:"none",stroke:"#AFCFEA","stroke-width":Math.max(7,w[1]*m2).toFixed(1),"stroke-linecap":"round","stroke-linejoin":"round"}));});
+  F.roads.forEach(function(r){var d=pl(r[0]);
+    if(r[1])o.push(E("path",{d:d,fill:"none",stroke:"#FFFFFF","stroke-width":9,"stroke-linecap":"round","stroke-linejoin":"round"}),E("path",{d:d,fill:"none",stroke:"#F3DFA2","stroke-width":5.5,"stroke-linecap":"round","stroke-linejoin":"round"}));
+    else o.push(E("path",{d:d,fill:"none",stroke:"#FFFFFF","stroke-width":5,"stroke-linecap":"round","stroke-linejoin":"round"}));});
+  var rp=[];seq.forEach(function(id,i){var p=[P[id][1],P[id][2]];if(!rp.length||p[0]!==rp[rp.length-1][0]||p[1]!==rp[rp.length-1][1])rp.push(p);});
+  if(rp.length>1){var d=pl(rp);o.push(E("path",{d:d,fill:"none",stroke:"#fff","stroke-width":9,"stroke-linecap":"round","stroke-linejoin":"round"}),E("path",{d:d,fill:"none",stroke:"#4A6FA5","stroke-width":4.5,"stroke-linecap":"round","stroke-linejoin":"round"}));}
+  rp.forEach(function(p){o.push(E("circle",{cx:X(p[1]).toFixed(1),cy:Y(p[0]).toFixed(1),r:5,fill:"#fff",stroke:"#4A6FA5","stroke-width":2.5}));});
+  var boxes=[];
+  function free(b){if(b[0]<4||b[1]<4||b[0]+b[2]>W-4||b[1]+b[3]>H-4)return false;for(var i=0;i<boxes.length;i++){var c=boxes[i];if(!(b[0]+b[2]<c[0]||c[0]+c[2]<b[0]||b[1]+b[3]<c[1]||c[1]+c[3]<b[1]))return false;}return true;}
+  var pinsSvg=[],labSvg=[],lmSvg=[];
+  var pxy=stops.map(function(st){var p=P[st[0]];return [st,X(p[2]),Y(p[1])];});
+  pxy.forEach(function(q){boxes.push([q[1]-13,q[2]-35,26,36]);});
+  pxy.forEach(function(q){var n=q[0][1],p=P[q[0][0]],x=q[1],y=q[2],c=COL[p[3]]||COL.sight;
+    pinsSvg.push('<g class="pin" data-n="'+n+'" transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+')"><g class="hd" style="transform-origin:0 0"><path d="M0,0 C-3,-7 -12,-12 -12,-22 A12,12 0 1 1 12,-22 C12,-12 3,-7 0,0Z" fill="'+c[0]+'" stroke="#fff" stroke-width="2"/>'+E("text",{x:0,y:-17.5,"text-anchor":"middle","font-size":12,"font-weight":700,fill:"#fff"},n)+'</g></g>');});
+  pxy.forEach(function(q){var n=q[0][1],p=P[q[0][0]],x=q[1],y=q[2],c=COL[p[3]]||COL.sight;
+    var name=p[0].replace(/\s*\(.*?\)/,""),w=tw(name,12)+16,h=22,hy=y-22;
+    var cs=[[x+16,hy-11],[x-16-w,hy-11],[x-w/2,hy-40],[x-w/2,y+6],[x+16,hy+8],[x-16-w,hy+8],[x+16,hy-30],[x-16-w,hy-30]];
+    for(var i=0;i<cs.length;i++){var b=[cs[i][0],cs[i][1],w,h];if(free(b)){boxes.push(b);
+      labSvg.push('<g class="lab" data-n="'+n+'">'+E("rect",{x:b[0].toFixed(1),y:b[1].toFixed(1),width:w.toFixed(1),height:h,rx:5,fill:c[1],stroke:"#fff","stroke-width":1.5})+E("text",{x:(b[0]+8).toFixed(1),y:(b[1]+15.5).toFixed(1),"font-size":12,"font-weight":600,fill:"#22262B"},esc(name))+'</g>');break;}}});
+  F.lm.forEach(function(l){var x=X(l[2]),y=Y(l[1]);if(x<20||x>W-20||y<20||y>H-20)return;
+    var near=stops.some(function(st){var p=P[st[0]];return Math.abs(p[1]-l[1])*111320<110&&Math.abs(p[2]-l[2])*111320*k<110;});if(near)return;
+    var sq=[x-4,y-4,8,8];if(!free(sq))return;
+    var w=tw(l[0],11)+4,cs=[[x+8,y-7],[x-8-w,y-7],[x-w/2,y-22],[x-w/2,y+7]];
+    for(var i=0;i<cs.length;i++){var b=[cs[i][0],cs[i][1],w,14];if(free(b)){boxes.push(sq,b);
+      lmSvg.push(E("rect",{x:(x-3.5).toFixed(1),y:(y-3.5).toFixed(1),width:7,height:7,rx:1.5,fill:"#7E858D",stroke:"#fff","stroke-width":1.5})+E("text",{x:(b[0]+2).toFixed(1),y:(b[1]+11).toFixed(1),"font-size":11,"font-weight":500,fill:"#5E646B",stroke:"#F1EADF","stroke-width":3,"paint-order":"stroke"},esc(l[0])));return;}}});
+  o.push(lmSvg.join(""),pinsSvg.join(""),labSvg.join(""),"</g>");
+  el.innerHTML='<svg class="smap" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+el.getAttribute("aria-label")+'" font-family="Apple SD Gothic Neo,Malgun Gothic,sans-serif">'+o.join("")+"</svg>";
+  $$(".pin,.lab",el).forEach(function(g){g.addEventListener("click",function(){highlight(g.dataset.n);});});
+}
+
+/* ---------- restaurants ---------- */
+function linkedDays(c){
+  var nm=(c.name||"").toLowerCase(),ds=[];
+  S.events.forEach(function(e){if((c.pl&&(e.pl||[]).indexOf(c.pl)>-1)||(nm.length>1&&e.t.toLowerCase().indexOf(nm)>-1)){if(ds.indexOf(e.d)<0)ds.push(e.d);}});
+  return ds.sort(function(a,b){return S.days.findIndex(function(x){return x.d===a;})-S.days.findIndex(function(x){return x.d===b;});});
+}
+function renderEat(){
+  $("#eatgrid").innerHTML=COUNTRY.map(function(co){
+    var list=S.cands.filter(function(c){return c.c===co.id;});
+    return '<section class="ecol"><div class="ecol-h"><h3>'+co.name+'<small>'+co.city+', 후보 '+list.length+'곳</small></h3><button type="button" class="btn-sm ed" data-cadd="'+co.id+'">+ 후보 추가</button></div>'
+      +(list.length?list.map(function(c){
+        var ds=linkedDays(c),url=c.pl&&P[c.pl]?P[c.pl][6]:mapsUrl(c.u);
+        return '<article class="cand'+(ds.length?" in":"")+'"><div class="cand-top"><span class="nm">'+(url?'<a class="pl" href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(c.name)+'</a>':esc(c.name))+'<em class="kind">'+esc(c.kind||"")+'</em></span>'+(c.score?'<span class="sc">'+esc(c.score)+'</span>':'')+'</div>'
+          +(c.local?'<div class="local">'+esc(c.local)+'</div>':'')+(c.price?'<div class="pr">'+esc(c.price)+'</div>':'')+(c.note?'<p>'+esc(c.note)+'</p>':'')
+          +'<div class="cand-foot">'+(ds.length?ds.map(function(d){return '<button type="button" class="inplan" data-go="'+d+'">'+dl(d)+' 일정에 있음</button>';}).join(""):'')
+          +'<button type="button" class="btn-sm primary ed" data-cplan="'+c.id+'">'+(ds.length?"한 번 더 넣기":"일정에 넣기")+'</button><span class="sp"></span><button type="button" class="link ed" data-cedit="'+c.id+'">수정</button></div></article>';
+      }).join(""):'<p class="nomap">아직 후보가 없어요.</p>')+'</section>';
+  }).join("");
+}
+function editCand(id,country){
+  var c=id?S.cands.filter(function(x){return x.id===id;})[0]:null;
+  var v=c?clone(c):{c:country,name:"",kind:"식당",price:"",local:"",note:"",score:"",pl:"",u:""};
+  form({title:c?"후보 수정":"후보 추가",del:c?"삭제":null,fields:[
+    {k:"name",label:"이름",value:v.name,req:1},
+    {k:"c",label:"나라",type:"select",options:COUNTRY.map(function(x){return [x.id,x.name+" ("+x.city+")"];}),value:v.c,half:1},
+    {k:"kind",label:"종류",type:"select",options:[["식당","식당"],["카페","카페"],["간식","간식"],["바","바"],["기타","기타"]],value:v.kind,half:1},
+    {k:"price",label:"가격과 메뉴",value:v.price,ph:"예: 슈니첼 €22"},
+    {k:"local",label:"현지 이름 (선택)",value:v.local,ph:"고덕지도 검색용 한자 이름 등"},
+    {k:"note",label:"메모",type:"textarea",rows:2,value:v.note},
+    {k:"score",label:"점수 (선택)",value:v.score,half:1},
+    {k:"pl",label:"약도에 있는 장소",type:"place1",value:v.pl,half:1},
+    {k:"u",label:"구글 지도 검색어나 링크",value:v.u,ph:"약도에 없는 곳이면 적어 주세요"}
+  ],validate:function(o){if(!o.name)return "이름을 적어 주세요";}}).then(function(o){
+    if(!o)return;
+    if(o==="__del"){confirmBox("후보를 지울까요?","‘"+v.name+"’ 후보를 목록에서 지워요. 이미 넣은 일정은 그대로 남아요.","지우기").then(function(ok){if(ok){S.cands=S.cands.filter(function(x){return x.id!==id;});commit();}});return;}
+    if(c){var lc=S.cands.filter(function(x){return x.id===id;})[0];if(lc)Object.assign(lc,o);else{o.id=id;S.cands.push(o);}}else{o.id=uid("c");S.cands.push(o);}
+    commit();
+  });
+}
+function candToPlan(id){
+  var c=S.cands.filter(function(x){return x.id===id;})[0],co=COUNTRY.filter(function(x){return x.id===c.c;})[0];
+  openEvent(null,{d:co.days[0],s:"12:00",e:"13:00",cat:"f",t:c.name,n:[c.price,c.local].filter(Boolean).join(", "),pl:c.pl?[c.pl]:[],u:c.pl?"":(c.u||c.name)});
+}
+
+/* ---------- money ---------- */
+var moneyFilter="all";
+function rate(cur){return +S.money.rates[cur]||1;}
+function krw(it){return (+it.amount||0)*rate(it.cur);}
+function renderMoney(){
+  var M=S.money,paid={},plan={},tb=0,tp=0,tl=0;
+  M.items.forEach(function(it){var v=krw(it);if(it.status==="paid"){paid[it.cat]=(paid[it.cat]||0)+v;tp+=v;}else{plan[it.cat]=(plan[it.cat]||0)+v;tl+=v;}});
+  M.cats.forEach(function(c){tb+=+c.budget||0;});
+  var left=tb-tp-tl;
+  $("#msum").innerHTML='<div><span>총 예산</span><b>'+won(tb)+'</b><small>1인 '+won(tb/2)+'</small></div><div><span>결제 완료</span><b>'+won(tp)+'</b><small>1인 '+won(tp/2)+'</small></div><div><span>결제 예정</span><b>'+won(tl)+'</b><small>1인 '+won(tl/2)+'</small></div><div class="'+(left<0?"neg":"")+'"><span>남은 예산</span><b>'+won(left)+'</b><small>예산에서 결제와 예정을 뺀 금액</small></div>';
+  $("#mcats").innerHTML='<thead><tr><th>분류</th><th class="n">예산</th><th class="n">결제 완료</th><th class="n">예정</th><th class="barh">사용</th><th class="n">남음</th></tr></thead><tbody>'+M.cats.map(function(c){
+    var b=+c.budget||0,p=paid[c.id]||0,l=plan[c.id]||0,pp=b?Math.min(100,p/b*100):0,lp=b?Math.min(100-pp,l/b*100):0,r=b-p-l;
+    return '<tr><td>'+esc(c.name)+'</td><td class="n"><input type="number" step="1000" min="0" class="bud" data-cat="'+c.id+'" value="'+b+'" aria-label="'+esc(c.name)+' 예산" data-live></td><td class="n">'+won(p)+'</td><td class="n muted">'+won(l)+'</td><td class="barh"><span class="bar"><i style="width:'+pp+'%"></i><i class="pl" style="width:'+lp+'%"></i></span></td><td class="n'+(r<0?" neg":"")+'">'+won(r)+'</td></tr>';
+  }).join("")+'</tbody>';
+  var items=M.items.filter(function(it){return moneyFilter==="all"||it.status===moneyFilter;}).slice().sort(function(a,b){return (a.status===b.status?0:a.status==="paid"?-1:1)||String(a.date||"9").localeCompare(String(b.date||"9"));});
+  var cn={};M.cats.forEach(function(c){cn[c.id]=c.name;});
+  $("#mlist").innerHTML=items.length?items.map(function(it){
+    return '<tr data-mid="'+it.id+'"><td>'+esc(it.date?it.date.slice(5).replace("-","/"):"")+'</td><td><b>'+esc(it.name)+'</b>'+(it.memo?'<small>'+esc(it.memo)+'</small>':'')+'</td><td><span class="chip">'+esc(it.kind||"")+'</span> '+esc(cn[it.cat]||"")+'</td><td class="n">'+(it.cur!=="KRW"?'<small>'+(+it.amount).toLocaleString("ko-KR")+" "+it.cur+'</small>':'')+won(krw(it))+'</td><td><span class="st '+it.status+'">'+(it.status==="paid"?"결제 완료":"예정")+'</span></td><td class="ed"><button type="button" class="btn-sm" data-medit="'+it.id+'">수정</button></td></tr>';
+  }).join(""):'<tr><td colspan="6" class="muted">기록이 없어요.</td></tr>';
+  $$("#mfilter button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===moneyFilter));});
+  $("#mrates").innerHTML=["EUR","USD","CZK","HUF","CNY"].map(function(c){return '<label>1 '+c+' <input type="number" step="0.01" min="0" data-rate="'+c+'" value="'+rate(c)+'" data-live> 원</label>';}).join("");
+}
+function editMoney(id){
+  var it=id?S.money.items.filter(function(x){return x.id===id;})[0]:null;
+  var v=it?clone(it):{date:new Date().toISOString().slice(0,10),cat:"food",name:"",amount:"",cur:"EUR",status:"paid",kind:"지출",memo:""};
+  form({title:it?"기록 수정":"예약이나 지출 기록",del:it?"삭제":null,fields:[
+    {k:"kind",label:"구분",type:"seg",options:[["예약","예약"],["지출","지출"]],value:v.kind},
+    {k:"name",label:"항목",value:v.name,req:1,ph:"예: 세체니 온천 2인"},
+    {k:"cat",label:"분류",type:"select",options:S.money.cats.map(function(c){return [c.id,c.name];}),value:v.cat,half:1},
+    {k:"date",label:"날짜",type:"date",value:v.date,half:1},
+    {k:"amount",label:"금액",type:"number",step:"0.01",value:v.amount,half:1,req:1},
+    {k:"cur",label:"통화",type:"select",options:[["KRW","원"],["EUR","유로"],["USD","달러"],["CZK","코루나"],["HUF","포린트"],["CNY","위안"]],value:v.cur,half:1},
+    {k:"status",label:"상태",type:"seg",options:[["paid","결제 완료"],["planned","예정"]],value:v.status},
+    {k:"memo",label:"메모",value:v.memo}
+  ],validate:function(o){if(!o.name)return "항목을 적어 주세요";if(!(o.amount>0))return "금액을 적어 주세요";}}).then(function(o){
+    if(!o)return;
+    if(o==="__del"){confirmBox("기록을 지울까요?","‘"+v.name+"’ 기록을 지워요.","지우기").then(function(ok){if(ok){S.money.items=S.money.items.filter(function(x){return x.id!==id;});commit();}});return;}
+    if(it){var li=S.money.items.filter(function(x){return x.id===id;})[0];if(li)Object.assign(li,o);else{o.id=id;S.money.items.push(o);}}else{o.id=uid("m");S.money.items.push(o);}
+    commit();
+  });
+}
+
+/* ---------- checklists ---------- */
+var curList=null;
+function renderChecks(){
+  if(!S.lists.some(function(l){return l.id===curList;}))curList=S.lists.length?S.lists[0].id:null;
+  $("#ltabs").innerHTML=S.lists.map(function(l){var all=0,dn=0;l.groups.forEach(function(g){g.items.forEach(function(i){all++;if(i.done)dn++;});});return '<button type="button" role="tab" data-list="'+l.id+'" aria-selected="'+(l.id===curList)+'">'+esc(l.name)+'<small>'+dn+'/'+all+'</small></button>';}).join("")+'<button type="button" class="ltab-add ed" data-ladd>+ 목록</button>';
+  var L=S.lists.filter(function(l){return l.id===curList;})[0];
+  if(!L){$("#lbody").innerHTML='<p class="nomap">목록을 만들어 보세요.</p>';return;}
+  var all=0,dn=0;L.groups.forEach(function(g){g.items.forEach(function(i){all++;if(i.done)dn++;});});
+  $("#lbody").innerHTML='<div class="lhead"><p class="progress">'+all+'개 중 '+dn+'개 완료</p><span class="meter"><i style="width:'+(all?dn/all*100:0)+'%"></i></span><button type="button" class="link ed" data-lren>목록 이름 바꾸기</button><button type="button" class="link ed" data-ldel>목록 지우기</button></div><div class="checks">'
+   +L.groups.map(function(g){var d=g.items.filter(function(i){return i.done;}).length;
+     return '<div class="ck" data-gid="'+g.id+'"><h3>'+esc(g.name)+'<small>'+d+' / '+g.items.length+'</small><button type="button" class="link ed" data-gedit="'+g.id+'">수정</button></h3>'
+       +g.items.map(function(i){return '<div class="ci'+(i.done?" done":"")+'"><label><input type="checkbox" data-iid="'+i.id+'"'+(i.done?" checked":"")+'><span>'+esc(i.t)+(i.s?'<small>'+esc(i.s)+'</small>':'')+'</span></label><button type="button" class="x ed" data-iedit="'+i.id+'" aria-label="항목 수정">✎</button></div>';}).join("")
+       +'<form class="addrow ed" data-gadd="'+g.id+'"><input type="text" placeholder="항목 추가" aria-label="'+esc(g.name)+'에 항목 추가"><button type="submit" class="btn-sm">추가</button></form></div>';
+   }).join("")+'</div><button type="button" class="btn add ed" data-gnew>+ 그룹 추가</button>';
+}
+function curL(){return S.lists.filter(function(l){return l.id===curList;})[0]||null;}
+function curG(gid){var L=curL();return L?L.groups.filter(function(x){return x.id===gid;})[0]||null:null;}
+function findItem(id){var r=null;S.lists.forEach(function(l){l.groups.forEach(function(g){g.items.forEach(function(i){if(i.id===id)r={l:l,g:g,i:i};});});});return r;}
+
+/* ---------- notes ---------- */
+function renderNotes(){
+  $("#notes").innerHTML=S.notes.map(function(n){return '<article class="notec" data-nid="'+n.id+'"><span class="tape t'+((n.id.charCodeAt(n.id.length-1)%3)+1)+'"></span><input class="nt" value="'+esc(n.title)+'" placeholder="제목" aria-label="메모 제목" data-live><textarea class="nb" rows="6" placeholder="자유롭게 적어 두세요" aria-label="메모 내용" data-live>'+esc(n.body)+'</textarea><button type="button" class="link ed" data-ndel="'+n.id+'">이 메모 지우기</button></article>';}).join("")+'<button type="button" class="notec addnote ed" data-nadd>+ 메모 추가</button>';
+}
+var liveTimer=null,livePending=false;
+function liveCommit(){livePending=true;clearTimeout(liveTimer);liveTimer=setTimeout(function(){livePending=false;commit(true);},500);}
+function flushLive(){if(livePending){clearTimeout(liveTimer);livePending=false;commit(true);}}
+
+/* ---------- read-only ---------- */
+function applyRO(){document.title="동유럽 여행";
+  document.body.classList.toggle("ro",!canWrite);
+  $$("#memo input,#lbody input,#notes input,#notes textarea,#money input").forEach(function(i){i.disabled=!canWrite;});
+}
+function renderAll(){renderHero();renderMemo();renderTT();renderTabs();renderPanel();renderEat();renderMoney();renderChecks();renderNotes();applyRO();}
+
+/* ---------- binding ---------- */
+function bind(){
+  $("#dlg").addEventListener("close",function(){if(dlgResolve&&!$("#dlg").open)close(null);});
+  document.addEventListener("click",function(e){
+    var b=e.target.closest("[data-go]");
+    if(b){e.preventDefault();show(b.dataset.go,true);}
+  });
+  $$(".cover-head [data-trip]").forEach(function(el){el.addEventListener("input",function(){S.trip[el.dataset.trip]=el.value;liveCommit();});el.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.isComposing){e.preventDefault();el.blur();}});});
+  // memo
+  $("#memo").addEventListener("change",function(e){var id=e.target.dataset.mid;if(!id)return;S.memo.forEach(function(x){if(x.id===id)x.done=e.target.checked?1:0;});commit();});
+  $("#memo").addEventListener("click",function(e){var b=e.target.closest("[data-mdel]");if(b){S.memo=S.memo.filter(function(x){return x.id!==b.dataset.mdel;});commit();}});
+  $("#memoForm").addEventListener("submit",function(e){e.preventDefault();var i=$("#memoIn"),t=i.value.trim();if(!t)return;S.memo.push({id:uid("t"),t:t,done:0});i.value="";commit();setTimeout(function(){$("#memoIn").focus();},0);});
+  $("#memoClear").onclick=function(){if(!S.memo.some(function(x){return x.done;}))return;S.memo=S.memo.filter(function(x){return !x.done;});commit();};
+  ttBind();
+  $("#daytabs").addEventListener("click",function(e){var b=e.target.closest("[data-tab]");if(b)show(b.dataset.tab,false);});
+  bindPanel();
+  // eat
+  $("#eatgrid").addEventListener("click",function(e){var b;
+    if((b=e.target.closest("[data-cadd]")))editCand(null,b.dataset.cadd);
+    else if((b=e.target.closest("[data-cedit]")))editCand(b.dataset.cedit);
+    else if((b=e.target.closest("[data-cplan]")))candToPlan(b.dataset.cplan);
+  });
+  // money
+  $("#madd").onclick=function(){editMoney(null);};
+  $("#mlist").addEventListener("click",function(e){var b=e.target.closest("[data-medit]");if(b)editMoney(b.dataset.medit);});
+  $("#mfilter").addEventListener("click",function(e){var b=e.target.closest("[data-f]");if(b){moneyFilter=b.dataset.f;renderMoney();applyRO();}});
+  $("#money").addEventListener("change",function(e){
+    var t=e.target;
+    if(t.dataset.cat){S.money.cats.forEach(function(c){if(c.id===t.dataset.cat)c.budget=+t.value||0;});commit();}
+    else if(t.dataset.rate){S.money.rates[t.dataset.rate]=+t.value||0;commit();}
+  });
+  // checks
+  $("#ltabs").addEventListener("click",function(e){var b=e.target.closest("[data-list]");if(b){curList=b.dataset.list;renderChecks();applyRO();return;}
+    if(e.target.closest("[data-ladd]"))form({title:"새 목록",fields:[{k:"name",label:"목록 이름",req:1,ph:"예: 기념품 살 것"}],validate:function(o){if(!o.name)return "이름을 적어 주세요";}}).then(function(o){if(o){var id=uid("L");S.lists.push({id:id,name:o.name,groups:[{id:uid("g"),name:"기본",items:[]}]});curList=id;commit();}});});
+  $("#lbody").addEventListener("change",function(e){var id=e.target.dataset.iid;if(!id)return;var f=findItem(id);if(f){f.i.done=e.target.checked?1:0;commit();}});
+  $("#lbody").addEventListener("submit",function(e){var f=e.target.closest("[data-gadd]");if(!f)return;e.preventDefault();var inp=$("input",f),t=inp.value.trim();if(!t)return;var gid=f.dataset.gadd;
+    S.lists.forEach(function(l){l.groups.forEach(function(g){if(g.id===gid)g.items.push({id:uid("i"),t:t,s:"",done:0});});});commit();
+    var nf=$('[data-gadd="'+gid+'"] input');if(nf)nf.focus();});
+  $("#lbody").addEventListener("click",function(e){var b,L=S.lists.filter(function(l){return l.id===curList;})[0];
+    if((b=e.target.closest("[data-iedit]"))){var f=findItem(b.dataset.iedit);form({title:"항목 수정",del:"삭제",fields:[{k:"t",label:"항목",value:f.i.t,req:1},{k:"s",label:"설명 (선택)",value:f.i.s}],validate:function(o){if(!o.t)return "항목을 적어 주세요";}}).then(function(o){if(!o)return;var f2=findItem(f.i.id);if(!f2)return;if(o==="__del")f2.g.items=f2.g.items.filter(function(x){return x.id!==f2.i.id;});else Object.assign(f2.i,o);commit();});}
+    else if((b=e.target.closest("[data-gedit]"))){var g=L.groups.filter(function(x){return x.id===b.dataset.gedit;})[0];form({title:"그룹 수정",del:"그룹 삭제",fields:[{k:"name",label:"그룹 이름",value:g.name,req:1}]}).then(function(o){if(!o)return;if(o==="__del"){confirmBox("그룹을 지울까요?","‘"+g.name+"’과 안의 항목 "+g.items.length+"개를 지워요.","지우기").then(function(ok){if(ok){var L2=curL();if(L2){L2.groups=L2.groups.filter(function(x){return x.id!==g.id;});commit();}}});return;}var g2=curG(g.id)||g;g2.name=o.name||g2.name;commit();});}
+    else if(e.target.closest("[data-gnew]"))form({title:"그룹 추가",fields:[{k:"name",label:"그룹 이름",req:1}],validate:function(o){if(!o.name)return "이름을 적어 주세요";}}).then(function(o){if(o){var L2=curL();if(L2){L2.groups.push({id:uid("g"),name:o.name,items:[]});commit();}}});
+    else if(e.target.closest("[data-lren]"))form({title:"목록 이름 바꾸기",fields:[{k:"name",label:"목록 이름",value:L.name,req:1}]}).then(function(o){if(o&&o.name){var L2=curL();if(L2){L2.name=o.name;commit();}}});
+    else if(e.target.closest("[data-ldel]"))confirmBox("목록을 지울까요?","‘"+L.name+"’ 목록과 안의 항목을 모두 지워요.","지우기").then(function(ok){if(ok){var lid=L.id;S.lists=S.lists.filter(function(x){return x.id!==lid;});curList=null;commit();}});
+  });
+  // notes
+  $("#notes").addEventListener("input",function(e){var c=e.target.closest("[data-nid]");if(!c)return;var n=S.notes.filter(function(x){return x.id===c.dataset.nid;})[0];if(!n)return;if(e.target.classList.contains("nt"))n.title=e.target.value;else n.body=e.target.value;setStatus(docRef?"saving":"local");liveCommit();});
+  $("#notes").addEventListener("click",function(e){var b;
+    if(e.target.closest("[data-nadd]")){S.notes.push({id:uid("n"),title:"",body:""});commit();var t=$$("#notes .nt");if(t.length)t[t.length-1].focus();}
+    else if((b=e.target.closest("[data-ndel]"))){var id=b.dataset.ndel;confirmBox("메모를 지울까요?","이 메모를 지워요.","지우기").then(function(ok){if(ok){S.notes=S.notes.filter(function(x){return x.id!==id;});commit();}});}
+  });
+  // backup
+  $("#bkSave").onclick=exportFile;
+  $("#bkLoad").onclick=function(){$("#bkFile").click();};
+  $("#bkFile").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!valid(d))throw 0;confirmBox("이 파일로 바꿀까요?","지금 내용이 파일 내용으로 바뀌어요. 먼저 지금 상태를 파일로 저장해 두면 안전해요.","불러오기").then(function(ok){if(ok){S=normalize(d);commit();msg("파일을 불러왔어요");}});}catch(x){msg("여행 계획 파일이 아니에요. 이 앱에서 저장한 .json 파일을 골라 주세요");}e.target.value="";};r.readAsText(f);});
+  $("#bkReset").onclick=function(){confirmBox("처음 상태로 되돌릴까요?","직접 추가하고 고친 내용, 체크, 메모, 지출 기록이 모두 처음 계획으로 돌아가요.","되돌리기").then(function(ok){if(ok){S=clone(DEFAULT);commit();msg("처음 계획으로 되돌렸어요");}});};
+}
+function msg(t){var m=$("#toast");m.textContent=t;m.classList.add("on");clearTimeout(msg.t);msg.t=setTimeout(function(){m.classList.remove("on");},2600);}
+function exportFile(){
+  var data=JSON.stringify(S,null,1),name="헝오체-여행계획-"+new Date().toISOString().slice(0,10)+".json";
+  var use=Promise.resolve(null);
+  Promise.resolve(use).then(function(dn){
+    if(dn)return dn.save({filename:name,data:data}).then(function(){msg("파일로 저장했어요");},function(e){if(e&&e.code!=="declined")msg("저장하지 못했어요");});
+    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();a.remove();
+  });
+}
+
+/* ---------- Google Sheets sync ---------- */
+var srvRev=0,base=null,dirty=false,renderLater=false;
+try{var sy=JSON.parse(localStorage.getItem(LS+"-sync")||"null");if(sy&&sy.base){srvRev=sy.rev||0;base=sy.base;}}catch(e){}
+function saveSync(){try{localStorage.setItem(LS+"-sync",JSON.stringify({rev:srvRev,base:base}));}catch(e){}}
+function eq(a,b){
+  if(a===b)return true;
+  if(typeof a!=="object"||typeof b!=="object"||!a||!b||Array.isArray(a)!==Array.isArray(b))return false;
+  var ka=Object.keys(a);if(ka.length!==Object.keys(b).length)return false;
+  return ka.every(function(k){return eq(a[k],b[k]);});
+}
+function same(a,b){var x=clone(a),y=clone(b);delete x.rev;delete y.rev;return eq(x,y);}
+function isObj(x){return !!x&&typeof x==="object"&&!Array.isArray(x);}
+function keyOf(x){return isObj(x)?(x.id!=null?x.id:(x.d!=null?x.d:null)):null;}
+function keyed(a){return Array.isArray(a)&&a.length>0&&a.every(function(x){return keyOf(x)!=null;});}
+function mapBy(a){var m={};(a||[]).forEach(function(x){m[keyOf(x)]=x;});return m;}
+/* 3-way merge: base(마지막으로 맞춘 상태), m(내 것), t(서버 최신). 서로 다른 항목/칸을 고쳤으면 둘 다 살리고, 같은 칸이면 내 것 */
+function merge3(b,m,t){
+  if(eq(m,b))return t;if(eq(t,b))return m;if(eq(m,t))return m;
+  if(isObj(m)&&isObj(t)){
+    var o={},bb=isObj(b)?b:{};
+    Object.keys(t).concat(Object.keys(m)).forEach(function(k){
+      if(k in o)return;var v=merge3(bb[k],m[k],t[k]);if(v!==undefined)o[k]=v;
+    });
+    return o;
+  }
+  if(Array.isArray(m)&&Array.isArray(t)&&(keyed(m)||keyed(t)||keyed(b))){
+    var bm=mapBy(b),mm=mapBy(m),tm=mapBy(t),out=[],seen={};
+    t.forEach(function(x){var k=keyOf(x);seen[k]=1;
+      if(k in mm)out.push(merge3(bm[k],mm[k],x));
+      else if(k in bm){if(!eq(bm[k],x))out.push(x);}   /* 내가 지움: 친구가 고쳤으면 살림 */
+      else out.push(x);});                              /* 친구가 추가 */
+    m.forEach(function(x){var k=keyOf(x);if(seen[k])return;
+      if(k in bm){if(!eq(bm[k],x))out.push(x);}         /* 친구가 지움: 내가 고쳤으면 살림 */
+      else out.push(x);});                              /* 내가 추가 */
+    return out;
+  }
+  return m;
+}
+function api(url,opt){return fetch(url,opt).then(function(r){return r.json();});}
+function merge_(r){
+  var m=merge3(base||clone(DEFAULT),S,r.state),ch=!same(m,S);
+  S=normalize(m);base=r.state;srvRev=r.rev;
+  try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+  saveSync();
+  if(ch){if(busy())renderLater=true;else renderAll();}
+}
+function push(n){
+  if($("#dlg").open)return new Promise(function(r){setTimeout(r,1000);}).then(function(){return push(n);});
+  var st=clone(S);
+  return api(SYNC_URL,{method:"POST",body:JSON.stringify({baseRev:srvRev,state:st})}).then(function(r){
+    if(r.ok){srvRev=r.rev;base=st;saveSync();return;}
+    if(r.conflict&&(n||0)<4){merge_(r);return push((n||0)+1);}
+    throw new Error(r.error||"sync failed");
+  });
+}
+function tick(first){
+  if(!SYNC_URL||writing||$("#dlg").open)return;
+  if(document.visibilityState==="hidden"&&first!==true)return;
+  api(SYNC_URL+"?action=rev&t="+Date.now()).then(function(r){
+    if(first!==true&&r.rev===srvRev){if(dirty)flush();return;}
+    return api(SYNC_URL+"?action=get&t="+Date.now()).then(function(g){
+      if(!g.state){commit(true);return;}               /* 시트가 비어 있으면 내 내용으로 채움 */
+      merge_(g);
+      if(same(S,g.state))setStatus("saved");else commit(true);
+    });
+  }).catch(function(){setStatus("error");});
+}
+function startSync(){
+  if(!SYNC_URL)return;
+  docRef={set:function(){dirty=true;return push(0).then(function(){dirty=false;});}};
+  setStatus("saving");tick(true);
+  setInterval(function(){tick();},8000);
+  document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")tick();});
+}
+
+/* ---------- start ---------- */
+var initHash=/^#d\d{4}$/.test(location.hash||"");
+renderAll();bind();show(cur,false,true);
+if(initHash)setTimeout(function(){$("#schedule").scrollIntoView();},50);
+setStatus("local");
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")flushLive();});
+window.addEventListener("pagehide",flushLive);
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}
+document.addEventListener("focusout",function(){if(pendingRemote&&!busy()){var d=pendingRemote;pendingRemote=null;applyRemote(d);}if(renderLater&&!busy()){renderLater=false;renderAll();}});
+startSync();
+})();
+
+</script>
+</body>
+</html>
