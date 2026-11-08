@@ -833,7 +833,25 @@ var LISTS={at:"https://maps.app.goo.gl/yxUsHAtFQDvfxB9V9",hu:"https://maps.app.g
 var KIND_T={"식당":"food","카페":"cafe","간식":"food","바":"food","관광":"sight","쇼핑":"market","기타":"sight"};
 var KINDS=["관광","쇼핑","식당","카페","간식","기타"],candFilter="all";
 function loadCP(o){var cp=(o||S||{}).cp||{};for(var k in cp)P[k]=cp[k];}
-function parseLL(s){s=String(s||"");var m=s.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)||s.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)||s.match(/^\s*(-?\d+\.\d+)\s*[, ]\s*(-?\d+\.\d+)\s*$/);return m?[+m[1],+m[2]]:null;}
+/* 장소 좌표 읽기. 구글 지도 링크의 @위도,경도는 화면 중심이라 장소 위치와 다를 수 있어서, 장소 핀 좌표(!3d…!4d…)를 먼저 읽고 @는 마지막에만 써요 */
+function parseLL(s){s=String(s||"").trim();try{if(/%[0-9A-F]{2}/i.test(s))s=decodeURIComponent(s);}catch(e){}
+  var m=s.match(/!8m2!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)||s.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)
+    ||s.match(/^\(?\s*(-?\d{1,2}\.\d+)\s*[, ]\s*(-?\d{1,3}\.\d+)\s*\)?$/)
+    ||s.match(/[?&](?:q|query|ll|center|destination|daddr)=(-?\d{1,2}\.\d+)\s*,\s*\+?(-?\d{1,3}\.\d+)/i)
+    ||s.match(/\/(?:place|search|dir)\/(-?\d{1,2}\.\d+)\s*,\s*\+?(-?\d{1,3}\.\d+)/)
+    ||s.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if(!m)return null;var a=[+m[1],+m[2]];return (Math.abs(a[0])<=90&&Math.abs(a[1])<=180)?a:null;}
+function isShort(u){return /^https?:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps)\//i.test(String(u||"").trim());}
+var noResolver=false;
+/* 짧은 링크(maps.app.goo.gl)는 브라우저에서 열어볼 수 없어서 Apps Script에 실제 주소를 물어봐요 */
+function resolveLL(u){u=String(u||"").trim();var a=parseLL(u);if(a||!u)return Promise.resolve(a);
+  if(!isShort(u)||!SYNC_URL||noResolver||denied)return Promise.resolve(null);
+  return api(SU("action=resolve&u="+encodeURIComponent(u)+"&t="+Date.now())).then(function(r){
+    if(!r||typeof r.url!=="string"){noResolver=true;return null;}return parseLL(r.url);},function(){return null;});}
+var CENTER=null;
+function nearCity(ll,fb){if(!CENTER){CENTER={};Object.keys(CF).forEach(function(c){var la=0,ln=0;CF[c].lm.forEach(function(l){la+=l[1];ln+=l[2];});CENTER[c]=[la/CF[c].lm.length,ln/CF[c].lm.length];});}var best=fb||"wien",bd=1e9;Object.keys(CENTER).forEach(function(c){var d=Math.pow(ll[0]-CENTER[c][0],2)+Math.pow((ll[1]-CENTER[c][1])*Math.cos(ll[0]*Math.PI/180),2);if(d<bd){bd=d;best=c;}});return best;}
+var CAT_T={f:"food",m:"station",s:"sight",r:"cafe"};
+function far(a,b){return Math.abs(a[0]-b[0])*111320>40||Math.abs(a[1]-b[1])*111320*Math.cos(a[0]*Math.PI/180)>40;}
 var CF={
 wien:{rot:-12,
  water:[[[[48.2330,16.3560],[48.2250,16.3610],[48.2185,16.3700],[48.2140,16.3770],[48.2105,16.3830],[48.2040,16.3920],[48.1990,16.4010]],45],
@@ -901,7 +919,7 @@ function won(n){return (Math.round(n)||0).toLocaleString("ko-KR")+"원";}
 function mapsUrl(q){if(!q)return "";if(/^https?:\/\//.test(q))return q;return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);}
 function valid(o){return !!(o&&Array.isArray(o.days)&&Array.isArray(o.events));}
 function hhmm(t){if(t==null)return "";t=String(t).trim();var m=t.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);return m?(m[1].length<2?"0":"")+m[1]+":"+m[2]:t;}
-function normalize(o){for(var k in DEFAULT){if(o[k]==null)o[k]=clone(DEFAULT[k]);}if(!o.cp)o.cp={};if(!o.seedV||o.seedV<3){NEWCS.forEach(function(nc,i){if((!o.seedV||i>0)&&!o.cands.some(function(c){return c.id===nc.id;}))o.cands.push(clone(nc));});o.seedV=3;}if(o.seedV<4){NEWCS4.forEach(function(nc){if(!o.cands.some(function(c){return c.id===nc.id;}))o.cands.push(clone(nc));});o.seedV=4;}loadCP(o);if(!o.money.rates)o.money.rates=clone(DEFAULT.money.rates);(o.events||[]).forEach(function(e){e.s=hhmm(e.s);e.e=hhmm(e.e);if(!Array.isArray(e.pl))e.pl=e.pl?String(e.pl).split(",").filter(Boolean):[];});return o;}
+function normalize(o){for(var k in DEFAULT){if(o[k]==null)o[k]=clone(DEFAULT[k]);}if(!o.cp)o.cp={};Object.keys(o.cp).forEach(function(k){var a=o.cp[k];if(!Array.isArray(a))return;var ll=/!3d/.test(a[6]||"")?parseLL(a[6]):null;if(ll&&far(ll,[a[1],a[2]])){a[1]=ll[0];a[2]=ll[1];a[5]=nearCity(ll,a[5]);}});if(!o.seedV||o.seedV<3){NEWCS.forEach(function(nc,i){if((!o.seedV||i>0)&&!o.cands.some(function(c){return c.id===nc.id;}))o.cands.push(clone(nc));});o.seedV=3;}if(o.seedV<4){NEWCS4.forEach(function(nc){if(!o.cands.some(function(c){return c.id===nc.id;}))o.cands.push(clone(nc));});o.seedV=4;}loadCP(o);if(!o.money.rates)o.money.rates=clone(DEFAULT.money.rates);(o.events||[]).forEach(function(e){e.s=hhmm(e.s);e.e=hhmm(e.e);if(!Array.isArray(e.pl))e.pl=e.pl?String(e.pl).split(",").filter(Boolean):[];});return o;}
 function dayOf(d){for(var i=0;i<S.days.length;i++)if(S.days[i].d===d)return S.days[i];return null;}
 function byStart(a,b){return (toMin(a.s)||0)-(toMin(b.s)||0)||((a.e?toMin(a.e):9999)-(b.e?toMin(b.e):9999));}
 
@@ -914,7 +932,7 @@ S=normalize(S);
 var canWrite=true,docRef=null,saveTimer=null,writing=false,again=false,lastRev=S.rev||"",pendingRemote=null;
 function setStatus(k){
   var el=$("#status");if(!el)return;
-  var m={local:"이 기기에만 저장돼요 (구글 시트 연결 안 됨)",saving:"저장하는 중",saved:"모든 기기에 저장됨",error:"저장하지 못했어요. 잠시 뒤 다시 시도해요",ro:"보기 전용"};
+  var m={local:"이 기기에만 저장돼요 (구글 시트 연결 안 됨)",saving:"저장하는 중",saved:"모든 기기에 저장됨",error:"저장하지 못했어요. 잠시 뒤 다시 시도해요",ro:"보기 전용",denied:"시트가 연결을 거부했어요. Apps Script의 비밀번호 확인을 지워 주세요"};
   el.textContent=m[k]||"";el.dataset.k=k;
 }
 function commit(silent){
@@ -929,6 +947,7 @@ function flush(){
   if(writing){again=true;return;}
   writing=true;
   docRef.set(clone(S)).then(function(){setStatus("saved");},function(e){
+    if(denied)return;
     if(e&&e.code==="invalid_argument"){canWrite=false;applyRO();setStatus("ro");}
     else{setStatus("error");setTimeout(function(){again=true;},2000);}
   }).then(function(){writing=false;if(again){again=false;flush();}});
@@ -1011,16 +1030,24 @@ function openEvent(id,preset){
     {k:"t",label:"일정",value:v.t,req:1,ph:"예: 세체니 온천"},
     {k:"n",label:"메모",type:"textarea",value:v.n,rows:2,ph:"가격, 예약, 주의할 점"},
     {k:"pl",label:"지도 장소",type:"places",value:v.pl||[],hint:"고른 장소는 일정과 지도의 약도에 번호 핀으로 표시돼요"},
-    {k:"u",label:"다른 장소 (구글 지도 검색어나 링크)",value:v.u,ph:"목록에 없는 곳"},
+    {k:"u",label:"다른 장소 (구글 지도 링크)",value:v.u,ph:"https://maps.app.goo.gl/…",hint:"목록에 없는 곳은 구글 지도 링크를 붙여 넣으면 약도에 핀이 찍혀요"},
     {k:"key",label:"중요 일정으로 표시",type:"check",value:v.key},
     {k:"tk",label:"예매 완료",type:"check",value:v.tk}
   ],validate:function(o){if(!o.t)return "일정 이름을 적어 주세요";if(toMin(o.s)==null)return "시작 시각을 적어 주세요";if(o.e&&toMin(o.e)===toMin(o.s))return "끝 시각이 시작과 같아요";}}).then(function(o){
     if(!o)return;
     if(o==="__del"){confirmBox("일정을 지울까요?","‘"+v.t+"’ 일정을 시간표와 지도에서 모두 지워요.","지우기").then(function(ok){if(ok){S.events=S.events.filter(function(e){return e.id!==id;});commit();}});return;}
-    if(ev){var live=S.events.filter(function(e){return e.id===id;})[0];if(live)Object.assign(live,o);else{o.id=id;S.events.push(o);}}
-    else{o.id=uid("e");S.events.push(o);}
-    commit();
-    if(o.d!==cur)show(o.d,false);
+    var eid=ev?id:uid("e"),key="u_"+eid;
+    resolveLL(o.u).then(function(ll){
+      var pl=(o.pl||[]).slice();
+      if(ll){var arr=[o.t,ll[0],ll[1],CAT_T[o.cat]||"sight",o.n||"",nearCity(ll,DAYCITY[o.d]),/^https?:/.test(o.u)?o.u:mapsUrl(o.u),1];S.cp[key]=arr;P[key]=arr;if(pl.indexOf(key)<0)pl.push(key);}
+      else if(isShort(o.u)){if(S.cp[key]&&pl.indexOf(key)<0)pl.push(key);msg(noResolver?"짧은 링크 위치를 읽으려면 Apps Script에 위치 확인 코드를 넣어야 해요":"링크에서 위치를 찾지 못했어요");}
+      else pl=pl.filter(function(k){return k!==key;});
+      o.pl=pl;
+      var live=ev?S.events.filter(function(e){return e.id===eid;})[0]:null;
+      if(live)Object.assign(live,o);else{o.id=eid;S.events.push(o);}
+      commit();
+      if(o.d!==cur)show(o.d,false);
+    });
   });
 }
 function editDay(d){
@@ -1251,18 +1278,24 @@ function editCand(id,country){
     {k:"note",label:"메모",type:"textarea",rows:2,value:v.note},
     {k:"score",label:"점수 (선택)",value:v.score,half:1},
     {k:"pl",label:"약도에 있는 장소",type:"place1",value:v.pl,half:1},
-    {k:"u",label:"구글 지도 검색어나 링크",value:v.u,ph:"약도에 없는 곳이면 적어 주세요"},
-    {k:"ll",label:"좌표 (지도에 표시하려면)",value:(v.pl&&v.pl.indexOf("u_")===0&&P[v.pl]?P[v.pl][1]+", "+P[v.pl][2]:""),ph:"예: 47.5009, 19.0539 또는 구글 지도 전체 주소",hint:"구글 지도에서 장소를 길게 눌러 나오는 숫자나, 주소창의 전체 링크(@위도,경도)를 붙여 넣으면 일정에 넣을 때 약도에 핀이 찍혀요. maps.app.goo.gl 짧은 링크는 좌표를 읽을 수 없어요."}
-  ],validate:function(o){if(!o.name)return "이름을 적어 주세요";if(o.ll&&!parseLL(o.ll)&&!parseLL(o.u))return "좌표 형식을 확인해 주세요 (예: 47.5009, 19.0539)";}}).then(function(o){
+    {k:"u",label:"구글 지도 링크",value:v.u,ph:"https://maps.app.goo.gl/…",hint:"링크를 붙여 넣으면 정확한 위치로 약도에 핀이 찍혀요. 짧은 링크도 돼요."},
+    {k:"ll",label:"좌표 (지도에 표시하려면)",value:(v.pl&&v.pl.indexOf("u_")===0&&P[v.pl]?P[v.pl][1]+", "+P[v.pl][2]:""),ph:"예: 47.5009, 19.0539 또는 구글 지도 전체 주소",hint:"링크로 위치가 안 맞을 때만 적어요. 구글 지도에서 장소를 길게 눌러 나오는 숫자를 붙여 넣으면 돼요."}
+  ],validate:function(o){if(!o.name)return "이름을 적어 주세요";if(o.ll&&!parseLL(o.ll)&&!isShort(o.ll))return "좌표 형식을 확인해 주세요 (예: 47.5009, 19.0539)";}}).then(function(o){
     if(!o)return;
     if(o==="__del"){confirmBox("후보를 지울까요?","‘"+v.name+"’ 후보를 목록에서 지워요. 이미 넣은 일정은 그대로 남아요.","지우기").then(function(ok){if(ok){S.cands=S.cands.filter(function(x){return x.id!==id;});commit();}});return;}
-    var ll=parseLL(o.ll)||parseLL(o.u);delete o.ll;
-    var cid=c?id:uid("c");
-    if(ll){var co2=COUNTRY.filter(function(x){return x.id===o.c;})[0],key=(o.pl&&o.pl.indexOf("u_")===0)?o.pl:"u_"+cid;
-      var arr=[o.name,ll[0],ll[1],KIND_T[o.kind]||"sight",o.price||o.note||"",co2.pc,/^https?:/.test(o.u)?o.u:mapsUrl(o.name+" "+co2.city)];
-      S.cp[key]=arr;P[key]=arr;o.pl=key;}
-    if(c){var lc=S.cands.filter(function(x){return x.id===id;})[0];if(lc)Object.assign(lc,o);else{o.id=id;S.cands.push(o);}}else{o.id=cid;S.cands.push(o);}
-    commit();
+    var raw=o.ll;delete o.ll;
+    var cid=c?id:uid("c"),link=/^https?:/.test(o.u)?o.u:(/^https?:/.test(raw)?raw:"");
+    if(link&&!o.u)o.u=link;
+    if(!parseLL(raw)&&!parseLL(link)&&(isShort(raw)||isShort(link)))msg("링크에서 위치를 확인하는 중");
+    resolveLL(raw).then(function(a){return a||resolveLL(link);}).then(function(ll){
+      var co2=COUNTRY.filter(function(x){return x.id===o.c;})[0];
+      if(ll){var key=(o.pl&&o.pl.indexOf("u_")===0)?o.pl:"u_"+cid;
+        var arr=[o.name,ll[0],ll[1],KIND_T[o.kind]||"sight",o.price||o.note||"",nearCity(ll,co2.pc),link||mapsUrl(o.name+" "+co2.city),1];
+        S.cp[key]=arr;P[key]=arr;o.pl=key;}
+      else if(raw||isShort(link))msg(noResolver?"짧은 링크 위치를 읽으려면 Apps Script에 위치 확인 코드를 넣어야 해요":"링크에서 위치를 찾지 못했어요. 좌표 칸에 위도, 경도를 적어 주세요");
+      if(c){var lc=S.cands.filter(function(x){return x.id===id;})[0];if(lc)Object.assign(lc,o);else{o.id=id;S.cands.push(o);}}else{o.id=cid;S.cands.push(o);}
+      commit();
+    });
   });
 }
 function candToPlan(id){
@@ -1451,10 +1484,11 @@ function merge3(b,m,t){
   }
   return m;
 }
-var KEY="";try{KEY=localStorage.getItem(LS+"-key")||"";}catch(e){}
-function SU(q){return SYNC_URL+"?"+(q?q+"&":"")+"k="+encodeURIComponent(KEY);}
+try{localStorage.removeItem(LS+"-key");}catch(e){}
+var denied=false;
+function SU(q){return SYNC_URL+(q?"?"+q:"");}
 function api(url,opt){return fetch(url,opt).then(function(r){return r.json();}).then(function(r){
-  if(r&&(r.error==="denied"||r.denied)){try{localStorage.removeItem(LS+"-key");}catch(e){}KEY="";throw new Error("denied");}return r;});}
+  if(r&&(r.error==="denied"||r.denied)){denied=true;setStatus("denied");throw new Error("denied");}return r;});}
 function merge_(r){
   var m=merge3(base||clone(DEFAULT),S,r.state),ch=!same(m,S);
   S=normalize(m);base=r.state;srvRev=r.rev;
@@ -1472,7 +1506,7 @@ function push(n){
   });
 }
 function tick(first){
-  if(!SYNC_URL||writing||$("#dlg").open)return;
+  if(!SYNC_URL||denied||writing||$("#dlg").open)return;
   if(document.visibilityState==="hidden"&&first!==true)return;
   api(SU("action=rev&t="+Date.now())).then(function(r){
     if(first!==true&&r.rev===srvRev){if(dirty)flush();return;}
@@ -1481,12 +1515,30 @@ function tick(first){
       merge_(g);
       if(same(S,g.state))setStatus("saved");else commit(true);
     });
-  }).catch(function(){setStatus("error");});
+  }).then(function(){if(first===true)repairPins();}).catch(function(){if(!denied)setStatus("error");});
+}
+/* 예전에 저장된 핀 중 링크가 있는 것은 링크의 실제 위치로 다시 맞추고, 링크만 있고 핀이 없던 후보·일정에도 핀을 만들어요 */
+var repairing=false;
+function repairPins(){
+  if(repairing||denied)return;repairing=true;
+  var jobs=[];
+  Object.keys(S.cp).forEach(function(k){var a=S.cp[k];if(Array.isArray(a)&&!a[7]&&/^https?:/.test(a[6]||""))jobs.push({cp:k,u:a[6]});});
+  S.cands.forEach(function(c){if(!c.pl&&/^https?:/.test(c.u||""))jobs.push({cand:c.id,u:c.u});});
+  S.events.forEach(function(e){var k="u_"+e.id;if(!S.cp[k]&&/^https?:/.test(e.u||"")&&/google\.|goo\.gl/.test(e.u))jobs.push({ev:e.id,u:e.u});});
+  var changed=false;
+  (function next(){
+    if(!jobs.length||noResolver&&jobs.every(function(j){return isShort(j.u);})){repairing=false;if(changed)commit();return;}
+    var j=jobs.shift();
+    resolveLL(j.u).then(function(ll){
+      if(j.cp){var a=S.cp[j.cp];if(a&&ll){if(far(ll,[a[1],a[2]])){a[1]=ll[0];a[2]=ll[1];a[5]=nearCity(ll,a[5]);P[j.cp]=a;}a[7]=1;changed=true;}}
+      else if(j.cand&&ll){var c=S.cands.filter(function(x){return x.id===j.cand;})[0];if(c&&!c.pl){var co=COUNTRY.filter(function(x){return x.id===c.c;})[0]||{};var key="u_"+c.id,arr=[c.name,ll[0],ll[1],KIND_T[c.kind]||"sight",c.price||c.note||"",nearCity(ll,co.pc),c.u,1];S.cp[key]=arr;P[key]=arr;c.pl=key;changed=true;}}
+      else if(j.ev&&ll){var e=S.events.filter(function(x){return x.id===j.ev;})[0];if(e){var key2="u_"+e.id,arr2=[e.t,ll[0],ll[1],CAT_T[e.cat]||"sight",e.n||"",nearCity(ll,DAYCITY[e.d]),e.u,1];S.cp[key2]=arr2;P[key2]=arr2;e.pl=(e.pl||[]).concat([key2]);changed=true;}}
+      next();
+    });
+  })();
 }
 function startSync(){
   if(!SYNC_URL)return;
-  if(!KEY){var k=window.prompt("둘이 함께 쓰는 비밀번호를 입력해 주세요. 이 기기에만 저장돼요. 취소하면 이 기기에서만 저장해요.");
-    if(!k){setStatus("local");return;}KEY=k.trim();try{localStorage.setItem(LS+"-key",KEY);}catch(e){}}
   docRef={set:function(){dirty=true;return push(0).then(function(){dirty=false;});}};
   setStatus("saving");tick(true);
   setInterval(function(){tick();},8000);
