@@ -1,0 +1,16 @@
+{
+  "name": "동유럽 여행",
+  "short_name": "동유럽 여행",
+  "description": "헝가리·오스트리아·체코 여행 계획표",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EAE1D3",
+  "theme_color": "#EAE1D3",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
